@@ -10,22 +10,70 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Widget titleSection = Container(
+      padding: const EdgeInsets.all(32),
+
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+              Container(
+                padding: const EdgeInsets.only(left:50),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                  style: ElevatedButton.styleFrom(
+                      elevation: 12.0,
+                      textStyle: const TextStyle(color: Colors.white)),
+
+                  child: const Text('Elevated Button'),
+                ),
+              ),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(right: 50),
+                    child: const Text(
+                      'First, Last',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  /*3*/
+                  Container(
+                    padding: const EdgeInsets.only(right: 50),
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.red[500],
+                    ),
+                  ),
+                ],
+              )
+
+          ],
+        ),
+    );
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'First UI',
       theme: ThemeData(
         // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
+
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Borrow Mii'),
+        ),
+        body: Column(
+          children: [
+            titleSection,
+          ],
+        ),
+        ),
     );
+
+
   }
 }
 
