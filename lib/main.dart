@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
+
 void main() {
-  runApp(const MyApp());
+  runApp(const MaterialApp(
+    title: 'Navigation Basics',
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
@@ -19,13 +24,18 @@ class MyApp extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.only(left:50),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Menu()),
+                    );
+                  },
                   // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
                   style: ElevatedButton.styleFrom(
                       elevation: 12.0,
                       textStyle: const TextStyle(color: Colors.white)),
 
-                  child: const Text('Elevated Button'),
+                  child: const Text('Menu'),
                 ),
               ),
               Row(
@@ -76,6 +86,7 @@ class MyApp extends StatelessWidget {
 
   }
 }
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -158,6 +169,27 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class Menu extends StatelessWidget {
+  const Menu({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Menu'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Go back!'),
+        ),
+      ),
     );
   }
 }
