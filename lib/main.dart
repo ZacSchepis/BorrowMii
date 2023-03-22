@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'Menu.dart';
 import 'panel.dart';
 import 'profileMenu.dart';
+import 'modelViewController.dart';
 
 void main() {
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
     title: 'Navigation Basics',
     home: MyApp(),
   ));
 }
 
 class MyApp extends StatelessWidget {
-
-  const MyApp({Key? key}) : super(key: key);
+  modelViewController mvc = modelViewController();
+  MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
