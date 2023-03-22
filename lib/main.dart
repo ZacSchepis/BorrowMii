@@ -3,6 +3,8 @@ import 'Menu.dart';
 import 'panel.dart';
 import 'profileMenu.dart';
 import 'modelViewController.dart';
+import 'person.dart';
+import 'item.dart';
 
 void main() {
   runApp(MaterialApp(
