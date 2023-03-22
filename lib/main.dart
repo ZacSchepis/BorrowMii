@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Menu.dart';
+import 'panel.dart';
+import 'profileMenu.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -15,55 +17,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Widget titleSection = Container(
-      padding: const EdgeInsets.all(32),
-
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-              Container(
-                padding: const EdgeInsets.only(left:50),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Menu().build(context)),
-                    );
-                  },
-                  // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
-                  style: ElevatedButton.styleFrom(
-                      elevation: 12.0,
-                      textStyle: const TextStyle(color: Colors.white)),
-
-                  child: const Text('Menu'),
-                ),
-              ),
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(right: 50),
-                    child: const Text(
-                      'First, Last',
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  /*3*/
-                  Container(
-                    padding: const EdgeInsets.only(right: 50),
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.red[500],
-                    ),
-                  ),
-                ],
-              )
-
-          ],
-        ),
-    );
+    Widget titleSection = Container();
+    Widget panelSection = const panel();
     return MaterialApp(
       title: 'First UI',
       theme: ThemeData(
@@ -74,12 +29,34 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Borrow Mii'),
+          centerTitle: true,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(onPressed: () => {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const profileMenu().build(context)))
+                }, icon: Icon(Icons.account_circle_rounded),
+              );
+            },
+          ),
+          actions: [
+            IconButton(onPressed: () => {
+            Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Menu().build(context)))
+            }, icon: Icon(Icons.more_vert)),
+          ],
         ),
+
         body: Column(
           children: [
             titleSection,
+            Expanded(child: panelSection),
+
           ],
         ),
+
         ),
     );
   }
