@@ -5,8 +5,13 @@ import 'profileMenu.dart';
 import 'modelViewController.dart';
 import 'person.dart';
 import 'item.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MaterialApp(
     title: 'Navigation Basics',
     home: MyApp(),
@@ -35,32 +40,37 @@ class MyApp extends StatelessWidget {
           centerTitle: true,
           leading: Builder(
             builder: (BuildContext context) {
-              return IconButton(onPressed: () => {
+              return IconButton(
+                onPressed: () => {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const profileMenu().build(context)))
-                }, icon: Icon(Icons.account_circle_rounded),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const profileMenu().build(context)))
+                },
+                icon: Icon(Icons.account_circle_rounded),
               );
             },
           ),
           actions: [
-            IconButton(onPressed: () => {
-            Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Menu().build(context)))
-            }, icon: Icon(Icons.more_vert)),
+            IconButton(
+                onPressed: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const Menu().build(context)))
+                    },
+                icon: Icon(Icons.more_vert)),
           ],
         ),
-
         body: Column(
           children: [
             titleSection,
             Expanded(child: panelSection),
-
           ],
         ),
-
-        ),
+      ),
     );
   }
 }
