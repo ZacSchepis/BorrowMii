@@ -4,9 +4,12 @@ class Item {
   String _name = "";
   String _owner = "";
   String _status = "";
-  Item(String name, String owner) {
-    _name = name;
-    _owner = owner;
+
+  @override
+  Item(String name, String owner, String status) {
+    this._name = name;
+    this._owner = owner;
+    this._status = status;
   }
 
   String get name => _name;
@@ -26,6 +29,21 @@ class Item {
   //method to display on screen
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: Expanded(
+        child: Row(
+          children: [
+            Icon(
+              Icons.gavel,
+              color: Colors.black,
+              size: 24.0,
+              semanticLabel: _name,
+            ),
+            Text(),
+
+          ],
+        )
+      )
+    );
   }
 }
