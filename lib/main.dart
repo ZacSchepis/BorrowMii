@@ -25,7 +25,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Widget titleSection = Container();
+    Item item = Item("Hammer","Bill","Bill", "in stock");
+    Widget titleSection = item.build(context);
     Widget panelSection = const panel();
     return MaterialApp(
       title: 'First UI',

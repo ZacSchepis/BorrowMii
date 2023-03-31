@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class Item {
+  String _itemName = "";
   String _name = "";
   String _owner = "";
   String _status = "";
 
   @override
-  Item(String name, String owner, String status) {
+  Item(String itemName, String name, String owner, String status) {
+    this._itemName = itemName;
     this._name = name;
     this._owner = owner;
     this._status = status;
@@ -29,9 +31,7 @@ class Item {
   //method to display on screen
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Expanded(
-        child: Row(
+    return Row(
           children: [
             Icon(
               Icons.gavel,
@@ -39,11 +39,19 @@ class Item {
               size: 24.0,
               semanticLabel: _name,
             ),
-            Text(),
-
+            const Text("    "),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(" Item:  $_itemName"),
+                Text(" Owner:  $_owner "),
+                Text(" Status: $_status "),
+              ],
+            ),
+            const Text("    "),
+            //add picture
           ],
-        )
-      )
+
     );
   }
 }
