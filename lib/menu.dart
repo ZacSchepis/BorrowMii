@@ -8,6 +8,7 @@ class Menu extends StatelessWidget {
   //variables
   final leftController = TextEditingController();
   final rightController = TextEditingController();
+  //add to update function
   String _search = "";
 
   //methods
@@ -16,7 +17,8 @@ class Menu extends StatelessWidget {
     Widget widget;
     
     ModelViewController().searchMyItems(search).forEach((element) {
-      widgetList.add(element.build(context));
+      RemovableItem rItem = RemovableItem(element);
+      widgetList.add(rItem.build(context));
     });
     
     widget = Column(
