@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Menu.dart';
+import 'menu.dart';
 import 'panel.dart';
 import 'profileMenu.dart';
 import 'modelViewController.dart';
@@ -19,15 +19,15 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  modelViewController mvc = modelViewController();
+  ModelViewController mvc = ModelViewController();
   MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Item item = Item("Hammer","Bill","Bill", "in stock");
+    Item item = Item("Hammer","Bill", "in stock");
     Widget titleSection = item.build(context);
-    Widget panelSection = const panel();
+    Widget panelSection = const Panel();
     return MaterialApp(
       title: 'First UI',
       theme: ThemeData(
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              const profileMenu().build(context)))
+                              const ProfileMenu().build(context)))
                 },
                 icon: Icon(Icons.account_circle_rounded),
               );
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  const Menu().build(context)))
+                                  Menu().build(context)))
                     },
                 icon: Icon(Icons.more_vert)),
           ],
