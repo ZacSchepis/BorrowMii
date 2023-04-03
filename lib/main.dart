@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'Menu.dart';
 import 'panel.dart';
@@ -25,7 +26,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Item item = Item("Hammer","Bill","Bill", "in stock");
+    // var db = FirebaseFirestore.instance;
+    Item item = Item("Hammer", "Bill", "Bill", "in stock");
+    // Item item2 = Item("screw Driver", "Bill", "Bill", "in stock");
+    // Person user1 = Person("Billy Brown", "09/23/1975");
+    // user1.addItem(item);
+    // user1.addItem(item2);
+    // db.collection("users").doc(user1.name).set(user1.toFirestore());
     Widget titleSection = item.build(context);
     Widget panelSection = const panel();
     return MaterialApp(

@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'item.dart';
 
 class Person {
   String _name = "";
   String _dob = "";
-  List<Item> myItems = <Item>[];
+  List<Item> _myItems = <Item>[];
   List<Item> borrowedItems = <Item>[];
   List<Item> requestedItems = <Item>[];
   List<Person> friends = <Person>[];
@@ -14,6 +16,44 @@ class Person {
   }
 
   String get name => _name;
+  String get dob => _dob;
+  List<Item> get myItems => _myItems;
+
+  // factory Person.fromFirestore(
+  //   DocumentSnapshot<Map<String, dynamic>> snapshot,
+  //   SnapshotOptions? options,
+  // ) {
+  //   final data = snapshot.data();
+  //   return Person(
+  //     // _name: data?['name'],
+  //     _dob: data?['dob'],
+  //     country: data?['country'],
+  //     capital: data?['capital'],
+  //     population: data?['population'],
+  //     regions:
+  //         data?['regions'] is Iterable ? List.from(data?['regions']) : null,
+  //   );
+  // }
+
+  List<Map<String, dynamic>> inventoryMapping() {
+    List<Map<String, dynamic>> inventory = <Map<String, dynamic>>[];
+    for (int i = 0; i < myItems.length; i++) {
+      inventory.add(myItems[i].toFirestore());
+    }
+    return inventory;
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      if (_dob != null) "dob": _dob,
+      if (_myItems != null) "myItems": inventoryMapping(),
+      // if (_myItems != null) "myItems": _myItems[0].toFirestore(),
+      // if (country != null) "country": country,
+      // if (capital != null) "capital": capital,
+      // if (population != null) "population": population,
+      // if (regions != null) "regions": regions,
+    };
+  }
   // String getName() {
   //   return _name;
   // }
