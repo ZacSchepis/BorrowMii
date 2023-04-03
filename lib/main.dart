@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'Menu.dart';
+import 'menu.dart';
 import 'panel.dart';
 import 'profileMenu.dart';
 import 'modelViewController.dart';
@@ -20,21 +20,15 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  modelViewController mvc = modelViewController();
+  ModelViewController mvc = ModelViewController();
   MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // var db = FirebaseFirestore.instance;
-    Item item = Item("Hammer", "Bill", "Bill", "in stock");
-    // Item item2 = Item("screw Driver", "Bill", "Bill", "in stock");
-    // Person user1 = Person("Billy Brown", "09/23/1975");
-    // user1.addItem(item);
-    // user1.addItem(item2);
-    // db.collection("users").doc(user1.name).set(user1.toFirestore());
+    Item item = Item("Hammer", "Bill", "in stock");
     Widget titleSection = item.build(context);
-    Widget panelSection = const panel();
+    Widget panelSection = const Panel();
     return MaterialApp(
       title: 'First UI',
       theme: ThemeData(
@@ -54,7 +48,7 @@ class MyApp extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              const profileMenu().build(context)))
+                              const ProfileMenu().build(context)))
                 },
                 icon: Icon(Icons.account_circle_rounded),
               );
@@ -66,8 +60,7 @@ class MyApp extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const Menu().build(context)))
+                              builder: (context) => Menu().build(context)))
                     },
                 icon: Icon(Icons.more_vert)),
           ],

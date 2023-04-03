@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //menu for editing profile features
-class profileMenu extends StatelessWidget {
-  const profileMenu({super.key});
+class ProfileMenu extends StatelessWidget {
+  const ProfileMenu({super.key});
   //String text = "hello";
   @override
   Widget build(BuildContext context) {

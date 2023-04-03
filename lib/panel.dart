@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 //panels for tabbed info on main screen
-class panel extends StatefulWidget {
-  const panel({super.key});
+class Panel extends StatefulWidget {
+  const Panel({super.key});
 
   @override
-  State<panel> createState() => _panelState();
+  State<Panel> createState() => _PanelState();
 }
 
-class _panelState extends State<panel> {
+class _PanelState extends State<Panel> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);

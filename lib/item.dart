@@ -2,19 +2,14 @@ import 'package:flutter/material.dart';
 
 class Item {
   String _itemName = "";
-  String _name = "";
   String _owner = "";
   String _status = "";
 
-  @override
-  Item(String itemName, String name, String owner, String status) {
+  Item(String itemName, String owner, String status) {
     this._itemName = itemName;
-    this._name = name;
     this._owner = owner;
     this._status = status;
   }
-
-  String get name => _name;
 
   String getOwner() {
     return _owner;
@@ -48,7 +43,7 @@ class Item {
           Icons.gavel,
           color: Colors.black,
           size: 24.0,
-          semanticLabel: _name,
+          semanticLabel: _itemName,
         ),
         const Text("    "),
         Column(
