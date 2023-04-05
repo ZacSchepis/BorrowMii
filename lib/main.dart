@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:team_d_project/Providers/logIn.dart';
 import 'menu.dart';
 import 'panel.dart';
 import 'profileMenu.dart';
@@ -14,9 +15,14 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MaterialApp(
-    title: 'Navigation Basics',
-    home: MyApp(),
+    title: 'Log In',
+    home: LogIn(),
   ));
+
+  // runApp(MaterialApp(
+  //   title: 'Navigation Basics',
+  //   home: MyApp(),
+  // ));
 }
 
 class MyApp extends StatelessWidget {
