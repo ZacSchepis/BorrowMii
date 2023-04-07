@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:team_d_project/Providers/logIn.dart';
+import 'package:team_d_project/logIn.dart';
 import 'menu.dart';
 import 'panel.dart';
 import 'profileMenu.dart';
