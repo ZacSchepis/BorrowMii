@@ -21,6 +21,20 @@ class LogInPage extends State<LogIn> {
     ));
   }
 
+  void formSignUp() async {
+    var doc =
+        await reference.collection("users").doc(userNameController.text).get();
+    if (!doc.exists) {
+      reference
+          .collection("users")
+          .doc(userNameController.text)
+          .set({"password": userPasswordController.text});
+      startApp();
+    } else {
+      _showSignUpErrorMessage();
+    }
+  }
+
   void formValidation() async {
     await reference
         .collection('users')
@@ -50,6 +64,34 @@ class LogInPage extends State<LogIn> {
             child: ListBody(
               children: const <Widget>[
                 Text('Incorrect User Name or Password!'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showSignUpErrorMessage() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text(
+                    'User name already exists! Please create a different one.'),
               ],
             ),
           ),
@@ -114,7 +156,7 @@ class LogInPage extends State<LogIn> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  startApp();
+                  formSignUp();
                 },
                 child: const Text('Sign up'),
               ),
