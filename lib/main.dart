@@ -32,7 +32,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore db = FirebaseFirestore.instance;
     Item item = Item("Hammer", "Bill", "in stock");
+    Person user2 = Person(name: "Jenny Robins", dob: "03-10-1999");
+    user2.addItem(item);
+    user2.setUserName("jenrob");
+    user2.setPassword("147");
+    // user1.toFirestore();
+    db.collection("users").doc(user2.uname).set(user2.toFirestore());
     Widget titleSection = item.build(context);
     Widget panelSection = const Panel();
     return MaterialApp(
