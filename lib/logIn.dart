@@ -1,15 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:team_d_project/main.dart';
-//menu for login
-class LogIn extends StatelessWidget {
-  const LogIn({super.key});
-  //String text = "hello";
-  void startApp(){
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class LogIn extends StatefulWidget {
+  const LogIn({Key? key}) : super(key: key);
+
+  @override
+  LogInPage createState() => LogInPage();
+}
+
+class LogInPage extends State<LogIn> {
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController userPasswordController = TextEditingController();
+  final reference = FirebaseFirestore.instance;
+
+  void startApp() {
     runApp(MaterialApp(
       title: 'Navigation Basics',
       home: MyApp(),
     ));
   }
+
+  void formValidation() async {
+    await reference
+        .collection('users')
+        .doc(userNameController.text)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        if (documentSnapshot.get('password') == userPasswordController.text) {
+          startApp();
+        } else {
+          _showErrorMessage();
+        }
+      } else {
+        _showErrorMessage();
+      }
+    });
+  }
+
+  Future<void> _showErrorMessage() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Incorrect User Name or Password!'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,50 +73,55 @@ class LogIn extends StatelessWidget {
         title: const Text('Log In'),
       ),
       body: Center(
-        child: Column(
-          children: [
-            SizedBox( // <-- SEE HERE
-              width: 200,
-              child: TextField(
+          child: Column(
+        children: [
+          SizedBox(
+            // <-- SEE HERE
+            width: 200,
+            child: TextFormField(
+                controller: userNameController,
                 decoration: InputDecoration(
                   labelText: 'Enter User Name',
                   border: OutlineInputBorder(),
                 ),
+                validator: (input) {
+                  if (input!.isEmpty) {
+                    return 'Enter User Name';
+                  }
+                  return null;
+                }),
+          ),
+          SizedBox(
+            // <-- SEE HERE
+            width: 200,
+            child: TextFormField(
+              obscureText: true,
+              controller: userPasswordController,
+              decoration: InputDecoration(
+                labelText: 'Enter Password',
+                border: OutlineInputBorder(),
               ),
             ),
-            SizedBox( // <-- SEE HERE
-              width: 200,
-              child: TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Enter Password',
-                  border: OutlineInputBorder(),
-                ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  formValidation();
+                },
+                child: const Text('Log In'),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    startApp();
-                  },
-                  child: const Text('Log In'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    startApp();
-                  },
-                  child: const Text('Sign up'),
-                ),
-              ],
-            )
-          ],
-        )
-
-
-
-      ),
+              ElevatedButton(
+                onPressed: () {
+                  startApp();
+                },
+                child: const Text('Sign up'),
+              ),
+            ],
+          )
+        ],
+      )),
     );
   }
 }
