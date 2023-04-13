@@ -3,37 +3,48 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'item.dart';
 
 class Person {
+  String _username = "";
   String _name = "";
+  String _password = "";
   String _dob = "";
   List<Item> _myItems = <Item>[];
   List<Item> borrowedItems = <Item>[];
   List<Item> requestedItems = <Item>[];
   List<Person> friends = <Person>[];
 
-  Person(String name, String dob) {
+  Person({required String name, required String dob}) {
     _name = name;
     _dob = dob;
   }
 
   String get name => _name;
+  String get uname => _username;
   String get dob => _dob;
   List<Item> get myItems => _myItems;
 
-  // factory Person.fromFirestore(
-  //   DocumentSnapshot<Map<String, dynamic>> snapshot,
-  //   SnapshotOptions? options,
-  // ) {
-  //   final data = snapshot.data();
-  //   return Person(
-  //     // _name: data?['name'],
-  //     _dob: data?['dob'],
-  //     country: data?['country'],
-  //     capital: data?['capital'],
-  //     population: data?['population'],
-  //     regions:
-  //         data?['regions'] is Iterable ? List.from(data?['regions']) : null,
-  //   );
-  // }
+  void setUserName(String uname) {
+    _username = uname;
+  }
+
+  void setPassword(String password) {
+    _password = password;
+  }
+
+  factory Person.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
+    return Person(
+      name: data?['name'],
+      dob: data?['dob'],
+      // country: data?['country'],
+      // capital: data?['capital'],
+      // population: data?['population'],
+      // regions:
+      //     data?['regions'] is Iterable ? List.from(data?['regions']) : null,
+    );
+  }
 
   List<Map<String, dynamic>> inventoryMapping() {
     List<Map<String, dynamic>> inventory = <Map<String, dynamic>>[];
@@ -45,6 +56,9 @@ class Person {
 
   Map<String, dynamic> toFirestore() {
     return {
+      if (_name != null) "name": _name,
+      if (uname != null) "userName": _username,
+      if (_password != null) "password": _password,
       if (_dob != null) "dob": _dob,
       if (_myItems != null) "myItems": inventoryMapping(),
       // if (_myItems != null) "myItems": _myItems[0].toFirestore(),
