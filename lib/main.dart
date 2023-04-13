@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              const ProfileMenu().build(context)))
+                              ProfileMenu().build(context)))
                 },
                 icon: Icon(Icons.account_circle_rounded),
               );
