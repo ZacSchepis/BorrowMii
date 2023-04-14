@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Item {
@@ -22,6 +23,18 @@ class Item {
   void setStatus(String status) {
     _status = status;
   }
+
+  // factory Item.fromFirestore(
+  //   DocumentSnapshot<Map<String, dynamic>> snapshot,
+  //   SnapshotOptions? options,
+  // ) {
+  //   final data = snapshot.data();
+  //   return Item(
+  //     itemName: data?['itemName'],
+  //     owner: data?['owner'],
+  //     status: data?['status'],
+  //   );
+  // }
 
   Map<String, dynamic> toFirestore() {
     return {
@@ -59,6 +72,4 @@ class Item {
       ],
     );
   }
-
-
 }

@@ -37,6 +37,10 @@ class Person {
     _password = password;
   }
 
+  void setName(String name) {
+    _name = name;
+  }
+
   // void setUItems() async {
   //   _myItems = await getUserItems();
   // }

@@ -100,3 +100,21 @@ void returnItem(Item item) async {
     reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
   }
 }
+
+void changeName(String name) async {
+  cuser.setName(name);
+  reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+}
+
+void changeUserName(String newuName) async {
+  reference.collection("users").doc(cuser.uname).delete();
+  cuser.setUserName(newuName);
+  cuser.setUName(newuName);
+  reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+}
+
+void updatePassword(String newpassword) async {
+  cuser.setPassword(newpassword);
+  cuser.setUPassword(newpassword);
+  reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+}
