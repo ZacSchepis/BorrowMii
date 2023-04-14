@@ -33,15 +33,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // FirebaseFirestore db = FirebaseFirestore.instance;
-    Item item = Item("Hammer", "Bill", "in stock");
+    //Item item = Item("Hammer", "Bill", "in stock");
     // Person user2 = Person(name: "Jenny Robins", dob: "03-10-1999");
     // user2.addItem(item);
     // user2.setUserName("jenrob");
     // user2.setPassword("147");
     // // user1.toFirestore();
     // db.collection("users").doc(user2.uname).set(user2.toFirestore());
-    Widget titleSection = item.build(context);
-    Widget panelSection = const Panel();
+    //Widget titleSection = item.build(context);
+    Widget panelSection = Panel();
     return MaterialApp(
       title: 'First UI',
       theme: ThemeData(
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              const ProfileMenu().build(context)))
+                              ProfileMenu().build(context)))
                 },
                 icon: Icon(Icons.account_circle_rounded),
               );
@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
         ),
         body: Column(
           children: [
-            titleSection,
+            //titleSection,
             Expanded(child: panelSection),
           ],
         ),
