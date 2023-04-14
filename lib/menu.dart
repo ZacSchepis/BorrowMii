@@ -1,6 +1,15 @@
+import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:team_d_project/modelViewController.dart';
 import 'item.dart';
+import 'databaseController.dart';
+// import 'package:team_d_project/Providers/user_provider.dart';
+// import 'package';
+// import 'user_provider.dart';
+import 'Notifiers/user_notifier.dart';
+import 'current_user.dart';
+import 'package:provider/provider.dart';
+
 //menu for editing profile features
 class Menu extends StatelessWidget {
   //constructor
@@ -8,14 +17,27 @@ class Menu extends StatelessWidget {
   //variables
   final leftController = TextEditingController();
   final rightController = TextEditingController();
+
   //add to update function
   String _search = "";
 
   //methods
-  Widget buildSearchResults(BuildContext context, String search){
+  Widget buildSearchResults(BuildContext context, String search) {
     List<Widget> widgetList = [const Text("Items:")];
     Widget widget;
-    
+
+    Item testitem = Item("hammer", "Billy", "Available");
+    addItemToDatabase(testitem);
+    Item testitem2 = Item("screwdriver", "Billy", "Available");
+    addItemToDatabase(testitem2);
+    Item borrowItem1 = Item("drill", "Jenny", "Available");
+    borrowItem(borrowItem1);
+    Item borrowItem2 = Item("wrench", "John", "Available");
+    borrowItem(borrowItem2);
+    // getUserInventory working but print statement after prints first instead of waiting
+    // getUserInventory();
+    // print(getUserItems());
+
     ModelViewController().searchMyItems(search).forEach((element) {
       RemovableItem rItem = RemovableItem(element);
       widgetList.add(rItem.build(context));
@@ -124,7 +146,6 @@ class Menu extends StatelessWidget {
                         //column displaying search results
                         Column(
                           children: [
-                            //build search
                             buildSearchResults(context, _search)
                           ],
                         ),

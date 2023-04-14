@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:team_d_project/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'current_user.dart';
+import 'person.dart';
+import 'Notifiers/user_notifier.dart';
+import 'current_user.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({Key? key}) : super(key: key);
@@ -29,6 +33,10 @@ class LogInPage extends State<LogIn> {
           .collection("users")
           .doc(userNameController.text)
           .set({"password": userPasswordController.text});
+      CurrentUser currentUser = CurrentUser();
+      currentUser.setUName(userNameController.text);
+      currentUser.setUPassword(userPasswordController.text);
+      // currentUser.setUItems();
       startApp();
     } else {
       _showSignUpErrorMessage();
@@ -43,6 +51,10 @@ class LogInPage extends State<LogIn> {
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         if (documentSnapshot.get('password') == userPasswordController.text) {
+          CurrentUser currentUser = CurrentUser();
+          currentUser.setUName(userNameController.text);
+          currentUser.setUPassword(userPasswordController.text);
+          // currentUser.setUItems();
           startApp();
         } else {
           _showErrorMessage();

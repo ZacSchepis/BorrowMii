@@ -1,4 +1,11 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
+import 'databaseController.dart';
+import 'Notifiers/user_notifier.dart';
+import 'current_user.dart';
+import 'item.dart';
+
 //panels for tabbed info on main screen
 class Panel extends StatefulWidget {
   const Panel({super.key});
@@ -9,9 +16,10 @@ class Panel extends StatefulWidget {
 
 class _PanelState extends State<Panel> {
   int _selectedIndex = 0;
+
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 0: Home',
       style: optionStyle,

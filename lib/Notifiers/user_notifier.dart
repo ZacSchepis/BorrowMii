@@ -1,35 +1,52 @@
 import 'dart:collection';
 
 // import 'package:adminpanel/model/allmodels.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:team_d_project/person.dart';
+import 'package:team_d_project/item.dart';
+import 'package:team_d_project/databaseController.dart';
 
-// class UserNotifier with ChangeNotifier {
-//   List<Person> _userList = [];
-//   Person _currentUser = ;
+class UserNotifier with ChangeNotifier {
+  // List<Item> _userItemList = [];
+  // Person _currentUser = Person(username: "", password: "");
 
-//   UnmodifiableListView<Person> get userList => UnmodifiableListView(_userList);
+  // UserNotifier();
 
-//   Person get currentUser => _currentUser;
+  // UnmodifiableListView<Item> get userItemList =>
+  //     UnmodifiableListView(_userItemList);
 
-//   set userList(List<Person> userList) {
-//     _userList = userList;
-//     notifyListeners();
-//   }
+  // Person get currentUser => _currentUser;
+  // // String get currentUserName => _currentUser.uname;
 
-//   set currentUser(Person user) {
-//     _currentUser = user;
-//     notifyListeners();
-//   }
+  // // void getInventory() {
+  // //   getUserInventory(UserNotifier());
+  // // }
 
-//   addUser(Person user) {
-//     _userList.insert(0, user);
-//     notifyListeners();
-//   }
+  // // List<Item> getUserItems() {
 
-//   // not sure with user.name???
-//   deleteUser(Person user) {
-//     _userList.removeWhere((_user) => _user.name == user.name);
-//     notifyListeners();
-//   }
-// }
+  // // }
+
+  // set userItemsList(List<Item> userItemList) {
+  //   _userItemList = userItemList;
+  //   notifyListeners();
+  // }
+
+  // set currentUser(Person user) {
+  //   _currentUser = user;
+  //   notifyListeners();
+  //   // print(currentUser.uname);
+  // }
+
+  // addItem(Item item) {
+  //   _userItemList.insert(0, item);
+  //   notifyListeners();
+  // }
+
+  // // not sure with user.name???
+  // deleteUser(Person user) {
+  //   _userList.removeWhere((_user) => _user.name == user.name);
+  //   notifyListeners();
+  // }
+}

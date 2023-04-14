@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'item.dart';
+import 'databaseController.dart';
 
 class Person {
   String _username = "";
@@ -12,9 +13,15 @@ class Person {
   List<Item> requestedItems = <Item>[];
   List<Person> friends = <Person>[];
 
-  Person({required String name, required String dob}) {
-    _name = name;
-    _dob = dob;
+  // Person({required String username, required String password, List? myItems}) {
+  //   _username = username;
+  //   _password = password;
+  // }
+
+  Person(String username, String password) {
+    _username = username;
+    _password = password;
+    // _myItems = myItems;
   }
 
   String get name => _name;
@@ -30,26 +37,38 @@ class Person {
     _password = password;
   }
 
-  factory Person.fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
-  ) {
-    final data = snapshot.data();
-    return Person(
-      name: data?['name'],
-      dob: data?['dob'],
-      // country: data?['country'],
-      // capital: data?['capital'],
-      // population: data?['population'],
-      // regions:
-      //     data?['regions'] is Iterable ? List.from(data?['regions']) : null,
-    );
-  }
+  // void setUItems() async {
+  //   _myItems = await getUserItems();
+  // }
+
+  // factory Person.fromFirestore(
+  //   DocumentSnapshot<Map<String, dynamic>> snapshot,
+  //   SnapshotOptions? options,
+  // ) {
+  //   final data = snapshot.data();
+  //   return Person(
+  //     username: data?['userName'],
+  //     password: data?['password'],
+  //     // country: data?['country'],
+  //     // capital: data?['capital'],
+  //     // population: data?['population'],
+  //     myItems:
+  //         data?['myItems'] is Iterable ? List.from(data?['myItems']) : null,
+  //   );
+  // }
 
   List<Map<String, dynamic>> inventoryMapping() {
     List<Map<String, dynamic>> inventory = <Map<String, dynamic>>[];
     for (int i = 0; i < myItems.length; i++) {
       inventory.add(myItems[i].toFirestore());
+    }
+    return inventory;
+  }
+
+  List<Map<String, dynamic>> borrowedInventoryMapping() {
+    List<Map<String, dynamic>> inventory = <Map<String, dynamic>>[];
+    for (int i = 0; i < borrowedItems.length; i++) {
+      inventory.add(borrowedItems[i].toFirestore());
     }
     return inventory;
   }
@@ -61,6 +80,7 @@ class Person {
       if (_password != null) "password": _password,
       if (_dob != null) "dob": _dob,
       if (_myItems != null) "myItems": inventoryMapping(),
+      if (borrowedItems != null) "borrowedItems": borrowedInventoryMapping(),
       // if (_myItems != null) "myItems": _myItems[0].toFirestore(),
       // if (country != null) "country": country,
       // if (capital != null) "capital": capital,
