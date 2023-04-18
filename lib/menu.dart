@@ -28,8 +28,10 @@ class Menu extends StatelessWidget {
 
     // Item testitem = Item("hammer", "Billy", "Available");
     // removeItemFromDatabase(testitem);
-    Item testitem = Item("Nails", "Billy", "Available");
-    addItemToDatabase(testitem);
+    // Item testitem = Item("Nails", "Billy", "Available");
+    // Map<String, dynamic> map = testitem.toFirestore();
+    // print(getItemFromMap(map).itemname);
+    // addItemToDatabase(testitem);
     // Item testitem2 = Item("Tape", "Billy", "Available");
     // removeItemFromDatabase(testitem2);
     // Item borrowItem1 = Item("drill", "Jenny", "Available");

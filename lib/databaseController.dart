@@ -12,6 +12,14 @@ List<dynamic> borrowedItems = <Item>[];
 CurrentUser cuser = CurrentUser();
 FirebaseFirestore reference = FirebaseFirestore.instance;
 
+Item getItemFromMap(Map<String, dynamic> itemMap) {
+  // String name = itemMap['itemName'] as String;
+  // itemMap['owner'];
+  // itemMap['status'];
+  return Item(itemMap["itemName"] as String, itemMap["owner"] as String,
+      itemMap["status"] as String);
+}
+
 Future<List<dynamic>> getUserInventory() async {
   await FirebaseFirestore.instance
       .collection("users")
