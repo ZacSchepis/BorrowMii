@@ -8,29 +8,34 @@ class Person {
   String _name = "";
   String _password = "";
   String _dob = "";
-  List<Item> _myItems = <Item>[];
-  List<Item> borrowedItems = <Item>[];
+  List<dynamic> _myItems = <dynamic>[];
+  List<dynamic> _borrowedItems = <dynamic>[];
   List<Item> requestedItems = <Item>[];
   List<Person> friends = <Person>[];
-
-  // Person({required String username, required String password, List? myItems}) {
-  //   _username = username;
-  //   _password = password;
-  // }
+  bool has_items = false;
+  bool has_Bitems = false;
 
   Person(String username, String password) {
     _username = username;
     _password = password;
-    // _myItems = myItems;
   }
 
   String get name => _name;
   String get uname => _username;
   String get dob => _dob;
-  List<Item> get myItems => _myItems;
+  List<dynamic> get myItems => _myItems;
+  List<dynamic> get bItems => _borrowedItems;
 
   void setUserName(String uname) {
     _username = uname;
+  }
+
+  void setItems(List<dynamic> items) {
+    _myItems = items;
+  }
+
+  void setborrowedItems(List<dynamic> borroweditems) {
+    _borrowedItems = borroweditems;
   }
 
   void setPassword(String password) {
@@ -42,37 +47,25 @@ class Person {
   }
 
   // void setUItems() async {
-  //   _myItems = await getUserItems();
+  //   _myItems = await getUserInventory();
   // }
 
-  // factory Person.fromFirestore(
-  //   DocumentSnapshot<Map<String, dynamic>> snapshot,
-  //   SnapshotOptions? options,
-  // ) {
-  //   final data = snapshot.data();
-  //   return Person(
-  //     username: data?['userName'],
-  //     password: data?['password'],
-  //     // country: data?['country'],
-  //     // capital: data?['capital'],
-  //     // population: data?['population'],
-  //     myItems:
-  //         data?['myItems'] is Iterable ? List.from(data?['myItems']) : null,
-  //   );
+  // void setBItems() async {
+  //   _borrowedItems = await getBorrowedInventory();
   // }
 
   List<Map<String, dynamic>> inventoryMapping() {
     List<Map<String, dynamic>> inventory = <Map<String, dynamic>>[];
     for (int i = 0; i < myItems.length; i++) {
-      inventory.add(myItems[i].toFirestore());
+      inventory.add(myItems[i]);
     }
     return inventory;
   }
 
   List<Map<String, dynamic>> borrowedInventoryMapping() {
     List<Map<String, dynamic>> inventory = <Map<String, dynamic>>[];
-    for (int i = 0; i < borrowedItems.length; i++) {
-      inventory.add(borrowedItems[i].toFirestore());
+    for (int i = 0; i < bItems.length; i++) {
+      inventory.add(bItems[i]);
     }
     return inventory;
   }
@@ -83,35 +76,10 @@ class Person {
       if (uname != null) "userName": _username,
       if (_password != null) "password": _password,
       if (_dob != null) "dob": _dob,
-      if (_myItems != null) "myItems": inventoryMapping(),
-      if (borrowedItems != null) "borrowedItems": borrowedInventoryMapping(),
-      // if (_myItems != null) "myItems": _myItems[0].toFirestore(),
-      // if (country != null) "country": country,
-      // if (capital != null) "capital": capital,
-      // if (population != null) "population": population,
-      // if (regions != null) "regions": regions,
+      if (_myItems != null) "myItems": myItems,
+      if (_borrowedItems != null) "borrowedItems": bItems,
     };
   }
-  // String getName() {
-  //   return _name;
-  // }
-
-  // String getDOB() {
-  //   return _dob;
-  // }
-
-  // List<Item> getMyItems() {
-  //   // find out how to also display status of items
-  //   return myItems;
-  // }
-
-  // List<Item> getBorrowedItems() {
-  //   return borrowedItems;
-  // }
-
-  // List<Item> getRequestedItems() {
-  //   return requestedItems;
-  // }
 
   // // Add friend when button selected to become friends
 
@@ -120,25 +88,23 @@ class Person {
   void addItem(Item item) {
     // when item is added just push button to add it set owner to current user and prompt user name tool
     item.setStatus("Available");
-    myItems.add(item);
+    myItems.add(item.toFirestore());
   }
 
   void removeItem(Item item) {
-    int index = myItems.indexOf(item);
-    myItems.remove(index);
+    myItems.removeWhere((element) => element["itemName"] == item.itemname);
   }
 
-  void borrowItem(Item item) {
+  void borrowAItem(Item item) {
     if (item.getStatus() == "Available") {
       item.setStatus("Borrowed");
-      borrowedItems.add(item);
+      bItems.add(item.toFirestore());
     }
   }
 
   void returnItem(Item item) {
     item.setStatus("Available");
-    int index = myItems.indexOf(item);
-    borrowedItems.remove(index);
+    bItems.removeWhere((element) => element["itemName"] == item.itemname);
   }
 
   // void requestItem(Item item) {

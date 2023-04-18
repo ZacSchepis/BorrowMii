@@ -29,14 +29,23 @@ class LogInPage extends State<LogIn> {
     var doc =
         await reference.collection("users").doc(userNameController.text).get();
     if (!doc.exists) {
-      reference
-          .collection("users")
-          .doc(userNameController.text)
-          .set({"password": userPasswordController.text});
       CurrentUser currentUser = CurrentUser();
       currentUser.setUName(userNameController.text);
       currentUser.setUPassword(userPasswordController.text);
+      reference
+          .collection("users")
+          .doc(userNameController.text)
+          .set(currentUser.toFirestore());
+      // .set({"password": userPasswordController.text});
+      // CurrentUser currentUser = CurrentUser();
+      // currentUser.setUName(userNameController.text);
+      // currentUser.setUPassword(userPasswordController.text);
+      // currentUser.setHasItems(false);
+      // currentUser.setHasBItems(false);
+      currentUser.setNewUser(true);
+      // currentUser.toFirestore();
       // currentUser.setUItems();
+      // currentUser.setBItems();
       startApp();
     } else {
       _showSignUpErrorMessage();
@@ -54,7 +63,9 @@ class LogInPage extends State<LogIn> {
           CurrentUser currentUser = CurrentUser();
           currentUser.setUName(userNameController.text);
           currentUser.setUPassword(userPasswordController.text);
+          // currentUser.toFirestore();
           // currentUser.setUItems();
+          // currentUser.setBItems();
           startApp();
         } else {
           _showErrorMessage();

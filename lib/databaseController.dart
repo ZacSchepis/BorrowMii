@@ -12,26 +12,7 @@ List<dynamic> borrowedItems = <Item>[];
 CurrentUser cuser = CurrentUser();
 FirebaseFirestore reference = FirebaseFirestore.instance;
 
-// Future<List<dynamic>> getUserInventory(String uname) async {
-//   // print('here1');
-//   // print(uname);
-//   await FirebaseFirestore.instance
-//       .collection("users")
-//       .doc(uname)
-//       .get()
-//       .then((DocumentSnapshot documentSnapshot) {
-//     if (documentSnapshot.exists) {
-//       List<dynamic> items = documentSnapshot.get("myItems");
-//       userItems = items;
-//       // print('here2');
-//     }
-//   });
-//   return userItems;
-// }
-
-void getUserInventory() async {
-  // print('here1');
-  // print(uname);
+Future<List<dynamic>> getUserInventory() async {
   await FirebaseFirestore.instance
       .collection("users")
       .doc(cuser.uname)
@@ -39,66 +20,58 @@ void getUserInventory() async {
       .then((DocumentSnapshot documentSnapshot) {
     if (documentSnapshot.exists) {
       List<dynamic> items = documentSnapshot.get("myItems");
+      cuser.setItems(items);
       userItems = items;
-      // print('here2');
     }
   });
-  print(userItems);
-  // return userItems;
-}
-
-getUserItems() {
   return userItems;
 }
 
-Future<List<dynamic>> getBorrowedInventory(String uname) async {
+Future<List<dynamic>> getBorrowedInventory() async {
   await FirebaseFirestore.instance
       .collection("users")
-      .doc(uname)
+      .doc(cuser.uname)
       .get()
       .then((DocumentSnapshot documentSnapshot) {
     if (documentSnapshot.exists) {
       List<dynamic> items = documentSnapshot.get("borrowedItems");
+      cuser.setborrowedItems(items);
       borrowedItems = items;
     }
   });
-  return userItems;
+  return borrowedItems;
 }
 
 // add item function
 void addItemToDatabase(Item item) async {
+  await getAllInventory();
   cuser.addItem(item);
-  print(cuser.myItems);
-  var doc = await reference.collection("users").doc(cuser.uname).get();
-  if (doc.exists) {
-    reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
-  }
+  reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+}
+
+Future getAllInventory() async {
+  await getBorrowedInventory();
+  await getUserInventory();
 }
 
 //remove item function
 void removeItemFromDatabase(Item item) async {
+  await getAllInventory();
   cuser.removeItem(item);
-  print(cuser.myItems);
-  var doc = await reference.collection("users").doc(cuser.uname).get();
-  if (doc.exists) {
-    reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
-  }
+  reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
 }
 
 void borrowItem(Item item) async {
-  cuser.borrowItem(item);
-  var doc = await reference.collection("users").doc(cuser.uname).get();
-  if (doc.exists) {
-    reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
-  }
+  await getAllInventory();
+  cuser.borrowAItem(item);
+  reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
 }
 
 void returnItem(Item item) async {
+  await getAllInventory();
   cuser.returnItem(item);
-  var doc = await reference.collection("users").doc(cuser.uname).get();
-  if (doc.exists) {
-    reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
-  }
+  print(cuser.bItems);
+  reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
 }
 
 void changeName(String name) async {

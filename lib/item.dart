@@ -12,6 +12,8 @@ class Item {
     this._status = status;
   }
 
+  String get itemname => _itemName;
+
   String getOwner() {
     return _owner;
   }
