@@ -52,7 +52,7 @@ jobs:
       - name: Do we have file
         run: echo "::debug::$(ls)"
       - name: Version number in file
-        run: echo "::debug::$(cat version.txt)"
+        run: cat version.txt
       - name: Create new file without newline char from version.txt
         run: tr -d '\n' < version.txt > version1.txt
       - name: Read version
