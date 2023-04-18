@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0                # fetch the whole repo history
 
       - name: Git Version
-        id: version
+        id: gitversion
         uses: codacy/git-version@2.7.1
 
       - name: Use the version
@@ -29,7 +29,7 @@ jobs:
       - name: Upload version.txt
         uses: actions/upload-artifact@v2
         with:
-          name: version
+          name: gitversion
           path: version.txt
       
 
