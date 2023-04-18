@@ -26,9 +26,10 @@ jobs:
         run: |
           echo ${{ steps.version.outputs.version }}
 
+      - name : Upload Debug
+        run: "echo::debug:: WE ARE IN BUILD1"
+
       - name: Upload version.txt
-        run: |
-          echo "WE ARE IN UPLOAD"
         uses: actions/upload-artifact@v2
         with:
           name: gitversion
@@ -40,9 +41,11 @@ jobs:
     needs: version
     runs-on: ubuntu-latest
     steps:
+      - name: Build debug
+        run: "echo::debug::WE ARE IN BUILD2"
+
       - uses: actions/checkout@v3
       - name: Get version.txt
-        run: echo "WE ARE IN BUILD"
         uses: actions/download-artifact@v2
         with:
           name: gitversion
