@@ -26,14 +26,16 @@ class Menu extends StatelessWidget {
     List<Widget> widgetList = [const Text("Items:")];
     Widget widget;
 
-    Item testitem = Item("hammer", "Billy", "Available");
+    // Item testitem = Item("hammer", "Billy", "Available");
+    // removeItemFromDatabase(testitem);
+    Item testitem = Item("Nails", "Billy", "Available");
     addItemToDatabase(testitem);
-    Item testitem2 = Item("screwdriver", "Billy", "Available");
-    addItemToDatabase(testitem2);
-    Item borrowItem1 = Item("drill", "Jenny", "Available");
-    borrowItem(borrowItem1);
-    Item borrowItem2 = Item("wrench", "John", "Available");
-    borrowItem(borrowItem2);
+    // Item testitem2 = Item("Tape", "Billy", "Available");
+    // removeItemFromDatabase(testitem2);
+    // Item borrowItem1 = Item("drill", "Jenny", "Available");
+    // borrowItem(borrowItem1);
+    // Item borrowItem2 = Item
+
     // getUserInventory working but print statement after prints first instead of waiting
     // getUserInventory();
     // print(getUserItems());

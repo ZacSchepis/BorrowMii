@@ -10,13 +10,14 @@ import 'databaseController.dart';
 class CurrentUser extends Person {
   static String _uName = "";
   static String _password = "";
-  // List<Item> _uItems = <Item>[];
-  // String _name = "";
-  // String _password = "";
-  // List<Item> _myItems = <Item>[];
-  // List<Item> borrowedItems = <Item>[];
-  // List<Item> requestedItems = <Item>[];
-  // List<Person> friends = <Person>[];
+  static bool _new_user = false;
+  static bool _has_items = false;
+  static bool has_borrowed_items = false;
+
+  bool get nuser => _new_user;
+  bool get hasItems => _has_items;
+  bool get hasBItems => has_borrowed_items;
+  String get uname => _uName;
 
   CurrentUser() : super(_uName, _password);
 
@@ -28,9 +29,17 @@ class CurrentUser extends Person {
     _password = password;
   }
 
-  // void setUItems() {
-  //   _uItems = getUserItems();
-  // }
+  void setNewUser(bool nuser) {
+    _new_user = nuser;
+  }
+
+  void setHasItems(bool hasitems) {
+    _has_items = hasitems;
+  }
+
+  void setHasBItems(bool hasBitems) {
+    has_borrowed_items = hasBitems;
+  }
 
   getCurrentUname() {
     return _uName;
@@ -39,6 +48,4 @@ class CurrentUser extends Person {
   getCurrentPassword() {
     return _password;
   }
-
-  String get uname => _uName;
 }
