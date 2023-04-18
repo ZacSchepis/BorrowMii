@@ -30,6 +30,8 @@ jobs:
         run: echo "::debug::WE ARE IN UPLOAD"
       - name: Do we have file on system?
         run: echo "::debug::$(ls)"
+      - name: test append to file
+        run echo "APPENDED">> version.txt
       - name: Upload version.txt
         uses: actions/upload-artifact@v3
         with:
@@ -53,6 +55,8 @@ jobs:
         run: echo "::debug::$(ls)"
       - name: Version number in file
         run: cat version.txt
+      - name: does ls have console out
+        run: ls
       - name: Create new file without newline char from version.txt
         run: tr -d '\n' < version.txt > version1.txt
       - name: Read version
