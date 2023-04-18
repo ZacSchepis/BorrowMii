@@ -45,6 +45,8 @@ jobs:
       - name: Build debug
         run: echo "::debug::WE ARE IN BUILD (Download)"
       - uses: actions/checkout@v3
+      - name: print text
+        run: echo "::debug::$(ls)"
       - name: Get version.txt
         uses: actions/download-artifact@v3
         with:
