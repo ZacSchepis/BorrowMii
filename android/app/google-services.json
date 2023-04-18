@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "840944533353",
+    "project_id": "borrowmii-53cc9",
+    "storage_bucket": "borrowmii-53cc9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840944533353:android:f5afb447e6e7b5c12487f8",
+        "android_client_info": {
+          "package_name": "com.example.team_d_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "840944533353-9mjfgffg2ihtm7ul8jroj99kd7c5ok0g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA49HQQL9nUG4jDadzQlewrtXMDE6zNle8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "840944533353-9mjfgffg2ihtm7ul8jroj99kd7c5ok0g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
