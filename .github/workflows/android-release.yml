@@ -31,7 +31,7 @@ jobs:
       - name: Do we have file on system?
         run: echo "::debug::$(ls)"
       - name: test append to file
-        run echo \"APPENDED\">> version.txt
+        run echo ${'APPENDED'}>> version.txt
       - name: Upload version.txt
         uses: actions/upload-artifact@v3
         with:
