@@ -1,6 +1,7 @@
 # team_d_project
 
 A new Flutter project.
+Kallie McLaren
 
 ## Getting Started
 
