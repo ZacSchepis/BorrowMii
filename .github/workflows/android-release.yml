@@ -27,6 +27,8 @@ jobs:
           echo ${{ steps.version.outputs.version }}
 
       - name: Upload version.txt
+        run: |
+          echo "WE ARE IN UPLOAD"
         uses: actions/upload-artifact@v2
         with:
           name: gitversion
@@ -40,6 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Get version.txt
+        run: echo "WE ARE IN BUILD"
         uses: actions/download-artifact@v2
         with:
           name: gitversion
