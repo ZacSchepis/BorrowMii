@@ -22,12 +22,11 @@ jobs:
         id: version
         uses: codacy/git-version@2.7.1
 
-      - name: Use the version
-        run: |
-          echo ${{ steps.version.outputs.version }}
-      - name: Use the previous version
-        run: |
-          echo ${{ steps.version.outputs.previous-version }}
+      - name: Upload version.txt
+          uses: actions/upload-artifact@v2
+          with:
+            name: gitversion
+            path: version.txt
 
   build:
     name: Create Android Build
