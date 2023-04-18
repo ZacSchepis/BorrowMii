@@ -26,9 +26,9 @@ jobs:
         run: |
           echo ${{ steps.version.outputs.version }}
 
-      - name : Upload Debug
+      - name: Upload Debug
         run: echo "::debug::WE ARE IN UPLOAD"
-      -name: Do we have file on system?
+      - name: Do we have file on system?
         run: echo "::debug::$(ls)"
       - name: Upload version.txt
         uses: actions/upload-artifact@v3
