@@ -30,7 +30,7 @@ jobs:
         run: flutter pub get
 
       - name: Start Web Release Build
-        run: flutter build web --release
+        run: flutter build web --release --base-href='/Team-D/gh-pages'
 
       - name: Upload Web Build Files
         uses: actions/upload-artifact@v2
@@ -53,4 +53,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./
