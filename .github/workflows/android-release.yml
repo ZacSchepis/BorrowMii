@@ -22,13 +22,19 @@ jobs:
         uses: gittools/actions/gitversion/setup@v0
         with:
           versionSpec: '5.x'
-
+      - name: Use GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+      # 3
+      - name: Create version.txt with semVersion
+#        run: echo ${{ steps.gitversion.outputs.nuGetVersion  }} > version.txt
       - name: Use the version and log
         run: |
+          echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
           echo ${{github.head_ref}}
           echo "$VERSION"
           echo ${{steps.version.outputs.version}}
-          echo ${{ steps.version.outputs.version }} >>version.txt
+          echo ${{ steps.version.outputs.fullSemVer }} >>version.txt
           cat version.txt
 
       - name: Upload Debug
