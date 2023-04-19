@@ -24,7 +24,7 @@ jobs:
 
       - name: Use the version and log
         run: |
-          echo $VERSION
+          echo "$VERSION"
           echo ${{steps.version.outputs.version}}
           echo ${{ steps.version.outputs.version }} >>version.txt
           cat version.txt
