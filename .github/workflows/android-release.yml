@@ -30,10 +30,8 @@ jobs:
 #        run: echo ${{ steps.gitversion.outputs.nuGetVersion  }} > version.txt
       - name: Use the version and log
         run: |
-          echo "FullSemVer: ${{ steps.gitversion.outputs.nuGetVersion }}"
-          echo ${{github.head_ref}}
-          echo "$VERSION"
-          echo ${{steps.version.outputs.version}}
+          echo "nuGetVersion: ${{ steps.gitversion.outputs.nuGetVersion }}"
+          echo "github head ref: ${{github.head_ref}}"
           echo ${{ steps.gitversion.outputs.nuGetVersion }} >>version.txt
           cat version.txt
 
@@ -75,6 +73,8 @@ jobs:
           path: version1.txt
       - name: Update version in YAML
         run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
+      - name: keystore value
+        run: echo ${{secrets.KEYSTORE_BASE64}}
       - name: Download Android keystore
         id: android_keystore
         uses: timheuer/base64-to-file@v1.0.3
