@@ -26,7 +26,7 @@ jobs:
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0.9.7
       # 3
-      - name: Create version.txt with semVersion
+#      - name: Create version.txt with semVersion
 #        run: echo ${{ steps.gitversion.outputs.nuGetVersion  }} > version.txt
       - name: Use the version and log
         run: |
