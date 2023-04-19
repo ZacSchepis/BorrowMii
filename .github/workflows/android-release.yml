@@ -18,9 +18,10 @@ jobs:
           ref: ${{ github.head_ref }}   # checkout the correct branch name
           fetch-depth: 0                # fetch the whole repo history
 
-      - name: Git Version
-        id: gitversion
-        uses: codacy/git-version@2.7.1
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0
+      with:
+        versionSpec: '5.x'
 
       - name: Use the version and log
         run: |
