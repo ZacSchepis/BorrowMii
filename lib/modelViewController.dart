@@ -25,18 +25,26 @@ class ModelViewController {
     return L1;
   }
 
-  List<Item> getMyItems() {
+  Future<List<Item>> getMyItems() async {
     //return list of persons items
-    List<Item> L1;
-    L1 = [Item("1", "1", "1")];
-    return L1;
+    List<dynamic> itemmaps = await getUserInventory();
+    List<Item> items = [];
+    for (int i = 0; i < itemmaps.length; i++) {
+      Map<String, dynamic> map = itemmaps[i];
+      items.add(getItemFromMap(map));
+    }
+    return items;
   }
 
-  List<Item> getBorrowedItems() {
+  Future<List<Item>> getBorrowedItems() async {
     //return list of items currently borrowed
-    List<Item> L1;
-    L1 = [Item("1", "1", "1")];
-    return L1;
+    List<dynamic> borroweditemsmaps = await getBorrowedInventory();
+    List<Item> borrowedItems = [];
+    for (int i = 0; i < borroweditemsmaps.length; i++) {
+      Map<String, dynamic> map = borroweditemsmaps[i];
+      borrowedItems.add(getItemFromMap(map));
+    }
+    return borrowedItems;
   }
 
   List<Item> searchOtherItems() {

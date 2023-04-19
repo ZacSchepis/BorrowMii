@@ -54,12 +54,14 @@ class _PanelState extends State<Panel> {
     updateLists();
   }
 
-  void updateLists() {
+  void updateLists() async {
     _myItems.clear();
     _borrowedItems.clear();
     _searchItems.clear();
-    List<Item> tempMy = mvc.getMyItems();
-    List<Item> tempBor = mvc.getBorrowedItems();
+    List<Item> tempMy = await mvc.getMyItems();
+    print(tempMy); // prints from database doesn't display though
+    List<Item> tempBor = await mvc.getBorrowedItems();
+    print(tempBor); // prints from database doesn't display though
     for (Item i in tempMy) {
       _myItems.add(_myWid);
       _myItems.add(i.build(this.context));
