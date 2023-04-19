@@ -30,11 +30,11 @@ jobs:
 #        run: echo ${{ steps.gitversion.outputs.nuGetVersion  }} > version.txt
       - name: Use the version and log
         run: |
-          echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
+          echo "FullSemVer: ${{ steps.gitversion.outputs.nuGetVersion }}"
           echo ${{github.head_ref}}
           echo "$VERSION"
           echo ${{steps.version.outputs.version}}
-          echo ${{ steps.version.outputs.fullSemVer }} >>version.txt
+          echo ${{ steps.gitversion.outputs.nuGetVersion }} >>version.txt
           cat version.txt
 
       - name: Upload Debug
