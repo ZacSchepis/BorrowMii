@@ -30,8 +30,10 @@ class LogInPage extends State<LogIn> {
         await reference.collection("users").doc(userNameController.text).get();
     if (!doc.exists) {
       CurrentUser currentUser = CurrentUser();
-      currentUser.setUName(userNameController.text);
-      currentUser.setUPassword(userPasswordController.text);
+      currentUser.setCUName(userNameController.text);
+      currentUser.setCUPassword(userPasswordController.text);
+      currentUser.setUserName(userNameController.text);
+      currentUser.setPassword(userPasswordController.text);
       reference
           .collection("users")
           .doc(userNameController.text)
@@ -42,7 +44,7 @@ class LogInPage extends State<LogIn> {
       // currentUser.setUPassword(userPasswordController.text);
       // currentUser.setHasItems(false);
       // currentUser.setHasBItems(false);
-      currentUser.setNewUser(true);
+      // currentUser.setNewUser(true);
       // currentUser.toFirestore();
       // currentUser.setUItems();
       // currentUser.setBItems();
@@ -61,8 +63,8 @@ class LogInPage extends State<LogIn> {
       if (documentSnapshot.exists) {
         if (documentSnapshot.get('password') == userPasswordController.text) {
           CurrentUser currentUser = CurrentUser();
-          currentUser.setUName(userNameController.text);
-          currentUser.setUPassword(userPasswordController.text);
+          currentUser.setCUName(userNameController.text);
+          currentUser.setCUPassword(userPasswordController.text);
           // currentUser.toFirestore();
           // currentUser.setUItems();
           // currentUser.setBItems();

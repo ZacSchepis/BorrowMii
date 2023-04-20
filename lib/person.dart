@@ -11,7 +11,7 @@ class Person {
   List<dynamic> _myItems = <dynamic>[];
   List<dynamic> _borrowedItems = <dynamic>[];
   List<Item> requestedItems = <Item>[];
-  List<Person> friends = <Person>[];
+  List<dynamic> _friends = <dynamic>[];
   bool has_items = false;
   bool has_Bitems = false;
 
@@ -21,13 +21,19 @@ class Person {
   }
 
   String get name => _name;
+  String get password => _password;
   String get uname => _username;
   String get dob => _dob;
   List<dynamic> get myItems => _myItems;
   List<dynamic> get bItems => _borrowedItems;
+  List<dynamic> get friends => _friends;
 
   void setUserName(String uname) {
     _username = uname;
+  }
+
+  void setPassword(String password) {
+    _password = password;
   }
 
   void setItems(List<dynamic> items) {
@@ -38,8 +44,8 @@ class Person {
     _borrowedItems = borroweditems;
   }
 
-  void setPassword(String password) {
-    _password = password;
+  void setFriendList(List<dynamic> friends) {
+    _friends = friends;
   }
 
   void setName(String name) {
@@ -78,6 +84,15 @@ class Person {
       if (_dob != null) "dob": _dob,
       if (_myItems != null) "myItems": myItems,
       if (_borrowedItems != null) "borrowedItems": bItems,
+      if (_friends != null) "friends": friends,
+    };
+  }
+
+  Map<String, dynamic> friendToFirestore() {
+    return {
+      if (_name != null) "name": _name,
+      if (uname != null) "userName": _username,
+      // if (_myItems != null) "myItems": myItems,
     };
   }
 
@@ -105,6 +120,14 @@ class Person {
   void returnItem(Item item) {
     item.setStatus("Available");
     bItems.removeWhere((element) => element["itemName"] == item.itemname);
+  }
+
+  void addFriend(Person friend) {
+    friends.add(friend.friendToFirestore());
+  }
+
+  void removeFriend(Person friend) {
+    friends.removeWhere((element) => element["userName"] == friend.uname);
   }
 
   // void requestItem(Item item) {

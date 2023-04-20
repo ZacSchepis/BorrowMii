@@ -2,6 +2,7 @@ import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:team_d_project/modelViewController.dart';
 import 'item.dart';
+import 'person.dart';
 import 'databaseController.dart';
 // import 'package:team_d_project/Providers/user_provider.dart';
 // import 'package';
@@ -26,21 +27,8 @@ class Menu extends StatelessWidget {
     List<Widget> widgetList = [const Text("Items:")];
     Widget widget;
 
-    // Item testitem = Item("hammer", "Billy", "Available");
-    // removeItemFromDatabase(testitem);
-    // Item testitem = Item("Nails", "Billy", "Available");
-    // Map<String, dynamic> map = testitem.toFirestore();
-    // print(getItemFromMap(map).itemname);
-    // addItemToDatabase(testitem);
-    // Item testitem2 = Item("Tape", "Billy", "Available");
-    // removeItemFromDatabase(testitem2);
-    // Item borrowItem1 = Item("drill", "Jenny", "Available");
-    // borrowItem(borrowItem1);
-    // Item borrowItem2 = Item
-
-    // getUserInventory working but print statement after prints first instead of waiting
-    // getUserInventory();
-    // print(getUserItems());
+    // Person testFriend = Person("bilbob", "1234");
+    // removeFriend(testFriend);
 
     ModelViewController().searchMyItems(search).forEach((element) {
       RemovableItem rItem = RemovableItem(element);

@@ -21,11 +21,11 @@ class CurrentUser extends Person {
 
   CurrentUser() : super(_uName, _password);
 
-  void setUName(String username) {
+  void setCUName(String username) {
     _uName = username;
   }
 
-  void setUPassword(String password) {
+  void setCUPassword(String password) {
     _password = password;
   }
 

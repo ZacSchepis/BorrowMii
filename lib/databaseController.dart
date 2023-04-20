@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 String username = "";
 List<dynamic> userItems = <Item>[];
 List<dynamic> borrowedItems = <Item>[];
+List<dynamic> friendList = <dynamic>[];
 CurrentUser cuser = CurrentUser();
 FirebaseFirestore reference = FirebaseFirestore.instance;
 
@@ -18,6 +19,10 @@ Item getItemFromMap(Map<String, dynamic> itemMap) {
   // itemMap['status'];
   return Item(itemMap["itemName"] as String, itemMap["owner"] as String,
       itemMap["status"] as String);
+}
+
+Person getPersonFromMap(Map<String, dynamic> personmap) {
+  return Person(personmap["userName"], personmap["password"]);
 }
 
 Future<List<dynamic>> getUserInventory() async {
@@ -50,16 +55,32 @@ Future<List<dynamic>> getBorrowedInventory() async {
   return borrowedItems;
 }
 
-// add item function
-void addItemToDatabase(Item item) async {
-  await getAllInventory();
-  cuser.addItem(item);
-  reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+Future<List<dynamic>> getFriends() async {
+  await FirebaseFirestore.instance
+      .collection("users")
+      .doc(cuser.uname)
+      .get()
+      .then((DocumentSnapshot documentSnapshot) {
+    if (documentSnapshot.exists) {
+      List<dynamic> friends = documentSnapshot.get("friends");
+      cuser.setFriendList(friends);
+      friendList = friends;
+    }
+  });
+  return friendList;
 }
 
 Future getAllInventory() async {
   await getBorrowedInventory();
   await getUserInventory();
+  await getFriends();
+}
+
+// add item function
+void addItemToDatabase(Item item) async {
+  await getAllInventory();
+  cuser.addItem(item);
+  reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
 }
 
 //remove item function
@@ -78,7 +99,29 @@ void borrowItem(Item item) async {
 void returnItem(Item item) async {
   await getAllInventory();
   cuser.returnItem(item);
-  print(cuser.bItems);
+  // print(cuser.bItems);
+  reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+}
+
+void addFriend(Person friend) async {
+  await getAllInventory();
+  await FirebaseFirestore.instance
+      .collection("users")
+      .doc(friend.uname)
+      .get()
+      .then((DocumentSnapshot documentSnapshot) {
+    if (documentSnapshot.exists) {
+      cuser.addFriend(friend);
+      reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+    } else {
+      print("Friend not found in Database");
+    }
+  });
+}
+
+void removeFriend(Person friend) async {
+  await getAllInventory();
+  cuser.removeFriend(friend);
   reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
 }
 
@@ -90,12 +133,12 @@ void changeName(String name) async {
 void changeUserName(String newuName) async {
   reference.collection("users").doc(cuser.uname).delete();
   cuser.setUserName(newuName);
-  cuser.setUName(newuName);
+  cuser.setCUName(newuName);
   reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
 }
 
 void updatePassword(String newpassword) async {
   cuser.setPassword(newpassword);
-  cuser.setUPassword(newpassword);
+  cuser.setCUPassword(newpassword);
   reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
 }
