@@ -90,6 +90,12 @@ void removeItemFromDatabase(Item item) async {
   reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
 }
 
+void removeItemByStringFromDatabase(String itemName) async {
+  await getAllInventory();
+  cuser.removeItemFromName(itemName);
+  reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+}
+
 void borrowItem(Item item) async {
   await getAllInventory();
   cuser.borrowAItem(item);
