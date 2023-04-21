@@ -1,5 +1,9 @@
 # team_d_project
 
+Authors: 
+* Baylor McElroy Blr-Mac
+* Kallie Mclaren mclakall
+
 ## Summary
 
 Borrow Mii is a tool used to help people keep track of items they are lending out. 
