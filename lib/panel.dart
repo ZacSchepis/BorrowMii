@@ -7,7 +7,7 @@ import 'item.dart';
 
 //panels for tabbed info on main screen
 class Panel extends StatefulWidget {
-  Panel({super.key});
+  const Panel({super.key});
   @override
   State<Panel> createState() => _PanelState();
 }
@@ -16,21 +16,22 @@ class _PanelState extends State<Panel> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  Widget _myWid = Text(
+  final Widget _myWid = const Text(
     'My Items',
     style: optionStyle,
   );
-  Widget _borWid = Text(
+  final Widget _borWid = const Text(
     'Borrowed Items',
     style: optionStyle,
   );
-  Widget _searchWid = Text(
+  final Widget _searchWid = const Text(
     'Search Items',
     style: optionStyle,
   );
-  List<Widget> _myItems = [];
-  List<Widget> _borrowedItems = [];
-  List<Widget> _searchItems = [];
+  final List<Widget> _myItems = [];
+  final List<Widget> _borrowedItems = [];
+  final List<Widget> _searchItems = [];
+
   ModelViewController mvc = ModelViewController();
 
   List<Widget> getWidgetOptions() {
@@ -55,12 +56,15 @@ class _PanelState extends State<Panel> {
   }
 
   void updateLists() async {
+    print("in updateLists");
     _myItems.clear();
     _borrowedItems.clear();
     _searchItems.clear();
     List<Item> tempMy = await mvc.getMyItems();
+    print("my items:");
     print(tempMy); // prints from database doesn't display though
     List<Item> tempBor = await mvc.getBorrowedItems();
+    print("borrowed items:");
     print(tempBor); // prints from database doesn't display though
     for (Item i in tempMy) {
       _myItems.add(_myWid);

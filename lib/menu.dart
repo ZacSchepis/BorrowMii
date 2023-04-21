@@ -16,6 +16,8 @@ class Menu extends StatelessWidget {
   //constructor
   Menu({super.key});
   //variables
+  ModelViewController mvc = ModelViewController();
+
   final leftController = TextEditingController();
   final rightController = TextEditingController();
 
@@ -24,7 +26,7 @@ class Menu extends StatelessWidget {
 
   //methods
   Widget buildSearchResults(BuildContext context, String search) {
-    List<Widget> widgetList = [const Text("Items:")];
+    List<Widget> widgetListItems = [const Text("Items:")];
     Widget widget;
 
     // Person testFriend = Person("bilbob", "1234");
@@ -32,11 +34,11 @@ class Menu extends StatelessWidget {
 
     ModelViewController().searchMyItems(search).forEach((element) {
       RemovableItem rItem = RemovableItem(element);
-      widgetList.add(rItem.build(context));
+      widgetListItems.add(rItem.build(context));
     });
     
     widget = Column(
-      children: widgetList
+      children: widgetListItems
     );
     
     return widget;
@@ -101,6 +103,12 @@ class Menu extends StatelessWidget {
                             //text field
                             Expanded(
                               child: TextField(
+                                textInputAction: TextInputAction.go,
+                                onSubmitted: (value) {
+                                  mvc.addItemFromName(value);
+                                  //print("added " + value);
+                                  leftController.text = "";
+                                },
                                 controller: leftController,
                                 autofocus: true,
                               ),
