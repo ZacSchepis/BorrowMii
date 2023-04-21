@@ -22,6 +22,11 @@ class ModelViewController {
     Item newItem = Item(name, cu.getCurrentUname(), "Availabe");
     cu.addItem(newItem);
   }
+
+  void deleteItemFromName(String name){
+    cu.removeItemFromName(name);
+  }
+
   //returns all items owned by user
   List<Item> searchMyItems(String search) {
     //search current list of persons items
