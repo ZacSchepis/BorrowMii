@@ -110,6 +110,10 @@ class Person {
     myItems.removeWhere((element) => element["itemName"] == item.itemname);
   }
 
+  void removeItemFromName(String n) {
+    myItems.removeWhere((element) => element["itemName"] == n);
+  }
+
   void borrowAItem(Item item) {
     if (item.getStatus() == "Available") {
       item.setStatus("Borrowed");

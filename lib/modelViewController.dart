@@ -1,5 +1,6 @@
 import 'package:team_d_project/item.dart';
 import 'package:team_d_project/databaseController.dart';
+import 'current_user.dart';
 
 class ModelViewController {
   static final ModelViewController _instance = ModelViewController._internal();
@@ -13,10 +14,19 @@ class ModelViewController {
     // initialization logic
     //print("test mvc");
   }
+  CurrentUser cu = CurrentUser();
 
-  // rest of class as normal, for example:
-  void openFile() {}
-  void writeFile() {}
+
+
+  void addItemFromName(String name){
+    Item newItem = Item(name, cu.getCurrentUname(), "Availabe");
+    cu.addItem(newItem);
+  }
+
+  void deleteItemFromName(String name){
+    cu.removeItemFromName(name);
+  }
+
   //returns all items owned by user
   List<Item> searchMyItems(String search) {
     //search current list of persons items

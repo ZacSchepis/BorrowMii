@@ -16,31 +16,37 @@ class Menu extends StatelessWidget {
   //constructor
   Menu({super.key});
   //variables
+  ModelViewController mvc = ModelViewController();
+
   final leftController = TextEditingController();
   final rightController = TextEditingController();
 
   //add to update function
   String _search = "";
 
+  //StatefulWidget results = [];
+
   //methods
-  Widget buildSearchResults(BuildContext context, String search) {
-    List<Widget> widgetList = [const Text("Items:")];
-    Widget widget;
-
-    // Person testFriend = Person("bilbob", "1234");
-    // removeFriend(testFriend);
-
-    ModelViewController().searchMyItems(search).forEach((element) {
-      RemovableItem rItem = RemovableItem(element);
-      widgetList.add(rItem.build(context));
-    });
-    
-    widget = Column(
-      children: widgetList
-    );
-    
-    return widget;
-  }
+  //requires creation of stateful widget to display search results
+  //implement later
+  // StatefulWidget buildSearchResults(BuildContext context, String search) {
+  //   List<Widget> widgetListItems = [const Text("Items:")];
+  //   StatefulWidget widget;
+  //
+  //   // Person testFriend = Person("bilbob", "1234");
+  //   // removeFriend(testFriend);
+  //
+  //   ModelViewController().searchMyItems(search).forEach((element) {
+  //     RemovableItem rItem = RemovableItem(element);
+  //     widgetListItems.add(rItem.build(context));
+  //   });
+  //
+  //   widget = Column(
+  //     children: widgetListItems
+  //   ) as StatefulWidget;
+  //
+  //   return widget;
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,6 +107,12 @@ class Menu extends StatelessWidget {
                             //text field
                             Expanded(
                               child: TextField(
+                                textInputAction: TextInputAction.go,
+                                onSubmitted: (value) {
+                                  mvc.addItemFromName(value);
+                                  //print("added " + value);
+                                  leftController.text = "";
+                                },
                                 controller: leftController,
                                 autofocus: true,
                               ),
@@ -128,6 +140,12 @@ class Menu extends StatelessWidget {
                             Expanded(child: Container(
                               alignment: Alignment.center,
                               child: TextField(
+                                textInputAction: TextInputAction.search,
+                                onSubmitted: (value) {
+                                  //display searched items
+                                  //results = buildSearchResults(context, value);
+                                  mvc.deleteItemFromName(value);
+                                },
                                 controller: rightController,
                                 autofocus: true,
                               ),
@@ -136,11 +154,9 @@ class Menu extends StatelessWidget {
                           ],
                         ),
                         //column displaying search results
-                        Column(
-                          children: [
-                            buildSearchResults(context, _search)
-                          ],
-                        ),
+                        // Column(
+                        //   children: [results],
+                        // ),
                       ],
                     ),
                 ),
