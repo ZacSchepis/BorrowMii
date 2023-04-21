@@ -1,22 +1,31 @@
 # team_d_project
 
-A new Flutter project.
+## Summary
 
+Borrow Mii is a tool used to help people keep track of items they are lending out. 
+A user can add and remove items they own, and keep track of their status. 
 
+You can access a live version of the build at: https://blr-mac.github.io/Team-D/
 
+## User Guide
 
+### Creating a User
 
-Kallie McLaren
+To create a user simply type in a username and password into the log in screen.
+Then select "Sign Up". This will create a new user profile.
 
-## Getting Started
+### Logging in
 
-This project is a starting point for a Flutter application.
+To log in type in your username and password into the log in screen. Then select "Log In". 
+This will keep all of your items from your last session. 
 
-A few resources to get you started if this is your first Flutter project:
+### Item management
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
--
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+An important feature of the application is item management. To manage your items click the 
+three dots in the top right. This will put you in the item management menu. From here 
+you can add and delete items you would like to keep track of. 
+
+### Editing Profile
+
+To edit your profile click the profile icon in the top left. From here you can change your 
+username, add a friend, or change your password. 
