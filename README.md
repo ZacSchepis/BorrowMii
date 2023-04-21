@@ -1,4 +1,6 @@
-# team_d_project
+# Borrow Mii
+
+Team D's software engineering project. 
 
 Authors: 
 * Baylor McElroy Blr-Mac
