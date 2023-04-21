@@ -16,14 +16,13 @@ class ModelViewController {
   }
   CurrentUser cu = CurrentUser();
 
-
-
-  void addItemFromName(String name){
+  void addItemFromName(String name) {
     Item newItem = Item(name, cu.getCurrentUname(), "Availabe");
-    cu.addItem(newItem);
+    addItemToDatabase(newItem);
+    // cu.addItem(newItem);
   }
 
-  void deleteItemFromName(String name){
+  void deleteItemFromName(String name) {
     cu.removeItemFromName(name);
   }
 
