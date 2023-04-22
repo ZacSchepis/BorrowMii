@@ -18,17 +18,17 @@ class Menu extends StatelessWidget {
   //variables
   ModelViewController mvc = ModelViewController();
 
+  SearchListWidget searchListWidget = SearchListWidget();
+
   final leftController = TextEditingController();
   final rightController = TextEditingController();
 
-  //add to update function
-  String _search = "";
+  //StatefulWidget displaySearch;
 
   //StatefulWidget results = [];
 
   //methods
-  //requires creation of stateful widget to display search results
-  //implement later
+
   // StatefulWidget buildSearchResults(BuildContext context, String search) {
   //   List<Widget> widgetListItems = [const Text("Items:")];
   //   StatefulWidget widget;
@@ -54,46 +54,28 @@ class Menu extends StatelessWidget {
         title: const Text('Menu'),
       ),
       body: Container(
-        child: Column(
+        child: Row(
           children: [
             //back button
-            Row(
+            Column(
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Back'),
-                ),
-              ],
-            ),
-
-            //title row
-            Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text("Add"),
+                //title row
+                Expanded(child:
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text("Add"),
+                      ),
+                    ],
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text("Remove"),
-                  ),
-                ),
-              ],
-            ),
-            //row holding bottom
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
 
-                  //column 1 (left side)
-                  Expanded(
-                    child:
+                //row holding bottom
+                Expanded( child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
                     Column(
                       children: [
                         //row with name and textfield
@@ -105,63 +87,31 @@ class Menu extends StatelessWidget {
                               child: const Text("Name of item     "),
                             ),
                             //text field
-                            Expanded(
-                              child: TextField(
-                                textInputAction: TextInputAction.go,
-                                onSubmitted: (value) {
-                                  mvc.addItemFromName(value);
-                                  //print("added " + value);
-                                  leftController.text = "";
-                                },
-                                controller: leftController,
-                                autofocus: true,
-                              ),
-                            ),
+                             SizedBox(
+                                width: 200,
+                                child:
+                                  TextField(
+                                    textInputAction: TextInputAction.go,
+                                    onSubmitted: (value) {
+                                      mvc.addItemFromName(value);
+                                      //print("added " + value);
+                                      leftController.text = "";
+                                    },
+                                    controller: leftController,
+                                    autofocus: true,
+                                  ),
+
+                             ),
                           ],
                         ),
                       ],
                     ),
-
-                  ),
-
-                //column 2 (right side)
-                Expanded(
-                    child: Column(
-                      children: [
-                        //Top row
-                        Row(
-                          children: [
-                            //search label
-                            Container(
-                              alignment: Alignment.center,
-                              child: const Text("Search     "),
-                            ),
-                            //search text box
-                            Expanded(child: Container(
-                              alignment: Alignment.center,
-                              child: TextField(
-                                textInputAction: TextInputAction.search,
-                                onSubmitted: (value) {
-                                  //display searched items
-                                  //results = buildSearchResults(context, value);
-                                  mvc.deleteItemFromName(value);
-                                },
-                                controller: rightController,
-                                autofocus: true,
-                              ),
-                            ),)
-
-                          ],
-                        ),
-                        //column displaying search results
-                        // Column(
-                        //   children: [results],
-                        // ),
-                      ],
-                    ),
+                  ],
+                ),
                 ),
               ],
             ),
+            Expanded(child: searchListWidget),
           ],
         ),
       ),
@@ -169,17 +119,20 @@ class Menu extends StatelessWidget {
   }
 }
 
-class RemovableItem{
+class RemovableItem extends StatelessWidget{
   Item _item = Item("1","1","1");
-  RemovableItem(Item item){
+  ModelViewController mvc = ModelViewController();
+  RemovableItem(Item item, {super.key}){
     _item = item;
   }
+  @override
   Widget build(BuildContext context){
     return Row(
       children: [
         _item.build(context),
         ElevatedButton.icon(
             onPressed:(){
+              mvc.deleteItem(_item);
               //delete item from person class
               //create modelviewcontroller method to delete passing item
               //create method to delete item in person call passing method
@@ -191,6 +144,60 @@ class RemovableItem{
             ),
             label: const Text("remove")
         )
+      ],
+    );
+  }
+}
+
+class SearchListWidget extends StatefulWidget {
+
+  @override
+  _SearchListWidgetState createState() => _SearchListWidgetState();
+}
+
+class _SearchListWidgetState extends State<SearchListWidget> {
+  List<Item> items = [];
+  List<Item> filteredItems = [];
+  ModelViewController mvc = ModelViewController();
+  void filterSearchResults(String query) async{
+    List<Item> results = [];
+    items = await mvc.getMyItems();
+    items.forEach((item) {
+      if (item.itemname.toLowerCase().contains(query.toLowerCase())) {
+        results.add(item);
+      }
+    });
+    setState(() {
+      filteredItems = results;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text("Search for an item to remove"),
+        SizedBox(
+          width: 200,
+          child: TextField(
+            onChanged: (query) {
+              filterSearchResults(query);
+            },
+            decoration: const InputDecoration(
+              hintText: 'Search',
+            ),
+          ),
+        ),
+        Expanded(child:
+        ListView.builder(
+            itemCount: filteredItems.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: RemovableItem(filteredItems[index]).build(context),
+              );
+            },
+          ),
+        ),
       ],
     );
   }

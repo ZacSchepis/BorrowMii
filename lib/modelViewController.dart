@@ -27,6 +27,10 @@ class ModelViewController {
     // cu.removeItemFromName(name);
   }
 
+  void deleteItem(Item item){
+    removeItemFromDatabase(item);
+  }
+
   //returns all items owned by user
   List<Item> searchMyItems(String search) {
     //search current list of persons items
