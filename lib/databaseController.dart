@@ -10,6 +10,7 @@ String username = "";
 List<dynamic> userItems = <Item>[];
 List<dynamic> borrowedItems = <Item>[];
 List<dynamic> friendList = <dynamic>[];
+List<dynamic> allItems = <dynamic>[];
 CurrentUser cuser = CurrentUser();
 FirebaseFirestore reference = FirebaseFirestore.instance;
 
@@ -53,6 +54,24 @@ Future<List<dynamic>> getBorrowedInventory() async {
     }
   });
   return borrowedItems;
+}
+
+Future<List<dynamic>> getAllItemsInDatabase() async {
+  QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection("users").get();
+
+  // Get data from docs and convert map to List
+  List<dynamic> allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+  for (int idx = 0; idx < allData.length; idx++) {
+    Map<String, dynamic> map = allData[idx];
+    if (map["myItems"].length != 0) {
+      for (int j = 0; j < map["myItems"].length; j++) {
+        allItems.add(map["myItems"][j]);
+      }
+    }
+  }
+  return allItems;
 }
 
 Future<List<dynamic>> getFriends() async {
