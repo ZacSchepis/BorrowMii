@@ -27,7 +27,7 @@ class ModelViewController {
     // cu.removeItemFromName(name);
   }
 
-  void deleteItem(Item item){
+  void deleteItem(Item item) {
     removeItemFromDatabase(item);
   }
 
