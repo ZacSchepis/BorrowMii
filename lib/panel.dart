@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:team_d_project/modelViewController.dart';
 import 'modelViewController.dart';
@@ -10,10 +8,12 @@ class Panel extends StatefulWidget {
   const Panel({super.key});
   @override
   State<Panel> createState() => _PanelState();
+
 }
 
 class _PanelState extends State<Panel> {
-  int _selectedIndex = 0;
+
+  int _selectedIndex = 2;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   final Widget _myWid = const Text(
@@ -28,61 +28,33 @@ class _PanelState extends State<Panel> {
     'Search Items',
     style: optionStyle,
   );
-  final List<Widget> _myItems = [];
-  final List<Widget> _borrowedItems = [];
-  final List<Widget> _searchItems = [];
-
+  Widget displayWidget = Text("null");
   ModelViewController mvc = ModelViewController();
 
   List<Widget> getWidgetOptions() {
     return <Widget>[
-      Column(
-        children: _myItems,
-      ),
-      Column(
-        children: _borrowedItems,
-      ),
-      Column(
-        children: _searchItems,
-      ),
+      _MyDisplayWidget(),
+      _BorDisplayWidget(),
+      Text("null"),
+
     ];
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      displayWidget = getWidgetOptions().elementAt(index);
     });
-    updateLists();
-  }
 
-  void updateLists() async {
-    print("in updateLists");
-    _myItems.clear();
-    _borrowedItems.clear();
-    _searchItems.clear();
-    List<Item> tempMy = await mvc.getMyItems();
-    print("my items:");
-    print(tempMy); // prints from database doesn't display though
-    List<Item> tempBor = await mvc.getBorrowedItems();
-    print("borrowed items:");
-    print(tempBor); // prints from database doesn't display though
-    for (Item i in tempMy) {
-      _myItems.add(_myWid);
-      _myItems.add(i.build(this.context));
-    }
-    for (Item i in tempBor) {
-      _borrowedItems.add(_borWid);
-      _borrowedItems.add(i.build(this.context));
-    }
-    _searchItems.add(_searchWid);
   }
 
   @override
   Widget build(BuildContext context) {
-    updateLists();
     return Scaffold(
-      body: Column(children: [
-        getWidgetOptions().elementAt(_selectedIndex),
+      body: Column(
+          children: [
+            displayWidget,
+            //getWidgetOptions().elementAt(_selectedIndex),
       ]),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -104,5 +76,82 @@ class _PanelState extends State<Panel> {
         onTap: _onItemTapped,
       ),
     );
+  }
+}
+
+abstract class _DisplayListWidget extends StatefulWidget{
+  const _DisplayListWidget({super.key});
+}
+
+class _MyDisplayWidget extends _DisplayListWidget{
+  const _MyDisplayWidget({super.key});
+
+  @override
+  _MyDisplayWidgetState createState() => _MyDisplayWidgetState();
+
+}
+
+class _BorDisplayWidget extends _DisplayListWidget{
+  const _BorDisplayWidget({super.key});
+
+  @override
+  _BorDisplayWidgetState createState() => _BorDisplayWidgetState();
+}
+
+
+
+abstract class _DisplayListWidgetState extends State<_DisplayListWidget>{
+  List<Item> items = [];
+  ModelViewController mvc = ModelViewController();
+
+  void getItems() async {
+    //final newItems = await mvc.;
+    setState(() {
+      //items = newItems;
+    });
+  }
+
+  @override void initState() {
+    getItems();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+   return  Expanded(
+     child:
+     ListView.builder(
+       itemCount: items.length,
+       itemBuilder: (BuildContext context, int index) {
+         return ListTile(
+           title: items[index].build(context),
+         );
+       },
+     ),
+   );
+  }
+
+}
+
+class _MyDisplayWidgetState extends _DisplayListWidgetState{
+
+  @override
+  void getItems() async {
+    final newItems = await mvc.getMyItems();
+    setState(() {
+      items = newItems;
+    });
+  }
+}
+
+class _BorDisplayWidgetState extends _DisplayListWidgetState{
+
+  @override
+  void getItems() async {
+    final newItems = await mvc.getBorrowedItems();
+    setState(() {
+      items = newItems;
+    });
   }
 }
