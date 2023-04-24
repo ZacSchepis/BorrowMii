@@ -151,7 +151,6 @@ void borrowItemDatabase(Item item) async {
   String itemOwner = item.getOwner();
   if (friendList.contains(itemOwner)) {
     cuser.borrowAItem(item);
-    // reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
   }
   reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
 
