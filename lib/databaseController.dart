@@ -168,8 +168,6 @@ void borrowItemDatabase(Item item) async {
           itemMap["status"] = "Borrowed";
         }
       }
-      // cuser.addFriendByString(friendUName);
-      // reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
     } else {
       print("Friend not found in Database");
     }
@@ -183,8 +181,8 @@ void borrowItemDatabase(Item item) async {
 void returnItemDatabase(Item item) async {
   await getAllInventory();
   cuser.returnItem(item);
-  // print(cuser.bItems);
   reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+
   String itemOwner = item.getOwner();
   List<dynamic> friendsItems = [];
   await FirebaseFirestore.instance
@@ -199,8 +197,6 @@ void returnItemDatabase(Item item) async {
           itemMap["status"] = "Available";
         }
       }
-      // cuser.addFriendByString(friendUName);
-      // reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
     } else {
       print("Friend not found in Database");
     }

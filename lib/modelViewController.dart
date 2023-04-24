@@ -49,9 +49,6 @@ class ModelViewController {
 
   Future<List<Item>> getMyItems() async {
     //return list of persons items
-    Item item = Item("drill", "janesmith", "Available");
-    returnItem(item);
-    await searchOtherItems();
     List<dynamic> itemmaps = await getUserInventory();
     List<Item> items = [];
     for (int i = 0; i < itemmaps.length; i++) {
