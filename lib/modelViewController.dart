@@ -39,6 +39,22 @@ class ModelViewController {
     removeItemFromDatabase(item);
   }
 
+  void addFriendByName(String frienduname) {
+    addFriend(frienduname);
+  }
+
+  void changeCName(String name) async {
+    changeName(name);
+  }
+
+  void changeCUserName(String newuName) async {
+    changeUserName(newuName);
+  }
+
+  void updateCPassword(String newpassword) async {
+    updatePassword(newpassword);
+  }
+
   //returns all items owned by user
   List<Item> searchMyItems(String search) {
     //search current list of persons items
@@ -49,6 +65,8 @@ class ModelViewController {
 
   Future<List<Item>> getMyItems() async {
     //return list of persons items
+    // Item item = Item('drill', 'janesmith', 'Available');
+    // borrowItemDatabase(item);
     List<dynamic> itemmaps = await getUserInventory();
     List<Item> items = [];
     for (int i = 0; i < itemmaps.length; i++) {
