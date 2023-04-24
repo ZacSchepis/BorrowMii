@@ -24,7 +24,7 @@ class ProfileMenu extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text("Change name:   "),
+                  const Text("Change name:   "),
                   SizedBox(
                     // <-- SEE HERE
                     width: 200,
@@ -32,9 +32,10 @@ class ProfileMenu extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
                         mvc.changeName(value);
+                        nameController.text = "";
                       },
                       controller: nameController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Enter New Name',
                         border: OutlineInputBorder(),
                       ),
@@ -44,7 +45,7 @@ class ProfileMenu extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text("Add friend:   "),
+                  const Text("Add friend:   "),
                   SizedBox(
                     // <-- SEE HERE
                     width: 200,
@@ -53,8 +54,9 @@ class ProfileMenu extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
                         mvc.addFriend(value);
+                        friendController.text = "";
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Enter User Name',
                         border: OutlineInputBorder(),
                       ),
@@ -64,7 +66,7 @@ class ProfileMenu extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text("Reset Password:   "),
+                  const Text("Reset Password:   "),
                   SizedBox(
                     // <-- SEE HERE
                     width: 200,
@@ -73,10 +75,10 @@ class ProfileMenu extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
                         mvc.updatePassword(value);
-                        // print("pw");
+                        pwController.text = "";
                       },
                       obscureText: true,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Enter Password',
                         border: OutlineInputBorder(),
                       ),

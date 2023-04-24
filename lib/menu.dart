@@ -23,30 +23,6 @@ class Menu extends StatelessWidget {
   final leftController = TextEditingController();
   final rightController = TextEditingController();
 
-  //StatefulWidget displaySearch;
-
-  //StatefulWidget results = [];
-
-  //methods
-
-  // StatefulWidget buildSearchResults(BuildContext context, String search) {
-  //   List<Widget> widgetListItems = [const Text("Items:")];
-  //   StatefulWidget widget;
-  //
-  //   // Person testFriend = Person("bilbob", "1234");
-  //   // removeFriend(testFriend);
-  //
-  //   ModelViewController().searchMyItems(search).forEach((element) {
-  //     RemovableItem rItem = RemovableItem(element);
-  //     widgetListItems.add(rItem.build(context));
-  //   });
-  //
-  //   widget = Column(
-  //     children: widgetListItems
-  //   ) as StatefulWidget;
-  //
-  //   return widget;
-  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
