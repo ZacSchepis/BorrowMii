@@ -52,14 +52,6 @@ class Person {
     _name = name;
   }
 
-  // void setUItems() async {
-  //   _myItems = await getUserInventory();
-  // }
-
-  // void setBItems() async {
-  //   _borrowedItems = await getBorrowedInventory();
-  // }
-
   List<Map<String, dynamic>> inventoryMapping() {
     List<Map<String, dynamic>> inventory = <Map<String, dynamic>>[];
     for (int i = 0; i < myItems.length; i++) {
@@ -95,10 +87,6 @@ class Person {
       // if (_myItems != null) "myItems": myItems,
     };
   }
-
-  // // Add friend when button selected to become friends
-
-  // // see friend list
 
   void addItem(Item item) {
     // when item is added just push button to add it set owner to current user and prompt user name tool
@@ -138,16 +126,7 @@ class Person {
     friends.removeWhere((element) => element["userName"] == friend.uname);
   }
 
-  // void requestItem(Item item) {
-  //   if (item.getStatus() == "Available") {
-  //     item.setStatus("Requested");
-  //   }
-  // }
-
-  // void acceptRequests(Item item) {
-  //   if (item.getStatus() == "Requested") {
-  //     item.setStatus("Borrowed");
-  //     borrowedItems.add(item);
-  //   }
-  // }
+  void removeFriendByString(String frienduName) {
+    friends.removeWhere((element) => element == frienduName);
+  }
 }
