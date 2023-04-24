@@ -51,7 +51,7 @@ class ProfileMenu extends StatelessWidget {
                       controller: friendController,
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
-                        print("friend");
+                        addFriend(value);
                       },
                       decoration: InputDecoration(
                         labelText: 'Enter User Name',

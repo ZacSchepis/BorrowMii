@@ -1,3 +1,4 @@
+// import 'dart:/ffi';
 import 'dart:io';
 import 'package:team_d_project/current_user.dart';
 import 'package:team_d_project/person.dart';
@@ -11,6 +12,7 @@ List<dynamic> userItems = <Item>[];
 List<dynamic> borrowedItems = <Item>[];
 List<dynamic> friendList = <dynamic>[];
 List<dynamic> allItems = <dynamic>[];
+List<dynamic> friendsItems = <dynamic>[];
 CurrentUser cuser = CurrentUser();
 FirebaseFirestore reference = FirebaseFirestore.instance;
 
@@ -27,6 +29,7 @@ Person getPersonFromMap(Map<String, dynamic> personmap) {
 }
 
 Future<List<dynamic>> getUserInventory() async {
+  await getFriendsItemsInDatabase();
   await FirebaseFirestore.instance
       .collection("users")
       .doc(cuser.uname)
@@ -72,6 +75,36 @@ Future<List<dynamic>> getAllItemsInDatabase() async {
     }
   }
   return allItems;
+}
+
+Future<List<dynamic>> getFriendsItemsInDatabase() async {
+  QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection("users").get();
+
+  // Get data from docs and convert map to List
+  List<dynamic> allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+  List<dynamic> friends = [];
+
+  for (int idx = 0; idx < allData.length; idx++) {
+    Map<String, dynamic> map = allData[idx];
+    if (map["userName"] == cuser.uname) {
+      for (int j = 0; j < map["friends"].length; j++) {
+        friends.add(map["friends"][j]);
+      }
+    }
+  }
+
+  for (int idx = 0; idx < allData.length; idx++) {
+    Map<String, dynamic> map = allData[idx];
+    if (map["myItems"].length != 0 && friends.contains(map["userName"])) {
+      for (int j = 0; j < map["myItems"].length; j++) {
+        friendsItems.add(map["myItems"][j]);
+      }
+    }
+  }
+  print(friendsItems);
+  return friendsItems;
 }
 
 Future<List<dynamic>> getFriends() async {
@@ -128,15 +161,15 @@ void returnItem(Item item) async {
   reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
 }
 
-void addFriend(Person friend) async {
+void addFriend(String friendUName) async {
   await getAllInventory();
   await FirebaseFirestore.instance
       .collection("users")
-      .doc(friend.uname)
+      .doc(friendUName)
       .get()
       .then((DocumentSnapshot documentSnapshot) {
     if (documentSnapshot.exists) {
-      cuser.addFriend(friend);
+      cuser.addFriendByString(friendUName);
       reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
     } else {
       print("Friend not found in Database");

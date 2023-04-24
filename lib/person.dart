@@ -130,6 +130,10 @@ class Person {
     friends.add(friend.friendToFirestore());
   }
 
+  void addFriendByString(String friendUName) {
+    friends.add(friendUName);
+  }
+
   void removeFriend(Person friend) {
     friends.removeWhere((element) => element["userName"] == friend.uname);
   }
