@@ -36,7 +36,14 @@ class _PanelState extends State<Panel> {
 
   List<Widget> getWidgetOptions() {
     return <Widget>[
-      _MyDisplayWidget(),
+      Expanded( child:
+        Column(
+          children: [
+          const Text("My Items: "),
+          Expanded(child: _MyDisplayWidget()),
+          ],
+        )
+      ),
       Expanded(child: _BorrowPanel()),
       Expanded(child: _SearchPanel()),
     ];
@@ -123,8 +130,7 @@ abstract class _DisplayListWidgetState extends State<_DisplayListWidget>{
   @override
   Widget build(BuildContext context) {
 
-   return  Expanded(
-     child:
+   return
      ListView.builder(
        itemCount: items.length,
        itemBuilder: (BuildContext context, int index) {
@@ -132,7 +138,6 @@ abstract class _DisplayListWidgetState extends State<_DisplayListWidget>{
            title: items[index].build(context),
          );
        },
-     ),
    );
   }
 
