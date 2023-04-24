@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'databaseController.dart';
+import 'modelViewController.dart';
 
 //menu for editing profile features
 class ProfileMenu extends StatelessWidget {
@@ -8,6 +8,7 @@ class ProfileMenu extends StatelessWidget {
   final nameController = TextEditingController();
   final friendController = TextEditingController();
   final pwController = TextEditingController();
+  final ModelViewController mvc = ModelViewController();
   //String text = "hello";
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class ProfileMenu extends StatelessWidget {
                     child: TextField(
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
-                        changeName(value);
+                        mvc.changeName(value);
                       },
                       controller: nameController,
                       decoration: InputDecoration(
@@ -51,7 +52,7 @@ class ProfileMenu extends StatelessWidget {
                       controller: friendController,
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
-                        addFriend(value);
+                        mvc.addFriend(value);
                       },
                       decoration: InputDecoration(
                         labelText: 'Enter User Name',
@@ -71,7 +72,7 @@ class ProfileMenu extends StatelessWidget {
                       controller: pwController,
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
-                        updatePassword(value);
+                        mvc.updatePassword(value);
                         // print("pw");
                       },
                       obscureText: true,
@@ -83,12 +84,6 @@ class ProfileMenu extends StatelessWidget {
                   ),
                 ],
               ),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     Navigator.pop(context);
-              //   },
-              //   child: const Text('Back'),
-              // ),
             ],
           )
         ],

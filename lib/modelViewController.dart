@@ -4,6 +4,7 @@ import 'current_user.dart';
 
 class ModelViewController {
   static final ModelViewController _instance = ModelViewController._internal();
+
   //create instance
   factory ModelViewController() {
     return _instance;
@@ -78,5 +79,15 @@ class ModelViewController {
       friendsItems.add(getItemFromMap(map));
     }
     return friendsItems;
+  }
+
+  void updatePassword(String value){
+    updatePassword(value);
+  }
+  void addFriend(String value){
+    addFriend(value);
+  }
+  void changeName(String value){
+    changeName(value);
   }
 }
