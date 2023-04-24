@@ -27,6 +27,14 @@ class ModelViewController {
     // cu.removeItemFromName(name);
   }
 
+  void borrowItem(Item item) {
+    borrowItemDatabase(item);
+  }
+
+  void returnItem(Item item) {
+    returnItemDatabase(item);
+  }
+
   void deleteItem(Item item) {
     removeItemFromDatabase(item);
   }
@@ -41,6 +49,8 @@ class ModelViewController {
 
   Future<List<Item>> getMyItems() async {
     //return list of persons items
+    Item item = Item("drill", "janesmith", "Available");
+    returnItem(item);
     await searchOtherItems();
     List<dynamic> itemmaps = await getUserInventory();
     List<Item> items = [];
@@ -64,12 +74,12 @@ class ModelViewController {
 
   Future<List<Item>> searchOtherItems() async {
     //return list of searched items other people own
-    List<dynamic> allitemsmaps = await getAllItemsInDatabase();
-    List<Item> allItems = [];
-    for (int i = 0; i < allitemsmaps.length; i++) {
-      Map<String, dynamic> map = allitemsmaps[i];
-      allItems.add(getItemFromMap(map));
+    List<dynamic> friendsitemsmaps = await getFriendsItemsInDatabase();
+    List<Item> friendsItems = [];
+    for (int i = 0; i < friendsitemsmaps.length; i++) {
+      Map<String, dynamic> map = friendsitemsmaps[i];
+      friendsItems.add(getItemFromMap(map));
     }
-    return allItems;
+    return friendsItems;
   }
 }

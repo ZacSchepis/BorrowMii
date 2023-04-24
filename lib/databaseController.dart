@@ -29,7 +29,6 @@ Person getPersonFromMap(Map<String, dynamic> personmap) {
 }
 
 Future<List<dynamic>> getUserInventory() async {
-  await getFriendsItemsInDatabase();
   await FirebaseFirestore.instance
       .collection("users")
       .doc(cuser.uname)
@@ -103,7 +102,6 @@ Future<List<dynamic>> getFriendsItemsInDatabase() async {
       }
     }
   }
-  print(friendsItems);
   return friendsItems;
 }
 
@@ -148,17 +146,69 @@ void removeItemByStringFromDatabase(String itemName) async {
   reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
 }
 
-void borrowItem(Item item) async {
+void borrowItemDatabase(Item item) async {
   await getAllInventory();
-  cuser.borrowAItem(item);
+  String itemOwner = item.getOwner();
+  if (friendList.contains(itemOwner)) {
+    cuser.borrowAItem(item);
+    // reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+  }
   reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+
+  List<dynamic> friendsItems = [];
+  await FirebaseFirestore.instance
+      .collection("users")
+      .doc(itemOwner)
+      .get()
+      .then((DocumentSnapshot documentSnapshot) {
+    if (documentSnapshot.exists) {
+      friendsItems = documentSnapshot.get("myItems");
+      for (var itemMap in friendsItems) {
+        if (itemMap["itemName"] == item.itemname) {
+          itemMap["status"] = "Borrowed";
+        }
+      }
+      // cuser.addFriendByString(friendUName);
+      // reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+    } else {
+      print("Friend not found in Database");
+    }
+  });
+  reference
+      .collection("users")
+      .doc(item.getOwner())
+      .update({"myItems": friendsItems});
 }
 
-void returnItem(Item item) async {
+void returnItemDatabase(Item item) async {
   await getAllInventory();
   cuser.returnItem(item);
   // print(cuser.bItems);
   reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+  String itemOwner = item.getOwner();
+  List<dynamic> friendsItems = [];
+  await FirebaseFirestore.instance
+      .collection("users")
+      .doc(itemOwner)
+      .get()
+      .then((DocumentSnapshot documentSnapshot) {
+    if (documentSnapshot.exists) {
+      friendsItems = documentSnapshot.get("myItems");
+      for (var itemMap in friendsItems) {
+        if (itemMap["itemName"] == item.itemname) {
+          itemMap["status"] = "Available";
+        }
+      }
+      // cuser.addFriendByString(friendUName);
+      // reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
+    } else {
+      print("Friend not found in Database");
+    }
+  });
+  reference
+      .collection("users")
+      .doc(item.getOwner())
+      .update({"myItems": friendsItems});
 }
 
 void addFriend(String friendUName) async {
