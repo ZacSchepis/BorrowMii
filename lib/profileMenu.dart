@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'databaseController.dart';
+import 'modelViewController.dart';
+// import 'package:team_d_project/modelViewController.dart';
 
 //menu for editing profile features
 class ProfileMenu extends StatelessWidget {
@@ -8,6 +10,7 @@ class ProfileMenu extends StatelessWidget {
   final nameController = TextEditingController();
   final friendController = TextEditingController();
   final pwController = TextEditingController();
+  ModelViewController mvc = ModelViewController();
   //String text = "hello";
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,7 @@ class ProfileMenu extends StatelessWidget {
                     child: TextField(
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
-                        changeName(value);
+                        mvc.changeCName(value);
                       },
                       controller: nameController,
                       decoration: InputDecoration(
@@ -51,7 +54,7 @@ class ProfileMenu extends StatelessWidget {
                       controller: friendController,
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
-                        addFriend(value);
+                        mvc.addFriendByName(value);
                       },
                       decoration: InputDecoration(
                         labelText: 'Enter User Name',
@@ -71,7 +74,7 @@ class ProfileMenu extends StatelessWidget {
                       controller: pwController,
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
-                        updatePassword(value);
+                        mvc.updateCPassword(value);
                         // print("pw");
                       },
                       obscureText: true,

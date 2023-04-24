@@ -115,11 +115,15 @@ class Person {
   }
 
   void addFriend(Person friend) {
+    // if ( friends.contains(friend))
     friends.add(friend.friendToFirestore());
   }
 
   void addFriendByString(String friendUName) {
-    friends.add(friendUName);
+    if (!friends.contains(friendUName)) {
+      friends.add(friendUName);
+    }
+    // friends.add(friendUName);
   }
 
   void removeFriend(Person friend) {
