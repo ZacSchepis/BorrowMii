@@ -41,6 +41,7 @@ class ModelViewController {
 
   Future<List<Item>> getMyItems() async {
     //return list of persons items
+    await searchOtherItems();
     List<dynamic> itemmaps = await getUserInventory();
     List<Item> items = [];
     for (int i = 0; i < itemmaps.length; i++) {
@@ -61,10 +62,14 @@ class ModelViewController {
     return borrowedItems;
   }
 
-  List<Item> searchOtherItems() {
+  Future<List<Item>> searchOtherItems() async {
     //return list of searched items other people own
-    List<Item> L1;
-    L1 = [Item("1", "1", "1")];
-    return L1;
+    List<dynamic> allitemsmaps = await getAllItemsInDatabase();
+    List<Item> allItems = [];
+    for (int i = 0; i < allitemsmaps.length; i++) {
+      Map<String, dynamic> map = allitemsmaps[i];
+      allItems.add(getItemFromMap(map));
+    }
+    return allItems;
   }
 }
