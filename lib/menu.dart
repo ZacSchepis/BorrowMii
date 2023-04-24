@@ -1,4 +1,3 @@
-import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:team_d_project/modelViewController.dart';
 import 'item.dart';
@@ -10,6 +9,7 @@ import 'databaseController.dart';
 import 'Notifiers/user_notifier.dart';
 import 'current_user.dart';
 import 'package:provider/provider.dart';
+import 'searchListWidget.dart';
 
 //menu for editing profile features
 class Menu extends StatelessWidget {
@@ -119,86 +119,3 @@ class Menu extends StatelessWidget {
   }
 }
 
-class RemovableItem extends StatelessWidget{
-  Item _item = Item("1","1","1");
-  ModelViewController mvc = ModelViewController();
-  RemovableItem(Item item, {super.key}){
-    _item = item;
-  }
-  @override
-  Widget build(BuildContext context){
-    return Row(
-      children: [
-        _item.build(context),
-        ElevatedButton.icon(
-            onPressed:(){
-              mvc.deleteItem(_item);
-              //delete item from person class
-              //create modelviewcontroller method to delete passing item
-              //create method to delete item in person call passing method
-            },
-            icon: const Icon(
-              Icons.clear,
-              color: Colors.red,
-              size: 40.0,
-            ),
-            label: const Text("remove")
-        )
-      ],
-    );
-  }
-}
-
-class SearchListWidget extends StatefulWidget {
-
-  @override
-  _SearchListWidgetState createState() => _SearchListWidgetState();
-}
-
-class _SearchListWidgetState extends State<SearchListWidget> {
-  List<Item> items = [];
-  List<Item> filteredItems = [];
-  ModelViewController mvc = ModelViewController();
-  void filterSearchResults(String query) async{
-    List<Item> results = [];
-    items = await mvc.getMyItems();
-    items.forEach((item) {
-      if (item.itemname.toLowerCase().contains(query.toLowerCase())) {
-        results.add(item);
-      }
-    });
-    setState(() {
-      filteredItems = results;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text("Search for an item to remove"),
-        SizedBox(
-          width: 200,
-          child: TextField(
-            onChanged: (query) {
-              filterSearchResults(query);
-            },
-            decoration: const InputDecoration(
-              hintText: 'Search',
-            ),
-          ),
-        ),
-        Expanded(child:
-        ListView.builder(
-            itemCount: filteredItems.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: RemovableItem(filteredItems[index]).build(context),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}

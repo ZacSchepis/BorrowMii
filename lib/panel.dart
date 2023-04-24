@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:team_d_project/modelViewController.dart';
+import 'package:team_d_project/removableItem.dart';
 import 'modelViewController.dart';
 import 'item.dart';
+import 'searchListWidget.dart';
+import 'removableItem.dart';
 
 //panels for tabbed info on main screen
 class Panel extends StatefulWidget {
@@ -34,11 +37,12 @@ class _PanelState extends State<Panel> {
   List<Widget> getWidgetOptions() {
     return <Widget>[
       _MyDisplayWidget(),
-      _BorDisplayWidget(),
-      Text("null"),
-
+      Expanded(child: _BorrowPanel()),
+      Expanded(child: _SearchPanel()),
     ];
   }
+
+
 
   void _onItemTapped(int index) {
     setState(() {
@@ -153,5 +157,136 @@ class _BorDisplayWidgetState extends _DisplayListWidgetState{
     setState(() {
       items = newItems;
     });
+  }
+}
+
+class _SearchPanel extends StatefulWidget {
+
+  @override
+  _SearchPanelState createState() => _SearchPanelState();
+}
+
+class _SearchPanelState extends State<_SearchPanel> {
+  List<Item> items = [];
+  List<Item> filteredItems = [];
+  ModelViewController mvc = ModelViewController();
+  void filterSearchResults(String query) async{
+    List<Item> results = [];
+    items = await mvc.searchOtherItems();
+    items.forEach((item) {
+      if (item.itemname.toLowerCase().contains(query.toLowerCase())) {
+        results.add(item);
+      }
+    });
+    setState(() {
+      filteredItems = results;
+    });
+  }
+
+  Widget buildInteractable(int index) {
+    return BorrowItem(filteredItems[index]).build(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text("Search for an item to borrow"),
+        SizedBox(
+          width: 200,
+          child: TextField(
+            onChanged: (query) {
+              filterSearchResults(query);
+            },
+            decoration: const InputDecoration(
+              hintText: 'Search',
+            ),
+          ),
+        ),
+        Expanded(child:
+        ListView.builder(
+          itemCount: filteredItems.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              title: buildInteractable(index),
+            );
+          },
+        ),
+        ),
+      ],
+    );
+  }
+}
+
+class _BorrowPanel extends StatefulWidget {
+
+  @override
+  _BorrowPanelState createState() => _BorrowPanelState();
+}
+
+class _BorrowPanelState extends State<_BorrowPanel> {
+  List<Item> items = [];
+  List<Item> filteredItems = [];
+  ModelViewController mvc = ModelViewController();
+  void filterSearchResults(String query) async{
+    List<Item> results = [];
+    items = await mvc.searchOtherItems();
+    items.forEach((item) {
+      if (item.itemname.toLowerCase().contains(query.toLowerCase())) {
+        results.add(item);
+      }
+    });
+    setState(() {
+      filteredItems = results;
+    });
+  }
+
+  Widget buildInteractable(int index) {
+    return ReturnItem(filteredItems[index]).build(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text("Search for an item to return"),
+        SizedBox(
+          width: 200,
+          child: TextField(
+            onChanged: (query) {
+              filterSearchResults(query);
+            },
+            decoration: const InputDecoration(
+              hintText: 'Search',
+            ),
+          ),
+        ),
+        Expanded(child:
+        ListView.builder(
+          itemCount: filteredItems.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              title: buildInteractable(index),
+            );
+          },
+        ),
+        ),
+      ],
+    );
+  }
+}
+class BorrowItem extends RemovableItem{
+  BorrowItem(Item item, {super.key}) : super(item);
+  @override
+  void _deleteItem(Item item){
+    mvc.borrowItem(item);
+  }
+}
+
+class ReturnItem extends RemovableItem{
+  ReturnItem(Item item, {super.key}) : super(item);
+  @override
+  void _deleteItem(Item item){
+    mvc.returnItem(item);
   }
 }
