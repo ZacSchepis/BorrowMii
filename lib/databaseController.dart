@@ -58,6 +58,24 @@ Future<List<dynamic>> getBorrowedInventory() async {
   return borrowedItems;
 }
 
+Future<List<dynamic>> getAllUserNames() async {
+  List<dynamic> allUsers = [];
+
+  QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection("users").get();
+
+  for (var doc in querySnapshot.docs) {
+    if (doc.id != "ADMIN" && doc.id != "admin") {
+      allUsers.add(doc.id);
+    }
+  }
+
+  print(allUsers);
+  // await FirebaseFirestore.instance.collection("users").get().then((query) => null)
+
+  return allUsers;
+}
+
 Future<List<dynamic>> getAllItemsInDatabase() async {
   QuerySnapshot querySnapshot =
       await FirebaseFirestore.instance.collection("users").get();

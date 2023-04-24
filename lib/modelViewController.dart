@@ -67,6 +67,7 @@ class ModelViewController {
     //return list of persons items
     // Item item = Item('drill', 'janesmith', 'Available');
     // borrowItemDatabase(item);
+    await getAllUserNames();
     List<dynamic> itemmaps = await getUserInventory();
     List<Item> items = [];
     for (int i = 0; i < itemmaps.length; i++) {
