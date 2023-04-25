@@ -36,8 +36,8 @@ class _PanelState extends State<Panel> {
     return <Widget>[
       Expanded(
           child: Column(
-        children: [
-          const Text("My Items: "),
+        children: const [
+          Text("My Items: "),
           Expanded(child: _MyDisplayWidget()),
         ],
       )),
@@ -94,21 +94,12 @@ class _MyDisplayWidget extends _DisplayListWidget {
   _MyDisplayWidgetState createState() => _MyDisplayWidgetState();
 }
 
-class _BorDisplayWidget extends _DisplayListWidget {
-  const _BorDisplayWidget({super.key});
-
-  @override
-  _BorDisplayWidgetState createState() => _BorDisplayWidgetState();
-}
-
 abstract class _DisplayListWidgetState extends State<_DisplayListWidget> {
   List<Item> items = [];
   ModelViewController mvc = ModelViewController();
 
   void getItems() async {
-    //final newItems = await mvc.;
     setState(() {
-      //items = newItems;
     });
   }
 
@@ -141,16 +132,6 @@ class _MyDisplayWidgetState extends _DisplayListWidgetState {
   }
 }
 
-class _BorDisplayWidgetState extends _DisplayListWidgetState {
-  @override
-  void getItems() async {
-    final newItems = await mvc.getBorrowedItems();
-    setState(() {
-      items = newItems;
-    });
-  }
-}
-
 class _SearchPanel extends StatefulWidget {
   @override
   _SearchPanelState createState() => _SearchPanelState();
@@ -174,7 +155,16 @@ class _SearchPanelState extends State<_SearchPanel> {
   }
 
   Widget buildInteractable(int index) {
-    return BorrowItem(filteredItems[index]).build(context);
+    BorrowItem bi = BorrowItem(filteredItems[index]);
+    bi.setIcon(
+      const Icon(
+        Icons.add_circle,
+        color: Colors.green,
+        size: 40.0,
+      )
+    );
+    bi.setText("Borrow");
+    return bi.build(context);
   }
 
   @override
@@ -219,7 +209,6 @@ class _BorrowPanelState extends State<_BorrowPanel> {
   ModelViewController mvc = ModelViewController();
   void filterSearchResults(String query) async {
     List<Item> results = [];
-    // items = await mvc.getBorrowedItems();
     items = await mvc.searchOtherItems();
     items.forEach((item) {
       if (item.itemname.toLowerCase().contains(query.toLowerCase())) {
@@ -232,7 +221,16 @@ class _BorrowPanelState extends State<_BorrowPanel> {
   }
 
   Widget buildInteractable(int index) {
-    return ReturnItem(filteredItems[index]).build(context);
+    ReturnItem ri = ReturnItem(filteredItems[index]);
+    ri.setIcon(
+      const Icon(
+        Icons.remove_circle,
+        color: Colors.yellow,
+        size: 40.0,
+      )
+    );
+    ri.setText("Return");
+    return ri.build(context);
   }
 
   @override
@@ -266,18 +264,18 @@ class _BorrowPanelState extends State<_BorrowPanel> {
   }
 }
 
-class BorrowItem extends RemovableItem {
+class BorrowItem extends InteractableItem {
   BorrowItem(Item item, {super.key}) : super(item);
   @override
-  void _deleteItem(Item item) {
+  void interact(Item item) {
     mvc.borrowItem(item);
   }
 }
 
-class ReturnItem extends RemovableItem {
+class ReturnItem extends InteractableItem {
   ReturnItem(Item item, {super.key}) : super(item);
   @override
-  void _deleteItem(Item item) {
+  void interact(Item item) {
     mvc.returnItem(item);
   }
 }

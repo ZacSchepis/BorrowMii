@@ -10,7 +10,7 @@ abstract class InteractableItem extends StatelessWidget{
     color: Colors.red,
     size: 40.0,
   );
-  Widget _text = Text("Remove");
+  Widget _text = const Text("Remove");
   ModelViewController mvc = ModelViewController();
   InteractableItem(Item item,{super.key}){
   _item = item;
@@ -22,7 +22,7 @@ abstract class InteractableItem extends StatelessWidget{
     _text = Text(text);
   }
   //override functionality
-  void _interact(Item item){
+  void interact(Item item){
     mvc.deleteItem(item);
   }
   @override
@@ -32,7 +32,7 @@ abstract class InteractableItem extends StatelessWidget{
         _item.build(context),
         ElevatedButton.icon(
             onPressed:(){
-              _interact(_item);
+              interact(_item);
             },
             icon: _icon,
             label: _text,
