@@ -142,6 +142,7 @@ class LogInPage extends State<LogIn> {
       body: Center(
           child: Column(
         children: [
+          Text(""),
           SizedBox(
             // <-- SEE HERE
             width: 200,
@@ -158,6 +159,7 @@ class LogInPage extends State<LogIn> {
                   return null;
                 }),
           ),
+          Text(""),
           SizedBox(
             // <-- SEE HERE
             width: 200,
@@ -170,6 +172,7 @@ class LogInPage extends State<LogIn> {
               ),
             ),
           ),
+          Text(""),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -179,6 +182,7 @@ class LogInPage extends State<LogIn> {
                 },
                 child: const Text('Log In'),
               ),
+              Text("       "),
               ElevatedButton(
                 onPressed: () {
                   formSignUp();

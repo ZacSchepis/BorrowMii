@@ -4,7 +4,6 @@ import 'package:team_d_project/InteractableItem.dart';
 import 'modelViewController.dart';
 import 'item.dart';
 import 'searchListWidget.dart';
-import 'InteractableItem.dart';
 
 //panels for tabbed info on main screen
 class Panel extends StatefulWidget {
@@ -29,7 +28,7 @@ class _PanelState extends State<Panel> {
     'Search Items',
     style: optionStyle,
   );
-  Widget displayWidget = Text("null");
+  Widget displayWidget = const Text("");
   ModelViewController mvc = ModelViewController();
 
   List<Widget> getWidgetOptions() {
@@ -209,7 +208,7 @@ class _BorrowPanelState extends State<_BorrowPanel> {
   ModelViewController mvc = ModelViewController();
   void filterSearchResults(String query) async {
     List<Item> results = [];
-    items = await mvc.searchOtherItems();
+    items = await mvc.getBorrowedItems();
     items.forEach((item) {
       if (item.itemname.toLowerCase().contains(query.toLowerCase())) {
         results.add(item);
