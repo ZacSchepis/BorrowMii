@@ -12,7 +12,7 @@ List<dynamic> userItems = <Item>[];
 List<dynamic> borrowedItems = <Item>[];
 List<dynamic> friendList = <dynamic>[];
 List<dynamic> allItems = <dynamic>[];
-List<dynamic> friendsItems = <dynamic>[];
+// List<dynamic> friendsItems = <dynamic>[];
 CurrentUser cuser = CurrentUser();
 FirebaseFirestore reference = FirebaseFirestore.instance;
 
@@ -58,6 +58,24 @@ Future<List<dynamic>> getBorrowedInventory() async {
   return borrowedItems;
 }
 
+Future<List<dynamic>> getAllUserNames() async {
+  List<dynamic> allUsers = [];
+
+  QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection("users").get();
+
+  for (var doc in querySnapshot.docs) {
+    if (doc.id != "ADMIN" && doc.id != "admin") {
+      allUsers.add(doc.id);
+    }
+  }
+
+  print(allUsers);
+  // await FirebaseFirestore.instance.collection("users").get().then((query) => null)
+
+  return allUsers;
+}
+
 Future<List<dynamic>> getAllItemsInDatabase() async {
   QuerySnapshot querySnapshot =
       await FirebaseFirestore.instance.collection("users").get();
@@ -84,6 +102,7 @@ Future<List<dynamic>> getFriendsItemsInDatabase() async {
   List<dynamic> allData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
   List<dynamic> friends = [];
+  List<dynamic> friendsItems = [];
 
   for (int idx = 0; idx < allData.length; idx++) {
     Map<String, dynamic> map = allData[idx];

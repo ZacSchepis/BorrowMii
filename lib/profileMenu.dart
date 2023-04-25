@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'modelViewController.dart';
 import 'databaseController.dart';
+import 'modelViewController.dart';
+// import 'package:team_d_project/modelViewController.dart';
 
 //menu for editing profile features
 class ProfileMenu extends StatelessWidget {
@@ -9,7 +11,9 @@ class ProfileMenu extends StatelessWidget {
   final nameController = TextEditingController();
   final friendController = TextEditingController();
   final pwController = TextEditingController();
+
   final ModelViewController mvc = ModelViewController();
+
   //String text = "hello";
   @override
   Widget build(BuildContext context) {
@@ -32,7 +36,7 @@ class ProfileMenu extends StatelessWidget {
                     child: TextField(
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
-                        changeName(value);
+                        mvc.changeCName(value);
                         nameController.text = "";
                       },
                       controller: nameController,
@@ -54,8 +58,7 @@ class ProfileMenu extends StatelessWidget {
                       controller: friendController,
                       textInputAction: TextInputAction.go,
                       onSubmitted: (value) {
-                        print(value);
-                        addFriend(value);
+                        mvc.addFriend(value);
                         friendController.text = "";
                       },
                       decoration: const InputDecoration(
@@ -76,7 +79,7 @@ class ProfileMenu extends StatelessWidget {
                       controller: pwController,
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
-                        updatePassword(value);
+                        mvc.updateCPassword(value);
                         pwController.text = "";
                       },
                       obscureText: true,

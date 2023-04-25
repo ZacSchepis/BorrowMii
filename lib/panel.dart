@@ -11,11 +11,9 @@ class Panel extends StatefulWidget {
   const Panel({super.key});
   @override
   State<Panel> createState() => _PanelState();
-
 }
 
 class _PanelState extends State<Panel> {
-
   int _selectedIndex = 2;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -36,36 +34,31 @@ class _PanelState extends State<Panel> {
 
   List<Widget> getWidgetOptions() {
     return <Widget>[
-      Expanded( child:
-        Column(
-          children: [
+      Expanded(
+          child: Column(
+        children: [
           const Text("My Items: "),
           Expanded(child: _MyDisplayWidget()),
-          ],
-        )
-      ),
+        ],
+      )),
       Expanded(child: _BorrowPanel()),
       Expanded(child: _SearchPanel()),
     ];
   }
-
-
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
       displayWidget = getWidgetOptions().elementAt(index);
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-          children: [
-            displayWidget,
-            //getWidgetOptions().elementAt(_selectedIndex),
+      body: Column(children: [
+        displayWidget,
+        //getWidgetOptions().elementAt(_selectedIndex),
       ]),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -90,28 +83,25 @@ class _PanelState extends State<Panel> {
   }
 }
 
-abstract class _DisplayListWidget extends StatefulWidget{
+abstract class _DisplayListWidget extends StatefulWidget {
   const _DisplayListWidget({super.key});
 }
 
-class _MyDisplayWidget extends _DisplayListWidget{
+class _MyDisplayWidget extends _DisplayListWidget {
   const _MyDisplayWidget({super.key});
 
   @override
   _MyDisplayWidgetState createState() => _MyDisplayWidgetState();
-
 }
 
-class _BorDisplayWidget extends _DisplayListWidget{
+class _BorDisplayWidget extends _DisplayListWidget {
   const _BorDisplayWidget({super.key});
 
   @override
   _BorDisplayWidgetState createState() => _BorDisplayWidgetState();
 }
 
-
-
-abstract class _DisplayListWidgetState extends State<_DisplayListWidget>{
+abstract class _DisplayListWidgetState extends State<_DisplayListWidget> {
   List<Item> items = [];
   ModelViewController mvc = ModelViewController();
 
@@ -122,29 +112,26 @@ abstract class _DisplayListWidgetState extends State<_DisplayListWidget>{
     });
   }
 
-  @override void initState() {
+  @override
+  void initState() {
     getItems();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
-   return
-     ListView.builder(
-       itemCount: items.length,
-       itemBuilder: (BuildContext context, int index) {
-         return ListTile(
-           title: items[index].build(context),
-         );
-       },
-   );
+    return ListView.builder(
+      itemCount: items.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          title: items[index].build(context),
+        );
+      },
+    );
   }
-
 }
 
-class _MyDisplayWidgetState extends _DisplayListWidgetState{
-
+class _MyDisplayWidgetState extends _DisplayListWidgetState {
   @override
   void getItems() async {
     final newItems = await mvc.getMyItems();
@@ -154,8 +141,7 @@ class _MyDisplayWidgetState extends _DisplayListWidgetState{
   }
 }
 
-class _BorDisplayWidgetState extends _DisplayListWidgetState{
-
+class _BorDisplayWidgetState extends _DisplayListWidgetState {
   @override
   void getItems() async {
     final newItems = await mvc.getBorrowedItems();
@@ -166,7 +152,6 @@ class _BorDisplayWidgetState extends _DisplayListWidgetState{
 }
 
 class _SearchPanel extends StatefulWidget {
-
   @override
   _SearchPanelState createState() => _SearchPanelState();
 }
@@ -175,7 +160,7 @@ class _SearchPanelState extends State<_SearchPanel> {
   List<Item> items = [];
   List<Item> filteredItems = [];
   ModelViewController mvc = ModelViewController();
-  void filterSearchResults(String query) async{
+  void filterSearchResults(String query) async {
     List<Item> results = [];
     items = await mvc.searchOtherItems();
     items.forEach((item) {
@@ -208,15 +193,15 @@ class _SearchPanelState extends State<_SearchPanel> {
             ),
           ),
         ),
-        Expanded(child:
-        ListView.builder(
-          itemCount: filteredItems.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: buildInteractable(index),
-            );
-          },
-        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: filteredItems.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: buildInteractable(index),
+              );
+            },
+          ),
         ),
       ],
     );
@@ -224,7 +209,6 @@ class _SearchPanelState extends State<_SearchPanel> {
 }
 
 class _BorrowPanel extends StatefulWidget {
-
   @override
   _BorrowPanelState createState() => _BorrowPanelState();
 }
@@ -233,8 +217,9 @@ class _BorrowPanelState extends State<_BorrowPanel> {
   List<Item> items = [];
   List<Item> filteredItems = [];
   ModelViewController mvc = ModelViewController();
-  void filterSearchResults(String query) async{
+  void filterSearchResults(String query) async {
     List<Item> results = [];
+    // items = await mvc.getBorrowedItems();
     items = await mvc.searchOtherItems();
     items.forEach((item) {
       if (item.itemname.toLowerCase().contains(query.toLowerCase())) {
@@ -266,32 +251,33 @@ class _BorrowPanelState extends State<_BorrowPanel> {
             ),
           ),
         ),
-        Expanded(child:
-        ListView.builder(
-          itemCount: filteredItems.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: buildInteractable(index),
-            );
-          },
-        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: filteredItems.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: buildInteractable(index),
+              );
+            },
+          ),
         ),
       ],
     );
   }
 }
-class BorrowItem extends RemovableItem{
+
+class BorrowItem extends RemovableItem {
   BorrowItem(Item item, {super.key}) : super(item);
   @override
-  void _deleteItem(Item item){
+  void _deleteItem(Item item) {
     mvc.borrowItem(item);
   }
 }
 
-class ReturnItem extends RemovableItem{
+class ReturnItem extends RemovableItem {
   ReturnItem(Item item, {super.key}) : super(item);
   @override
-  void _deleteItem(Item item){
+  void _deleteItem(Item item) {
     mvc.returnItem(item);
   }
 }
