@@ -18,14 +18,15 @@ class CurrentUser extends Person {
   bool get hasItems => _has_items;
   bool get hasBItems => has_borrowed_items;
   String get uname => _uName;
+  String get password => _password;
 
   CurrentUser() : super(_uName, _password);
 
-  void setUName(String username) {
+  void setCUName(String username) {
     _uName = username;
   }
 
-  void setUPassword(String password) {
+  void setCUPassword(String password) {
     _password = password;
   }
 

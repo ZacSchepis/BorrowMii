@@ -1,82 +1,63 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:team_d_project/modelViewController.dart';
+import 'package:team_d_project/InteractableItem.dart';
 import 'modelViewController.dart';
 import 'item.dart';
+import 'searchListWidget.dart';
 
 //panels for tabbed info on main screen
 class Panel extends StatefulWidget {
-  Panel({super.key});
+  const Panel({super.key});
   @override
   State<Panel> createState() => _PanelState();
 }
 
 class _PanelState extends State<Panel> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  Widget _myWid = Text(
+  final Widget _myWid = const Text(
     'My Items',
     style: optionStyle,
   );
-  Widget _borWid = Text(
+  final Widget _borWid = const Text(
     'Borrowed Items',
     style: optionStyle,
   );
-  Widget _searchWid = Text(
+  final Widget _searchWid = const Text(
     'Search Items',
     style: optionStyle,
   );
-  List<Widget> _myItems = [];
-  List<Widget> _borrowedItems = [];
-  List<Widget> _searchItems = [];
+  Widget displayWidget = const Text("");
   ModelViewController mvc = ModelViewController();
 
   List<Widget> getWidgetOptions() {
     return <Widget>[
-      Column(
-        children: _myItems,
-      ),
-      Column(
-        children: _borrowedItems,
-      ),
-      Column(
-        children: _searchItems,
-      ),
+      Expanded(
+          child: Column(
+        children: const [
+          Text("My Items: "),
+          Expanded(child: _MyDisplayWidget()),
+        ],
+      )),
+      Expanded(child: _BorrowPanel()),
+      Expanded(child: _SearchPanel()),
     ];
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      displayWidget = getWidgetOptions().elementAt(index);
     });
-    updateLists();
-  }
-
-  void updateLists() {
-    _myItems.clear();
-    _borrowedItems.clear();
-    _searchItems.clear();
-    List<Item> tempMy = mvc.getMyItems();
-    List<Item> tempBor = mvc.getBorrowedItems();
-    for (Item i in tempMy) {
-      _myItems.add(_myWid);
-      _myItems.add(i.build(this.context));
-    }
-    for (Item i in tempBor) {
-      _borrowedItems.add(_borWid);
-      _borrowedItems.add(i.build(this.context));
-    }
-    _searchItems.add(_searchWid);
   }
 
   @override
   Widget build(BuildContext context) {
-    updateLists();
     return Scaffold(
       body: Column(children: [
-        getWidgetOptions().elementAt(_selectedIndex),
+        displayWidget,
+        //getWidgetOptions().elementAt(_selectedIndex),
       ]),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -98,5 +79,202 @@ class _PanelState extends State<Panel> {
         onTap: _onItemTapped,
       ),
     );
+  }
+}
+
+abstract class _DisplayListWidget extends StatefulWidget {
+  const _DisplayListWidget({super.key});
+}
+
+class _MyDisplayWidget extends _DisplayListWidget {
+  const _MyDisplayWidget({super.key});
+
+  @override
+  _MyDisplayWidgetState createState() => _MyDisplayWidgetState();
+}
+
+abstract class _DisplayListWidgetState extends State<_DisplayListWidget> {
+  List<Item> items = [];
+  ModelViewController mvc = ModelViewController();
+
+  void getItems() async {
+    setState(() {
+    });
+  }
+
+  @override
+  void initState() {
+    getItems();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: items.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          title: items[index].build(context),
+        );
+      },
+    );
+  }
+}
+
+class _MyDisplayWidgetState extends _DisplayListWidgetState {
+  @override
+  void getItems() async {
+    final newItems = await mvc.getMyItems();
+    setState(() {
+      items = newItems;
+    });
+  }
+}
+
+class _SearchPanel extends StatefulWidget {
+  @override
+  _SearchPanelState createState() => _SearchPanelState();
+}
+
+class _SearchPanelState extends State<_SearchPanel> {
+  List<Item> items = [];
+  List<Item> filteredItems = [];
+  ModelViewController mvc = ModelViewController();
+  void filterSearchResults(String query) async {
+    List<Item> results = [];
+    items = await mvc.searchOtherItems();
+    items.forEach((item) {
+      if (item.itemname.toLowerCase().contains(query.toLowerCase())) {
+        results.add(item);
+      }
+    });
+    setState(() {
+      filteredItems = results;
+    });
+  }
+
+  Widget buildInteractable(int index) {
+    BorrowItem bi = BorrowItem(filteredItems[index]);
+    bi.setIcon(
+      const Icon(
+        Icons.add_circle,
+        color: Colors.green,
+        size: 40.0,
+      )
+    );
+    bi.setText("Borrow");
+    return bi.build(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text("Search for an item to borrow"),
+        SizedBox(
+          width: 200,
+          child: TextField(
+            onChanged: (query) {
+              filterSearchResults(query);
+            },
+            decoration: const InputDecoration(
+              hintText: 'Search',
+            ),
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: filteredItems.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: buildInteractable(index),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _BorrowPanel extends StatefulWidget {
+  @override
+  _BorrowPanelState createState() => _BorrowPanelState();
+}
+
+class _BorrowPanelState extends State<_BorrowPanel> {
+  List<Item> items = [];
+  List<Item> filteredItems = [];
+  ModelViewController mvc = ModelViewController();
+  void filterSearchResults(String query) async {
+    List<Item> results = [];
+    items = await mvc.getBorrowedItems();
+    items.forEach((item) {
+      if (item.itemname.toLowerCase().contains(query.toLowerCase())) {
+        results.add(item);
+      }
+    });
+    setState(() {
+      filteredItems = results;
+    });
+  }
+
+  Widget buildInteractable(int index) {
+    ReturnItem ri = ReturnItem(filteredItems[index]);
+    ri.setIcon(
+      const Icon(
+        Icons.remove_circle,
+        color: Colors.yellow,
+        size: 40.0,
+      )
+    );
+    ri.setText("Return");
+    return ri.build(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text("Search for an item to return"),
+        SizedBox(
+          width: 200,
+          child: TextField(
+            onChanged: (query) {
+              filterSearchResults(query);
+            },
+            decoration: const InputDecoration(
+              hintText: 'Search',
+            ),
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: filteredItems.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: buildInteractable(index),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class BorrowItem extends InteractableItem {
+  BorrowItem(Item item, {super.key}) : super(item);
+  @override
+  void interact(Item item) {
+    mvc.borrowItem(item);
+  }
+}
+
+class ReturnItem extends InteractableItem {
+  ReturnItem(Item item, {super.key}) : super(item);
+  @override
+  void interact(Item item) {
+    mvc.returnItem(item);
   }
 }
