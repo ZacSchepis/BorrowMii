@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:team_d_project/modelViewController.dart';
-import 'package:team_d_project/removableItem.dart';
+import 'package:team_d_project/InteractableItem.dart';
 import 'modelViewController.dart';
 import 'item.dart';
 import 'searchListWidget.dart';
-import 'removableItem.dart';
+import 'InteractableItem.dart';
 
 //panels for tabbed info on main screen
 class Panel extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'item.dart';
 import 'modelViewController.dart';
-import 'removableItem.dart';
+import 'InteractableItem.dart';
 
 class SearchListWidget extends StatefulWidget {
   const SearchListWidget({super.key});
@@ -59,5 +59,13 @@ class SearchListWidgetState extends State<SearchListWidget> {
         ),
       ],
     );
+  }
+}
+
+class RemovableItem extends InteractableItem{
+  RemovableItem(super.item, {super.key});
+  @override
+  void _interact(Item item){
+    mvc.deleteItem(item);
   }
 }

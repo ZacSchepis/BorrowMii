@@ -56,14 +56,6 @@ class ModelViewController {
     updatePassword(newpassword);
   }
 
-  //returns all items owned by user
-  List<Item> searchMyItems(String search) {
-    //search current list of persons items
-    List<Item> L1;
-    L1 = [Item("1", "1", "1")];
-    return L1;
-  }
-
   Future<List<Item>> getMyItems() async {
     //return list of persons items
     // Item item = Item('drill', 'janesmith', 'Available');
@@ -100,13 +92,4 @@ class ModelViewController {
     return friendsItems;
   }
 
-  void updatePassword(String value){
-    updatePassword(value);
-  }
-  void addFriend(String value){
-    addFriend(value);
-  }
-  void changeName(String value){
-    changeName(value);
-  }
 }

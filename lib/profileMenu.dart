@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'modelViewController.dart';
 import 'databaseController.dart';
-import 'modelViewController.dart';
 // import 'package:team_d_project/modelViewController.dart';
 
 //menu for editing profile features
@@ -58,7 +57,7 @@ class ProfileMenu extends StatelessWidget {
                       controller: friendController,
                       textInputAction: TextInputAction.go,
                       onSubmitted: (value) {
-                        mvc.addFriend(value);
+                        mvc.addFriendByName(value);
                         friendController.text = "";
                       },
                       decoration: const InputDecoration(
