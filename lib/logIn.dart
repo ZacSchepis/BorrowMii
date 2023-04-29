@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:team_d_project/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'current_user.dart';
-import 'person.dart';
-import 'Notifiers/user_notifier.dart';
-import 'current_user.dart';
+
 
 class LogIn extends StatefulWidget {
   const LogIn({Key? key}) : super(key: key);

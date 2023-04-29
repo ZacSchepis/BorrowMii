@@ -1,0 +1,308 @@
+@startuml
+set namespaceSeparator ::
+
+class "team_d_project::current_user.dart::CurrentUser" {
+  {static} -String _uName
+  {static} -String _password
+  {static} -bool _new_user
+  {static} -bool _has_items
+  {static} +bool has_borrowed_items
+  +bool nuser
+  +bool hasItems
+  +bool hasBItems
+  +String uname
+  +String password
+  +void setCUName()
+  +void setCUPassword()
+  +void setNewUser()
+  +void setHasItems()
+  +void setHasBItems()
+  +dynamic getCurrentUname()
+  +dynamic getCurrentPassword()
+}
+
+"team_d_project::person.dart::Person" <|-- "team_d_project::current_user.dart::CurrentUser"
+
+class "team_d_project::firebase_options.dart::DefaultFirebaseOptions" {
+  {static} +FirebaseOptions web
+  {static} +FirebaseOptions android
+  {static} +FirebaseOptions ios
+  {static} +FirebaseOptions currentPlatform
+}
+
+"team_d_project::firebase_options.dart::DefaultFirebaseOptions" o-- "firebase_core_platform_interface::firebase_core_platform_interface.dart::FirebaseOptions"
+
+abstract class "team_d_project::InteractableItem.dart::InteractableItem" {
+  -Item _item
+  -Icon _icon
+  -Widget _text
+  +ModelViewController mvc
+  +void setIcon()
+  +void setText()
+  +void interact()
+  +Widget build()
+}
+
+"team_d_project::InteractableItem.dart::InteractableItem" o-- "team_d_project::item.dart::Item"
+"team_d_project::InteractableItem.dart::InteractableItem" o-- "flutter::src::widgets::icon.dart::Icon"
+"team_d_project::InteractableItem.dart::InteractableItem" o-- "flutter::src::widgets::framework.dart::Widget"
+"team_d_project::InteractableItem.dart::InteractableItem" o-- "team_d_project::modelViewController.dart::ModelViewController"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "team_d_project::InteractableItem.dart::InteractableItem"
+
+class "team_d_project::item.dart::Item" {
+  -String _itemName
+  -String _owner
+  -String _status
+  +String itemname
+  +String getOwner()
+  +String getStatus()
+  +void setStatus()
+  +Map<String, dynamic> toFirestore()
+  +Widget build()
+}
+
+class "team_d_project::logIn.dart::LogIn" {
+  +LogInPage createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "team_d_project::logIn.dart::LogIn"
+
+class "team_d_project::logIn.dart::LogInPage" {
+  +TextEditingController userNameController
+  +TextEditingController userPasswordController
+  +FirebaseFirestore reference
+  +void startApp()
+  +void formSignUp()
+  +void formValidation()
+  -Future<void> _showErrorMessage()
+  -Future<void> _showSignUpErrorMessage()
+  +Widget build()
+}
+
+"team_d_project::logIn.dart::LogInPage" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"team_d_project::logIn.dart::LogInPage" o-- "cloud_firestore::cloud_firestore.dart::FirebaseFirestore"
+"flutter::src::widgets::framework.dart::State" <|-- "team_d_project::logIn.dart::LogInPage"
+
+class "team_d_project::main.dart::MyApp" {
+  +ModelViewController mvc
+  +Widget build()
+}
+
+"team_d_project::main.dart::MyApp" o-- "team_d_project::modelViewController.dart::ModelViewController"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "team_d_project::main.dart::MyApp"
+
+class "team_d_project::menu.dart::Menu" {
+  +ModelViewController mvc
+  +SearchListWidget searchListWidget
+  +TextEditingController leftController
+  +TextEditingController rightController
+  +Widget build()
+}
+
+"team_d_project::menu.dart::Menu" o-- "team_d_project::modelViewController.dart::ModelViewController"
+"team_d_project::menu.dart::Menu" o-- "team_d_project::searchListWidget.dart::SearchListWidget"
+"team_d_project::menu.dart::Menu" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "team_d_project::menu.dart::Menu"
+
+class "team_d_project::modelViewController.dart::ModelViewController" {
+  {static} -ModelViewController _instance
+  +CurrentUser cu
+  +void addItemFromName()
+  +void deleteItemFromName()
+  +void borrowItem()
+  +void returnItem()
+  +void deleteItem()
+  +void addFriendByName()
+  +void changeCName()
+  +void changeCUserName()
+  +void updateCPassword()
+  +Future<List<Item>> getMyItems()
+  +Future<List<Item>> getBorrowedItems()
+  +Future<List<Item>> searchOtherItems()
+}
+
+"team_d_project::modelViewController.dart::ModelViewController" o-- "team_d_project::modelViewController.dart::ModelViewController"
+"team_d_project::modelViewController.dart::ModelViewController" o-- "team_d_project::current_user.dart::CurrentUser"
+
+class "team_d_project::Notifiers::user_notifier.dart::UserNotifier" {
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "team_d_project::Notifiers::user_notifier.dart::UserNotifier"
+
+class "team_d_project::panel.dart::Panel" {
+  +State<Panel> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "team_d_project::panel.dart::Panel"
+
+class "team_d_project::panel.dart::_PanelState" {
+  -int _selectedIndex
+  {static} +TextStyle optionStyle
+  -Widget _myWid
+  -Widget _borWid
+  -Widget _searchWid
+  +Widget displayWidget
+  +ModelViewController mvc
+  +List<Widget> getWidgetOptions()
+  -void _onItemTapped()
+  +Widget build()
+}
+
+"team_d_project::panel.dart::_PanelState" o-- "flutter::src::painting::text_style.dart::TextStyle"
+"team_d_project::panel.dart::_PanelState" o-- "flutter::src::widgets::framework.dart::Widget"
+"team_d_project::panel.dart::_PanelState" o-- "team_d_project::modelViewController.dart::ModelViewController"
+"flutter::src::widgets::framework.dart::State" <|-- "team_d_project::panel.dart::_PanelState"
+
+abstract class "team_d_project::panel.dart::_DisplayListWidget" {
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "team_d_project::panel.dart::_DisplayListWidget"
+
+class "team_d_project::panel.dart::_MyDisplayWidget" {
+  +_MyDisplayWidgetState createState()
+}
+
+"team_d_project::panel.dart::_DisplayListWidget" <|-- "team_d_project::panel.dart::_MyDisplayWidget"
+
+abstract class "team_d_project::panel.dart::_DisplayListWidgetState" {
+  +List<Item> items
+  +ModelViewController mvc
+  +void getItems()
+  +void initState()
+  +Widget build()
+}
+
+"team_d_project::panel.dart::_DisplayListWidgetState" o-- "team_d_project::modelViewController.dart::ModelViewController"
+"flutter::src::widgets::framework.dart::State" <|-- "team_d_project::panel.dart::_DisplayListWidgetState"
+
+class "team_d_project::panel.dart::_MyDisplayWidgetState" {
+  +void getItems()
+}
+
+"team_d_project::panel.dart::_DisplayListWidgetState" <|-- "team_d_project::panel.dart::_MyDisplayWidgetState"
+
+class "team_d_project::panel.dart::_SearchPanel" {
+  +_SearchPanelState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "team_d_project::panel.dart::_SearchPanel"
+
+class "team_d_project::panel.dart::_SearchPanelState" {
+  +List<Item> items
+  +List<Item> filteredItems
+  +ModelViewController mvc
+  +void filterSearchResults()
+  +Widget buildInteractable()
+  +Widget build()
+}
+
+"team_d_project::panel.dart::_SearchPanelState" o-- "team_d_project::modelViewController.dart::ModelViewController"
+"flutter::src::widgets::framework.dart::State" <|-- "team_d_project::panel.dart::_SearchPanelState"
+
+class "team_d_project::panel.dart::_BorrowPanel" {
+  +_BorrowPanelState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "team_d_project::panel.dart::_BorrowPanel"
+
+class "team_d_project::panel.dart::_BorrowPanelState" {
+  +List<Item> items
+  +List<Item> filteredItems
+  +ModelViewController mvc
+  +void filterSearchResults()
+  +Widget buildInteractable()
+  +Widget build()
+}
+
+"team_d_project::panel.dart::_BorrowPanelState" o-- "team_d_project::modelViewController.dart::ModelViewController"
+"flutter::src::widgets::framework.dart::State" <|-- "team_d_project::panel.dart::_BorrowPanelState"
+
+class "team_d_project::panel.dart::BorrowItem" {
+  +void interact()
+}
+
+"team_d_project::InteractableItem.dart::InteractableItem" <|-- "team_d_project::panel.dart::BorrowItem"
+
+class "team_d_project::panel.dart::ReturnItem" {
+  +void interact()
+}
+
+"team_d_project::InteractableItem.dart::InteractableItem" <|-- "team_d_project::panel.dart::ReturnItem"
+
+class "team_d_project::person.dart::Person" {
+  -String _username
+  -String _name
+  -String _password
+  -String _dob
+  -List<dynamic> _myItems
+  -List<dynamic> _borrowedItems
+  +List<Item> requestedItems
+  -List<dynamic> _friends
+  +bool has_items
+  +bool has_Bitems
+  +String name
+  +String password
+  +String uname
+  +String dob
+  +List<dynamic> myItems
+  +List<dynamic> bItems
+  +List<dynamic> friends
+  +void setUserName()
+  +void setPassword()
+  +void setItems()
+  +void setborrowedItems()
+  +void setFriendList()
+  +void setName()
+  +List<Map<String, dynamic>> inventoryMapping()
+  +List<Map<String, dynamic>> borrowedInventoryMapping()
+  +Map<String, dynamic> toFirestore()
+  +Map<String, dynamic> friendToFirestore()
+  +void addItem()
+  +void removeItem()
+  +void removeItemFromName()
+  +void borrowAItem()
+  +void returnItem()
+  +void addFriend()
+  +void addFriendByString()
+  +void removeFriend()
+  +void removeFriendByString()
+}
+
+class "team_d_project::profileMenu.dart::ProfileMenu" {
+  +TextEditingController nameController
+  +TextEditingController friendController
+  +TextEditingController pwController
+  +ModelViewController mvc
+  +Widget build()
+}
+
+"team_d_project::profileMenu.dart::ProfileMenu" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"team_d_project::profileMenu.dart::ProfileMenu" o-- "team_d_project::modelViewController.dart::ModelViewController"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "team_d_project::profileMenu.dart::ProfileMenu"
+
+class "team_d_project::searchListWidget.dart::SearchListWidget" {
+  +SearchListWidgetState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "team_d_project::searchListWidget.dart::SearchListWidget"
+
+class "team_d_project::searchListWidget.dart::SearchListWidgetState" {
+  +List<Item> items
+  +List<Item> filteredItems
+  +ModelViewController mvc
+  +void filterSearchResults()
+  +Widget buildRemoveable()
+  +Widget build()
+}
+
+"team_d_project::searchListWidget.dart::SearchListWidgetState" o-- "team_d_project::modelViewController.dart::ModelViewController"
+"flutter::src::widgets::framework.dart::State" <|-- "team_d_project::searchListWidget.dart::SearchListWidgetState"
+
+class "team_d_project::searchListWidget.dart::RemovableItem" {
+  -void _interact()
+}
+
+"team_d_project::InteractableItem.dart::InteractableItem" <|-- "team_d_project::searchListWidget.dart::RemovableItem"
+
+
+@enduml
