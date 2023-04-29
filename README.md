@@ -35,3 +35,7 @@ you can add and delete items you would like to keep track of.
 
 To edit your profile click the profile icon in the top left. From here you can change your 
 username, add a friend, or change your password. 
+
+## Documentation
+
+You can find a plant UML file in text and PUML types under the "Documentation" folder
