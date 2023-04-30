@@ -1,14 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:team_d_project/modelViewController.dart';
-import 'item.dart';
-import 'person.dart';
-import 'databaseController.dart';
-// import 'package:team_d_project/Providers/user_provider.dart';
-// import 'package';
-// import 'user_provider.dart';
-import 'Notifiers/user_notifier.dart';
-import 'current_user.dart';
-import 'package:provider/provider.dart';
 import 'searchListWidget.dart';
 
 //menu for editing profile features
@@ -70,7 +61,6 @@ class Menu extends StatelessWidget {
                                     textInputAction: TextInputAction.go,
                                     onSubmitted: (value) {
                                       mvc.addItemFromName(value);
-                                      //print("added " + value);
                                       leftController.text = "";
                                     },
                                     controller: leftController,
