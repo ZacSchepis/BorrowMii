@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Item {
@@ -12,6 +11,7 @@ class Item {
     this._status = status;
   }
 
+  // getters
   String get itemname => _itemName;
 
   String getOwner() {
@@ -22,30 +22,18 @@ class Item {
     return _status;
   }
 
+  // setter
   void setStatus(String status) {
     _status = status;
   }
 
-  // factory Item.fromFirestore(
-  //   DocumentSnapshot<Map<String, dynamic>> snapshot,
-  //   SnapshotOptions? options,
-  // ) {
-  //   final data = snapshot.data();
-  //   return Item(
-  //     itemName: data?['itemName'],
-  //     owner: data?['owner'],
-  //     status: data?['status'],
-  //   );
-  // }
-
+  // Creates a map of item information to store in database
+  // want to add functionality of who currently is borrowing the item if it is borrowed
   Map<String, dynamic> toFirestore() {
     return {
       if (_itemName != null) "itemName": _itemName,
       if (_owner != null) "owner": _owner,
       if (_status != null) "status": _status,
-      // if (capital != null) "capital": capital,
-      // if (population != null) "population": population,
-      // if (regions != null) "regions": regions,
     };
   }
 
@@ -70,7 +58,6 @@ class Item {
           ],
         ),
         const Text("    "),
-        //add picture
       ],
     );
   }

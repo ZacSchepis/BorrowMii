@@ -57,7 +57,6 @@ class _PanelState extends State<Panel> {
     return Scaffold(
       body: Column(children: [
         displayWidget,
-        //getWidgetOptions().elementAt(_selectedIndex),
       ]),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -98,8 +97,7 @@ abstract class _DisplayListWidgetState extends State<_DisplayListWidget> {
   ModelViewController mvc = ModelViewController();
 
   void getItems() async {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -155,13 +153,11 @@ class _SearchPanelState extends State<_SearchPanel> {
 
   Widget buildInteractable(int index) {
     BorrowItem bi = BorrowItem(filteredItems[index]);
-    bi.setIcon(
-      const Icon(
-        Icons.add_circle,
-        color: Colors.green,
-        size: 40.0,
-      )
-    );
+    bi.setIcon(const Icon(
+      Icons.add_circle,
+      color: Colors.green,
+      size: 40.0,
+    ));
     bi.setText("Borrow");
     return bi.build(context);
   }
@@ -221,13 +217,11 @@ class _BorrowPanelState extends State<_BorrowPanel> {
 
   Widget buildInteractable(int index) {
     ReturnItem ri = ReturnItem(filteredItems[index]);
-    ri.setIcon(
-      const Icon(
-        Icons.remove_circle,
-        color: Colors.yellow,
-        size: 40.0,
-      )
-    );
+    ri.setIcon(const Icon(
+      Icons.remove_circle,
+      color: Colors.yellow,
+      size: 40.0,
+    ));
     ri.setText("Return");
     return ri.build(context);
   }

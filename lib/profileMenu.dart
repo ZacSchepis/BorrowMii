@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'modelViewController.dart';
-import 'databaseController.dart';
-// import 'package:team_d_project/modelViewController.dart';
 
 //menu for editing profile features
 class ProfileMenu extends StatelessWidget {
@@ -13,7 +11,6 @@ class ProfileMenu extends StatelessWidget {
 
   final ModelViewController mvc = ModelViewController();
 
-  //String text = "hello";
   @override
   Widget build(BuildContext context) {
     return Scaffold(

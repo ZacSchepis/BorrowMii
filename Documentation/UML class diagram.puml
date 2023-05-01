@@ -1,4 +1,4 @@
-@startuml
+@startuml classDiagram
 set namespaceSeparator ::
 
 class "team_d_project::current_user.dart::CurrentUser" {
@@ -123,11 +123,6 @@ class "team_d_project::modelViewController.dart::ModelViewController" {
 
 "team_d_project::modelViewController.dart::ModelViewController" o-- "team_d_project::modelViewController.dart::ModelViewController"
 "team_d_project::modelViewController.dart::ModelViewController" o-- "team_d_project::current_user.dart::CurrentUser"
-
-class "team_d_project::Notifiers::user_notifier.dart::UserNotifier" {
-}
-
-"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "team_d_project::Notifiers::user_notifier.dart::UserNotifier"
 
 class "team_d_project::panel.dart::Panel" {
   +State<Panel> createState()
