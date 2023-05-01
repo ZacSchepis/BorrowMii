@@ -1,7 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'item.dart';
-import 'databaseController.dart';
 
 class Person {
   String _username = "";
@@ -20,6 +17,7 @@ class Person {
     _password = password;
   }
 
+  // Getters
   String get name => _name;
   String get password => _password;
   String get uname => _username;
@@ -28,6 +26,7 @@ class Person {
   List<dynamic> get bItems => _borrowedItems;
   List<dynamic> get friends => _friends;
 
+  // Setters
   void setUserName(String uname) {
     _username = uname;
   }
@@ -52,22 +51,7 @@ class Person {
     _name = name;
   }
 
-  List<Map<String, dynamic>> inventoryMapping() {
-    List<Map<String, dynamic>> inventory = <Map<String, dynamic>>[];
-    for (int i = 0; i < myItems.length; i++) {
-      inventory.add(myItems[i]);
-    }
-    return inventory;
-  }
-
-  List<Map<String, dynamic>> borrowedInventoryMapping() {
-    List<Map<String, dynamic>> inventory = <Map<String, dynamic>>[];
-    for (int i = 0; i < bItems.length; i++) {
-      inventory.add(bItems[i]);
-    }
-    return inventory;
-  }
-
+  // Converts person to a map to be saved in database.
   Map<String, dynamic> toFirestore() {
     return {
       if (_name != null) "name": _name,
@@ -84,24 +68,26 @@ class Person {
     return {
       if (_name != null) "name": _name,
       if (uname != null) "userName": _username,
-      // if (_myItems != null) "myItems": myItems,
     };
   }
 
+  // Adds an item to current users items
   void addItem(Item item) {
-    // when item is added just push button to add it set owner to current user and prompt user name tool
     item.setStatus("Available");
     myItems.add(item.toFirestore());
   }
 
+  // Removes items where an item name is equal to an item name in the current users items
   void removeItem(Item item) {
     myItems.removeWhere((element) => element["itemName"] == item.itemname);
   }
 
+  // Removes item by its item name
   void removeItemFromName(String n) {
     myItems.removeWhere((element) => element["itemName"] == n);
   }
 
+  // borrows item from user and adds to current users borrowed items
   void borrowAItem(Item item) {
     if (item.getStatus() == "Available") {
       item.setStatus("Borrowed");
@@ -109,27 +95,30 @@ class Person {
     }
   }
 
+  // return a borrowed item from borrowed items list by item name
   void returnItem(Item item) {
     item.setStatus("Available");
     bItems.removeWhere((element) => element["itemName"] == item.itemname);
   }
 
+  // add friend to friends list of current user then added to firebase
   void addFriend(Person friend) {
-    // if ( friends.contains(friend))
     friends.add(friend.friendToFirestore());
   }
 
+  // add friend by friends username to friends list of current user
   void addFriendByString(String friendUName) {
     if (!friends.contains(friendUName)) {
       friends.add(friendUName);
     }
-    // friends.add(friendUName);
   }
 
+  // remove friend from friends by friends username
   void removeFriend(Person friend) {
     friends.removeWhere((element) => element["userName"] == friend.uname);
   }
 
+  // remove friend by the friends username
   void removeFriendByString(String frienduName) {
     friends.removeWhere((element) => element == frienduName);
   }

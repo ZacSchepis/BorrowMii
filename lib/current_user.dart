@@ -1,11 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:team_d_project/Notifiers/user_notifier.dart';
-
-import 'item.dart';
 import 'person.dart';
-import 'Notifiers/user_notifier.dart';
-import 'databaseController.dart';
 
 class CurrentUser extends Person {
   static String _uName = "";
@@ -14,14 +7,24 @@ class CurrentUser extends Person {
   static bool _has_items = false;
   static bool has_borrowed_items = false;
 
+  CurrentUser() : super(_uName, _password);
+
+  // getters
   bool get nuser => _new_user;
   bool get hasItems => _has_items;
   bool get hasBItems => has_borrowed_items;
   String get uname => _uName;
   String get password => _password;
 
-  CurrentUser() : super(_uName, _password);
+  getCurrentUname() {
+    return _uName;
+  }
 
+  getCurrentPassword() {
+    return _password;
+  }
+
+  // setters
   void setCUName(String username) {
     _uName = username;
   }
@@ -40,13 +43,5 @@ class CurrentUser extends Person {
 
   void setHasBItems(bool hasBitems) {
     has_borrowed_items = hasBitems;
-  }
-
-  getCurrentUname() {
-    return _uName;
-  }
-
-  getCurrentPassword() {
-    return _password;
   }
 }

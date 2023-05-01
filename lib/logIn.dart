@@ -3,7 +3,6 @@ import 'package:team_d_project/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'current_user.dart';
 
-
 class LogIn extends StatefulWidget {
   const LogIn({Key? key}) : super(key: key);
 
@@ -23,6 +22,8 @@ class LogInPage extends State<LogIn> {
     ));
   }
 
+  // verifies user does not exist in database -- signs them up and writes to database.
+  // if exists creates pop up window saying username already exists
   void formSignUp() async {
     var doc =
         await reference.collection("users").doc(userNameController.text).get();
@@ -36,22 +37,14 @@ class LogInPage extends State<LogIn> {
           .collection("users")
           .doc(userNameController.text)
           .set(currentUser.toFirestore());
-      // .set({"password": userPasswordController.text});
-      // CurrentUser currentUser = CurrentUser();
-      // currentUser.setUName(userNameController.text);
-      // currentUser.setUPassword(userPasswordController.text);
-      // currentUser.setHasItems(false);
-      // currentUser.setHasBItems(false);
-      // currentUser.setNewUser(true);
-      // currentUser.toFirestore();
-      // currentUser.setUItems();
-      // currentUser.setBItems();
       startApp();
     } else {
       _showSignUpErrorMessage();
     }
   }
 
+  // verifies existing user log in with password stored in database
+  // if password incorrect shows error message
   void formValidation() async {
     await reference
         .collection('users')
@@ -63,9 +56,6 @@ class LogInPage extends State<LogIn> {
           CurrentUser currentUser = CurrentUser();
           currentUser.setCUName(userNameController.text);
           currentUser.setCUPassword(userPasswordController.text);
-          // currentUser.toFirestore();
-          // currentUser.setUItems();
-          // currentUser.setBItems();
           startApp();
         } else {
           _showErrorMessage();
@@ -76,6 +66,7 @@ class LogInPage extends State<LogIn> {
     });
   }
 
+  // error message for incorrect log in
   Future<void> _showErrorMessage() async {
     return showDialog<void>(
       context: context,
@@ -103,6 +94,7 @@ class LogInPage extends State<LogIn> {
     );
   }
 
+  // error message for user already existing when trying to sign up
   Future<void> _showSignUpErrorMessage() async {
     return showDialog<void>(
       context: context,

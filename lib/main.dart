@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:team_d_project/logIn.dart';
 import 'menu.dart';
@@ -16,7 +15,6 @@ void main() async {
     title: 'Log In',
     home: LogIn(),
   ));
-
 }
 
 class MyApp extends StatelessWidget {
@@ -45,8 +43,7 @@ class MyApp extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              ProfileMenu().build(context)))
+                          builder: (context) => ProfileMenu().build(context)))
                 },
                 icon: const Icon(Icons.account_circle_rounded),
               );
