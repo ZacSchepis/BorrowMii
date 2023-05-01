@@ -176,28 +176,6 @@ void borrowItemDatabase(Item item) async {
   reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
 
   editFriendsDatabase(item, "Borrowed");
-
-  // List<dynamic> friendsItems = [];
-  // await FirebaseFirestore.instance
-  //     .collection("users")
-  //     .doc(itemOwner)
-  //     .get()
-  //     .then((DocumentSnapshot documentSnapshot) {
-  //   if (documentSnapshot.exists) {
-  //     friendsItems = documentSnapshot.get("myItems");
-  //     for (var itemMap in friendsItems) {
-  //       if (itemMap["itemName"] == item.itemname) {
-  //         itemMap["status"] = "Borrowed";
-  //       }
-  //     }
-  //   } else {
-  //     print("Friend not found in Database");
-  //   }
-  // });
-  // reference
-  //     .collection("users")
-  //     .doc(item.getOwner())
-  //     .update({"myItems": friendsItems});
 }
 
 void editFriendsDatabase(Item item, String status) async {
@@ -232,29 +210,6 @@ void returnItemDatabase(Item item) async {
   reference.collection("users").doc(cuser.uname).set(cuser.toFirestore());
 
   editFriendsDatabase(item, "Available");
-
-  // String itemOwner = item.getOwner();
-  // List<dynamic> friendsItems = [];
-  // await FirebaseFirestore.instance
-  //     .collection("users")
-  //     .doc(itemOwner)
-  //     .get()
-  //     .then((DocumentSnapshot documentSnapshot) {
-  //   if (documentSnapshot.exists) {
-  //     friendsItems = documentSnapshot.get("myItems");
-  //     for (var itemMap in friendsItems) {
-  //       if (itemMap["itemName"] == item.itemname) {
-  //         itemMap["status"] = "Available";
-  //       }
-  //     }
-  //   } else {
-  //     print("Friend not found in Database");
-  //   }
-  // });
-  // reference
-  //     .collection("users")
-  //     .doc(item.getOwner())
-  //     .update({"myItems": friendsItems});
 }
 
 void addFriend(String friendUName) async {
