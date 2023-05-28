@@ -65,10 +65,10 @@ class ModelViewController {
 
   // Get all current user's items as a List of Items
   Future<List<Item>> getMyItems() async {
-    List<dynamic> itemmaps = await getUserInventory();
+    List<dynamic> itemsMaps = await getUserInventory();
     List<Item> items = [];
-    for (int i = 0; i < itemmaps.length; i++) {
-      Map<String, dynamic> map = itemmaps[i];
+    for (var itemMap in itemsMaps) {
+      Map<String, dynamic> map = itemMap;
       items.add(getItemFromMap(map));
     }
     return items;
@@ -79,21 +79,22 @@ class ModelViewController {
     //return list of items currently borrowed
     List<dynamic> borroweditemsmaps = await getBorrowedInventory();
     List<Item> borrowedItems = [];
-    for (int i = 0; i < borroweditemsmaps.length; i++) {
-      Map<String, dynamic> map = borroweditemsmaps[i];
+    for (var bItemMap in borroweditemsmaps) {
+      Map<String, dynamic> map = bItemMap;
       borrowedItems.add(getItemFromMap(map));
     }
     return borrowedItems;
   }
 
   // Get all current user's friends' items as a List of Items
+  //Note that we probably don't have to explicitly define map and set it to fMap, but the type hinting is more readable here.
   Future<List<Item>> searchOtherItems() async {
     //return list of searched items other people own
     List<dynamic> friendsitemsmaps = await getFriendsItemsInDatabase();
     List<Item> friendsItems = [];
-    for (int i = 0; i < friendsitemsmaps.length; i++) {
-      Map<String, dynamic> map = friendsitemsmaps[i];
-      friendsItems.add(getItemFromMap(map));
+    for (var fMap in friendsitemsmaps) {
+      Map<String, dynamic> map = fMap;
+      friendsItems.add(getItemFromMap(map)); //HELLO
     }
     return friendsItems;
   }
