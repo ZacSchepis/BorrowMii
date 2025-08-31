@@ -23,6 +23,7 @@ dependencies:
   firebase_auth: ^4.4.0
   provider: ^6.0.5
   fake_cloud_firestore: ^2.4.1+1
+  image_picker: ^1.2.0
 
 
 dev_dependencies:

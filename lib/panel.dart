@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:team_d_project/features/items/screens/my_items_screen.dart';
 import 'package:team_d_project/modelViewController.dart';
 import 'package:team_d_project/InteractableItem.dart';
 import 'modelViewController.dart';
@@ -37,11 +38,12 @@ class _PanelState extends State<Panel> {
           child: Column(
         children: const [
           Text("My Items: "),
-          Expanded(child: _MyDisplayWidget()),
+          Expanded(child: MyItemsScreenWidget()),
         ],
       )),
       Expanded(child: _BorrowPanel()),
       Expanded(child: _SearchPanel()),
+      // Expanded(child: _)
     ];
   }
 
