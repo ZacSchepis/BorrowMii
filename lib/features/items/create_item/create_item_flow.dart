@@ -13,7 +13,7 @@ class CreateItemFlow  extends StatefulWidget{
 class _CreateItemFlowState extends State<CreateItemFlow> {
   int _currentStep = 0;
   bool feesEnabled = false;
-  final ItemModel newItem = ItemModel.empty();
+  ItemModel newItem = ItemModel.empty();
   FileImage? image;
 
   void nextStep() {
