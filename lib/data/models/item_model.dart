@@ -12,7 +12,12 @@ class ItemModel {
   String _itemCondition = "";
   int _itemRetail = 0;
   int _itemValue = 0;
-
+  bool _dailyFeeEnabled = false;
+  bool _flatFeeEnabled = false;
+  int _lateFeeDays = 0;
+  int _flatFeeMonths = 0;
+  int _lateFeeCost = 0;
+  int _flatFeeCost = 0;
   ItemModel(
     String owner,
     String status,
@@ -46,6 +51,19 @@ class ItemModel {
   int get itemRetail => _itemRetail; 
   int get itemValue => _itemValue; 
 
+  int get lateFeeDays => _lateFeeDays;
+  int get flatFeeMonths => _flatFeeMonths;
+  bool get dailyFeeEnabled => _dailyFeeEnabled;
+  bool get flatFeeEnabled => _flatFeeEnabled;
+  int get lateFeeCost => _lateFeeCost;
+  int get flatFeeCost => _flatFeeCost;
+
+  set lateFeeDays(int v) { _lateFeeDays = v;}
+  set flatFeeMonths(int v) { _flatFeeMonths = v; }
+  set dailyFeeEnabled(bool v) { _dailyFeeEnabled = v; }
+  set flatFeeEnabled(bool v) { _flatFeeEnabled = v; }
+  set flatFeeCost(int v) { _flatFeeCost = v; }
+  set lateFeeCost(int v) { _lateFeeCost = v; }
   set owner(String value) { _owner = value.isEmpty ? _owner : value; }
   set status(String value) { _status = value.isEmpty ? _status : value; }
   set itemName(String value) { _itemName = value.isEmpty ? _itemName : value; }

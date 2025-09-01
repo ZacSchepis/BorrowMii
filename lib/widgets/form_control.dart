@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:team_d_project/core/validators/item_input_validator.dart';
 
 class FormControl extends StatefulWidget {
   final String label;
+  final FormFieldValidator<String>? validator;
   final ValueChanged<String?> onChanged;
-  const FormControl({super.key, required this.label, required this.onChanged});
+  const FormControl(
+      {super.key,
+      required this.label,
+      required this.onChanged,
+      required this.validator});
 
   @override
-  _FormControlState createState() =>
-      _FormControlState(onChanged: onChanged, label: label);
+  _FormControlState createState() => _FormControlState();
 }
 
 class _FormControlState extends State<FormControl> {
-  final ValueChanged<String?> onChanged;
-  final String label;
-  _FormControlState({required this.onChanged, required this.label});
+  _FormControlState();
 
   @override
   Widget build(BuildContext ctx) {
@@ -23,12 +26,12 @@ class _FormControlState extends State<FormControl> {
         // Text(label, textAlign: TextAlign.left),
         SizedBox(
           width: 250,
-          child: TextField(
-            textInputAction:  TextInputAction.go,
+          child: TextFormField(
+            textInputAction: TextInputAction.go,
             decoration: InputDecoration(
-                border: OutlineInputBorder(), labelText: "$label"),
-            onSubmitted: onChanged,
-            
+                border: OutlineInputBorder(), hintText: "${widget.label}"),
+            validator: widget.validator,
+            onChanged: widget.onChanged,
           ),
         )
       ],

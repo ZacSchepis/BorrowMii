@@ -1,25 +1,26 @@
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:team_d_project/data/models/item_model.dart';
 import 'package:team_d_project/widgets/button.dart';
 
-class Step1ImageUpload extends StatefulWidget{
+class Step1ImageUpload extends StatefulWidget {
   ItemModel item;
   final VoidCallback onNext;
-  final FileImage? selectedImage;
-  final VoidCallback onSelectImage;
-  Step1ImageUpload({
-    super.key,
-    required this.item,
-    required this.onNext,
-    required this.onSelectImage,
-    required this.selectedImage
-  });
+  final XFile? selectedImage;
+  final ValueChanged<XFile?> onSelectImage;
+  final AsyncCallback pickImage;
+  Step1ImageUpload(
+      {super.key,
+      required this.item,
+      required this.onNext,
+      required this.onSelectImage,
+      required this.selectedImage,
+      required this.pickImage});
 
   @override
-  _Step1ImageUploadWidgetState createState() => _Step1ImageUploadWidgetState(onNext: onNext);
-
-
+  _Step1ImageUploadWidgetState createState() =>
+      _Step1ImageUploadWidgetState(onNext: onNext);
 }
 
 class _Step1ImageUploadWidgetState extends State<Step1ImageUpload> {
@@ -27,23 +28,35 @@ class _Step1ImageUploadWidgetState extends State<Step1ImageUpload> {
   final VoidCallback onNext;
   // final FileImage? selectedImage;
   // final VoidCallback onSelectImage;
+
   _Step1ImageUploadWidgetState({
     required this.onNext,
   });
-
   @override
   Widget build(BuildContext ctx) {
-
     return Column(
-      
       children: [
-        Container(color: Colors.grey.shade100, width: 100, height: 100,),
+        Column(
+          children: [
+            widget.selectedImage == null
+                ? Container(
+                  width: 250,
+                  height: 250,
+                  child: const Text("No image selected"),
+                )
+                : Image.network(widget.selectedImage!.path, width: 250, height: 250,),
+            ElevatedButton(
+                  onPressed: widget.pickImage, child: const Text("Select image")),
+
+                ],
+        ),
+        Spacer(),
         Align(
-          child: Button(text: "Next", onPressed: onNext),
+          child: ElevatedButton(onPressed: onNext, child: Text("Next")),
           alignment: Alignment.bottomRight,
+          
         )
       ],
-
     );
   }
 }

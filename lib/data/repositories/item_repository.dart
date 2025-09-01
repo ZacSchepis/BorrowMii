@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:team_d_project/data/datasources/item_datasource.dart';
 import 'package:team_d_project/data/datasources/user_datasource.dart';
@@ -25,3 +26,11 @@ class ItemRepository {
     }
   }
 }
+
+class ImageRepository {
+  // const ImageRepository();
+  Future<void> uploadImageToGCS(XFile? img) async {
+  }
+  Future<void> getImageFromGCS(String? path) async {}
+}
+
