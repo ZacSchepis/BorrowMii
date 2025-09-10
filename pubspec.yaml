@@ -1,5 +1,5 @@
-name: team_d_project
-description: A new Flutter project.
+name: borrow_mii
+description: An asset-tracking app.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -25,6 +25,8 @@ dependencies:
   fake_cloud_firestore: ^2.4.1+1
   image_picker: ^1.2.0
   nfc_manager: ^4.0.2
+  app_links: ^6.4.1
+  go_router: ^16.2.1
 
 
 dev_dependencies:

@@ -1,5 +1,5 @@
-import 'package:team_d_project/item.dart';
-import 'package:team_d_project/databaseController.dart';
+import 'package:borrow_mii/item.dart';
+import 'package:borrow_mii/databaseController.dart';
 import 'current_user.dart';
 
 // Takes UI input and talks to database Controller for data

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:team_d_project/core/validators/item_input_validator.dart';
-import 'package:team_d_project/data/models/item_model.dart';
-import 'package:team_d_project/widgets/button.dart';
-import 'package:team_d_project/widgets/form_control.dart';
+import 'package:borrow_mii/core/validators/item_input_validator.dart';
+import 'package:borrow_mii/data/models/item_model.dart';
+import 'package:borrow_mii/widgets/button.dart';
+import 'package:borrow_mii/widgets/form_control.dart';
 
 class Step2ItemDetails extends StatefulWidget {
   final VoidCallback onNext;
@@ -112,6 +112,8 @@ class _Step2ItemDetailsWidgetState extends State<Step2ItemDetails> {
                     if (_formKey.currentState!.validate()) {widget.onNext()}
                   },
               child: const Text("Submit")),
+              alignment: Alignment.bottomRight,
+
           )
         ],
       ),

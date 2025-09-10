@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:team_d_project/data/models/item_model.dart';
-import 'package:team_d_project/widgets/button.dart';
+import 'package:borrow_mii/data/models/item_model.dart';
+import 'package:borrow_mii/widgets/button.dart';
 
 class Step1ImageUpload extends StatefulWidget {
   ItemModel item;

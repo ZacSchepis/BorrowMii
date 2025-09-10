@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:team_d_project/modelViewController.dart';
+import 'package:borrow_mii/modelViewController.dart';
 import 'searchListWidget.dart';
 
 //menu for editing profile features

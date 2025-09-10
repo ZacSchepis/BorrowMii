@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:team_d_project/data/models/item_model.dart';
-import 'package:team_d_project/features/items/widgets/create_item/daily_late_fee_form_section.dart';
-import 'package:team_d_project/features/items/widgets/create_item/flat_fee_form_section.dart';
-import 'package:team_d_project/widgets/form_control.dart';
+import 'package:borrow_mii/data/models/item_model.dart';
+import 'package:borrow_mii/features/items/widgets/create_item/daily_late_fee_form_section.dart';
+import 'package:borrow_mii/features/items/widgets/create_item/flat_fee_form_section.dart';
+import 'package:borrow_mii/widgets/form_control.dart';
 
 class Step3Fees extends StatefulWidget {
   final ItemModel item;
-
-  const Step3Fees({super.key, required this.item});
+  final VoidCallback onNext;
+  const Step3Fees({super.key, required this.item, required this.onNext});
 
   @override
   _Step3FeesWidgetState createState() => _Step3FeesWidgetState();
@@ -32,6 +32,12 @@ class _Step3FeesWidgetState extends State<Step3Fees> {
                 enabled: widget.item.flatFeeEnabled,
                 monthsThreshold: widget.item.flatFeeMonths,
                 onToggle: (v) => setState(() => widget.item.flatFeeEnabled = v))
+                  ,Spacer(),
+        Align(
+          child: ElevatedButton(onPressed: widget.onNext, child: Text("Next")),
+          alignment: Alignment.bottomRight,
+          
+        )
           ],
         )),
     );

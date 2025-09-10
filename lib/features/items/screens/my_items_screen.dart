@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:team_d_project/data/models/item_model.dart';
-import 'package:team_d_project/data/repositories/item_repository.dart';
-import 'package:team_d_project/modelViewController.dart';
+import 'package:borrow_mii/data/models/item_model.dart';
+import 'package:borrow_mii/data/repositories/item_repository.dart';
+import 'package:borrow_mii/modelViewController.dart';
 
 class MyItemsScreenWidget extends StatefulWidget {
   const MyItemsScreenWidget({super.key});

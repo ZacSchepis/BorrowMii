@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:team_d_project/widgets/form_control.dart';
+import 'package:borrow_mii/widgets/form_control.dart';
 
 class DailyLateFeeFormSection extends StatefulWidget {
   final bool enabled;

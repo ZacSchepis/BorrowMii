@@ -1,5 +1,5 @@
 
-import 'package:team_d_project/core/validators/validator.dart';
+import 'package:borrow_mii/core/validators/validator.dart';
 
 class ItemInputValidator extends Validator {
   // Validator v = Validator();

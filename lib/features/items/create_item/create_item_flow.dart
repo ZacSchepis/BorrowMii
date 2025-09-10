@@ -1,12 +1,15 @@
+import 'package:borrow_mii/data/repositories/item_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:team_d_project/data/models/item_model.dart';
-import 'package:team_d_project/features/items/create_item/step1_image_upload.dart';
-import 'package:team_d_project/features/items/create_item/step2_item_details.dart';
-import 'package:team_d_project/features/items/create_item/step3_fees.dart';
+import 'package:borrow_mii/data/models/item_model.dart';
+import 'package:borrow_mii/features/items/create_item/step1_image_upload.dart';
+import 'package:borrow_mii/features/items/create_item/step2_item_details.dart';
+import 'package:borrow_mii/features/items/create_item/step3_fees.dart';
+import 'package:borrow_mii/widgets/nfc_scan.dart';
 
 class CreateItemFlow extends StatefulWidget {
-  const CreateItemFlow({super.key});
+  final String id;
+  const CreateItemFlow({super.key, required this.id});
 
   @override
   State<CreateItemFlow> createState() => _CreateItemFlowState();
@@ -18,12 +21,17 @@ class _CreateItemFlowState extends State<CreateItemFlow> {
   ItemModel newItem = ItemModel.empty();
   XFile? image;
   String screenTitle = "";
+  final ItemRepository _repo = ItemRepository();
+  // bool scanned = false;
+  // Uri? appUri;
   void nextStep() {
     if (_currentStep == 1 && !feesEnabled) {
       setState(() {
         _currentStep = 3;
+        finish();
       });
-    } else {
+    } 
+    else {
       setState(() => _currentStep++);
     }
   }
@@ -31,9 +39,16 @@ class _CreateItemFlowState extends State<CreateItemFlow> {
   void setItemCondition(String? value) {
     setState(() => newItem.itemCondition = value!);
   }
-
+  void finish() {
+    newItem.itemId = widget.id;
+    _repo.local.cacheItems([newItem]);
+    Navigator.pop(context);
+  }
   void previousStep() {
     setState(() => _currentStep = (_currentStep - 1).clamp(0, 3));
+    if(_currentStep == 0) {
+      finish();
+    }
   }
 
   void setEnableFees(bool value) {
@@ -54,7 +69,7 @@ class _CreateItemFlowState extends State<CreateItemFlow> {
   }
   @override
   Widget build(BuildContext ctx) {
-    Widget currentScreen;
+    Widget? currentScreen;
     switch (_currentStep) {
       case 0:
         currentScreen = Step1ImageUpload(
@@ -66,6 +81,7 @@ class _CreateItemFlowState extends State<CreateItemFlow> {
         screenTitle = "Upload Item Image";
         break;
       case 1:
+
         currentScreen = Step2ItemDetails(
             onNext: nextStep,
             onChanged: setEnableFees,
@@ -76,15 +92,16 @@ class _CreateItemFlowState extends State<CreateItemFlow> {
         break;
       case 2:
         screenTitle = "Set Item Fees";
-        currentScreen = Step3Fees(item: newItem);
+        currentScreen = Step3Fees(item: newItem, onNext: finish,);
         break;
 
       default:
-        currentScreen = Text("Idk");
+        currentScreen = null;
         break;
     }
 
-    return Scaffold(
+    return    
+    Scaffold(
         appBar: AppBar(
           title: Text(screenTitle),
           leading: BackButton(onPressed: previousStep),
@@ -94,7 +111,8 @@ class _CreateItemFlowState extends State<CreateItemFlow> {
           padding: const EdgeInsets.fromLTRB(12.0, 8.0, 8.0, 8.0),
           child: Align(
             alignment: Alignment.topLeft,
-            child: currentScreen,
+            child:  currentScreen
+            ,
           )
         )
         // alignment: Alignment.centerLeft,

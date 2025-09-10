@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:team_d_project/core/validators/item_input_validator.dart';
+import 'package:borrow_mii/core/validators/item_input_validator.dart';
 
 class FormControl extends StatefulWidget {
   final String label;
@@ -29,7 +29,7 @@ class _FormControlState extends State<FormControl> {
           child: TextFormField(
             textInputAction: TextInputAction.go,
             decoration: InputDecoration(
-                border: OutlineInputBorder(), hintText: "${widget.label}"),
+                border: OutlineInputBorder(), labelText: widget.label),
             validator: widget.validator,
             onChanged: widget.onChanged,
           ),

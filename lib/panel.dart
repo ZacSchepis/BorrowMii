@@ -1,7 +1,8 @@
+import 'package:borrow_mii/features/items/view_item/item_scan.dart';
 import 'package:flutter/material.dart';
-import 'package:team_d_project/features/items/screens/my_items_screen.dart';
-import 'package:team_d_project/modelViewController.dart';
-import 'package:team_d_project/InteractableItem.dart';
+import 'package:borrow_mii/features/items/screens/my_items_screen.dart';
+import 'package:borrow_mii/modelViewController.dart';
+import 'package:borrow_mii/InteractableItem.dart';
 import 'modelViewController.dart';
 import 'item.dart';
 import 'searchListWidget.dart';
@@ -14,7 +15,7 @@ class Panel extends StatefulWidget {
 }
 
 class _PanelState extends State<Panel> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   final Widget _myWid = const Text(
@@ -27,6 +28,10 @@ class _PanelState extends State<Panel> {
   );
   final Widget _searchWid = const Text(
     'Search Items',
+    style: optionStyle,
+  );
+  final Widget _scanWid = const Text(
+    'Scan Item',
     style: optionStyle,
   );
   Widget displayWidget = const Text("");
@@ -43,6 +48,7 @@ class _PanelState extends State<Panel> {
       )),
       Expanded(child: _BorrowPanel()),
       Expanded(child: _SearchPanel()),
+      Expanded(child: ItemScan())
       // Expanded(child: _)
     ];
   }
@@ -60,7 +66,10 @@ class _PanelState extends State<Panel> {
       body: Column(children: [
         displayWidget,
       ]),
+      
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed, // add this line
+
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -74,6 +83,7 @@ class _PanelState extends State<Panel> {
             icon: Icon(Icons.search),
             label: 'Find Items',
           ),
+          BottomNavigationBarItem(icon: Icon(Icons.nfc), label: "Scan Item")
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],

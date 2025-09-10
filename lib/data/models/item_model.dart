@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 
 class ItemModel {
   String _owner = "";
+  String _ownerId = "";
   String _status = "";
   String _itemName = "";
   String _itemDesc = "";
@@ -18,6 +19,8 @@ class ItemModel {
   int _flatFeeMonths = 0;
   int _lateFeeCost = 0;
   int _flatFeeCost = 0;
+  String itemId = "";
+  String itemImage = "https://www.shutterstock.com/image-photo/cute-astronaut-cat-black-space-600w-2402632927.jpg";
   ItemModel(
     String owner,
     String status,
@@ -27,6 +30,8 @@ class ItemModel {
     String itemSerial,
     String itemLink,
     String itemCondition,
+    String ownerId,
+    String itmId,
     int itemRetail,
     int itemValue,
   ) {
@@ -36,7 +41,9 @@ class ItemModel {
     _itemDesc = itemDesc;
     _itemImg = itemImg;
     _itemSerial = itemSerial;
+    _ownerId = ownerId;
     _itemLink = itemLink;
+    itemId = itmId;
     _itemRetail = itemRetail;
     _itemValue = itemValue;
   }
@@ -48,6 +55,7 @@ class ItemModel {
   String get itemSerial => _itemSerial; 
   String get itemLink => _itemLink; 
   String get itemCondition => _itemCondition;
+  String get ownerId => _owner;
   int get itemRetail => _itemRetail; 
   int get itemValue => _itemValue; 
 
@@ -57,7 +65,7 @@ class ItemModel {
   bool get flatFeeEnabled => _flatFeeEnabled;
   int get lateFeeCost => _lateFeeCost;
   int get flatFeeCost => _flatFeeCost;
-
+  
   set lateFeeDays(int v) { _lateFeeDays = v;}
   set flatFeeMonths(int v) { _flatFeeMonths = v; }
   set dailyFeeEnabled(bool v) { _dailyFeeEnabled = v; }
@@ -75,7 +83,7 @@ class ItemModel {
   set itemRetail(int value) { _itemRetail = value;}
   set itemCondition(String value) { _itemCondition = value; }
   static ItemModel empty() {
-    return ItemModel("", "", "", "", "", "", "", "Good", 0, 0);
+    return ItemModel("", "", "", "", "", "", "", "Good", "123","", 0, 0);
   }
   
   factory ItemModel.fromJson(Map<String, dynamic> json, String id) {
@@ -90,6 +98,8 @@ class ItemModel {
       json["itemCondition"] ?? '', 
       json["itemRetail"] ?? 0, 
       json["itemValue"] ?? 0,
+      json["ownerId"] ?? "",
+      json["itemId"] ?? ""
     );
   }
   Map<String, dynamic> toJson() {
@@ -103,11 +113,12 @@ class ItemModel {
       'itemLink': _itemLink,
       'itemRetail': _itemRetail,
       'itemValue': _itemValue,
-      'itemCondition': _itemCondition
+      'itemCondition': _itemCondition,
+      "ownerId": _ownerId
     };
   }
   static ItemModel generate(int idx) {
-    return ItemModel("Owner$idx", "Status", "ItemName", "ItemDesc", "<>", "ItemSerial", "https://youtu.be/dQw4w9WgXcq", "Good", 1, 1);
+    return ItemModel("Owner$idx", "Status", "ItemName", "ItemDesc", "<>", "ItemSerial", "https://youtu.be/dQw4w9WgXcq", "Good", "123","", 1, 1);
   }
 
   Widget build(BuildContext context) {

@@ -1,8 +1,8 @@
 // import 'dart:/ffi';
 import 'dart:io';
-import 'package:team_d_project/current_user.dart';
-import 'package:team_d_project/person.dart';
-import 'package:team_d_project/item.dart';
+import 'package:borrow_mii/current_user.dart';
+import 'package:borrow_mii/person.dart';
+import 'package:borrow_mii/item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 String username = "";
