@@ -1,6 +1,5 @@
-package com.example.team_d_project
+package com.example.borrow_mii
 
 import io.flutter.embedding.android.FlutterActivity
 
-class MainActivity: FlutterActivity() {
-}
+class MainActivity : FlutterActivity()

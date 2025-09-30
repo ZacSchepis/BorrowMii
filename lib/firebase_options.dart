@@ -47,31 +47,32 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBa9nDJZ0B5pYobVeiStYegKMNRH18wPOQ',
-    appId: '1:840944533353:web:3589d6ae5760fb402487f8',
-    messagingSenderId: '840944533353',
-    projectId: 'borrowmii-53cc9',
-    authDomain: 'borrowmii-53cc9.firebaseapp.com',
-    storageBucket: 'borrowmii-53cc9.appspot.com',
-    measurementId: 'G-RVM7PTSTB8',
+    apiKey: 'AIzaSyB__qdg1t9LkzwWqVXWqnzVJ-CnSJpeCks',
+    appId: '1:403010117366:web:1b26c2d3ac537f3f69d6d7',
+    messagingSenderId: '403010117366',
+    projectId: 'borrow-mii',
+    authDomain: 'borrow-mii.firebaseapp.com',
+    storageBucket: 'borrow-mii.firebasestorage.app',
+    measurementId: 'G-QL43GTRREL',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA49HQQL9nUG4jDadzQlewrtXMDE6zNle8',
-    appId: '1:840944533353:android:f5afb447e6e7b5c12487f8',
-    messagingSenderId: '840944533353',
-    projectId: 'borrowmii-53cc9',
-    storageBucket: 'borrowmii-53cc9.appspot.com',
+    apiKey: 'AIzaSyBrXV2z64oy-yHrmJbl8EiWBUmghLfE6WI',
+    appId: '1:403010117366:android:ad2b50f75b97fdac69d6d7',
+    messagingSenderId: '403010117366',
+    projectId: 'borrow-mii',
+    storageBucket: 'borrow-mii.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCYfE9cQA6WYuAqYudRr-MjfWC0h-1yvAg',
-    appId: '1:840944533353:ios:8d5afc5c8cc632f52487f8',
-    messagingSenderId: '840944533353',
-    projectId: 'borrowmii-53cc9',
-    storageBucket: 'borrowmii-53cc9.appspot.com',
-    iosClientId:
-        '840944533353-b1ifn5cefqa20o5to4cuokp9bu0v332v.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBmBsrr7IX-SQoGPBrPBZtCI-ihOHOx_r8',
+    appId: '1:403010117366:ios:524eb4ffe2ca057069d6d7',
+    messagingSenderId: '403010117366',
+    projectId: 'borrow-mii',
+    storageBucket: 'borrow-mii.firebasestorage.app',
+    androidClientId: '403010117366-mrl6uvcgjov9t8599ip5natuupudut9v.apps.googleusercontent.com',
+    iosClientId: '403010117366-pefh06jficmtrhi669ndubvdfejies5d.apps.googleusercontent.com',
     iosBundleId: 'com.example.teamDProject',
   );
+
 }
