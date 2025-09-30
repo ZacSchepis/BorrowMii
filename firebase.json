@@ -1,0 +1,37 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "borrow-mii",
+          "appId": "1:403010117366:android:ad2b50f75b97fdac69d6d7",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "borrow-mii",
+          "configurations": {
+            "android": "1:403010117366:android:ad2b50f75b97fdac69d6d7",
+            "ios": "1:403010117366:ios:524eb4ffe2ca057069d6d7",
+            "web": "1:403010117366:web:1b26c2d3ac537f3f69d6d7"
+          }
+        }
+      }
+    }
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099,
+      "host": "0.0.0.0"
+    },
+    "firestore": {
+      "port": 8080,
+      "host": "0.0.0.0"
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  }
+}

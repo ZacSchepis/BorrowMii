@@ -23,7 +23,7 @@ class _ItemOwnerViewWidgetState extends State<ItemOwnerView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.item.itemName), leading: BackButton(onPressed: () => widget.goHome(),),),
+      appBar: AppBar(title: Text(widget.item.name ?? ""), leading: BackButton(onPressed: () => widget.goHome(),),),
       body: Align(
         alignment: Alignment.topLeft,
         child: Padding(
@@ -31,7 +31,7 @@ class _ItemOwnerViewWidgetState extends State<ItemOwnerView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ItemImage(itemId: widget.item.ownerId),
+          ItemImage(itemId: widget.item.image ?? ""),
           ItemInfo(item: widget.item),
           ItemTerms(item: widget.item),
           // Button(text: "Borrow", onPressed: widget.onPressed)

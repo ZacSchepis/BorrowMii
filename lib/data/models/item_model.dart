@@ -1,139 +1,166 @@
+import 'package:borrow_mii/core/constants/item_status.dart';
+import 'package:borrow_mii/data/models/borrow_terms.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ItemModel {
-  String _owner = "";
-  String _ownerId = "";
-  String _status = "";
-  String _itemName = "";
-  String _itemDesc = "";
-  String _itemImg = "";
-  String _itemSerial = "";
-  String _itemLink = "";
-  String _itemCondition = "";
-  int _itemRetail = 0;
-  int _itemValue = 0;
-  bool _dailyFeeEnabled = false;
-  bool _flatFeeEnabled = false;
-  int _lateFeeDays = 0;
-  int _flatFeeMonths = 0;
-  int _lateFeeCost = 0;
-  int _flatFeeCost = 0;
-  String itemId = "";
-  String itemImage = "https://www.shutterstock.com/image-photo/cute-astronaut-cat-black-space-600w-2402632927.jpg";
-  ItemModel(
-    String owner,
-    String status,
-    String itemName,
-    String itemDesc,
-    String itemImg,
-    String itemSerial,
-    String itemLink,
-    String itemCondition,
-    String ownerId,
-    String itmId,
-    int itemRetail,
-    int itemValue,
-  ) {
-    _owner = owner;
-    _status = status;
-    _itemName = itemName;
-    _itemDesc = itemDesc;
-    _itemImg = itemImg;
-    _itemSerial = itemSerial;
-    _ownerId = ownerId;
-    _itemLink = itemLink;
-    itemId = itmId;
-    _itemRetail = itemRetail;
-    _itemValue = itemValue;
-  }
-  String get owner => _owner;
-  String get status => _status; 
-  String get itemName => _itemName; 
-  String get itemDesc => _itemDesc; 
-  String get itemImg => _itemImg; 
-  String get itemSerial => _itemSerial; 
-  String get itemLink => _itemLink; 
-  String get itemCondition => _itemCondition;
-  String get ownerId => _owner;
-  int get itemRetail => _itemRetail; 
-  int get itemValue => _itemValue; 
 
-  int get lateFeeDays => _lateFeeDays;
-  int get flatFeeMonths => _flatFeeMonths;
-  bool get dailyFeeEnabled => _dailyFeeEnabled;
-  bool get flatFeeEnabled => _flatFeeEnabled;
-  int get lateFeeCost => _lateFeeCost;
-  int get flatFeeCost => _flatFeeCost;
-  
-  set lateFeeDays(int v) { _lateFeeDays = v;}
-  set flatFeeMonths(int v) { _flatFeeMonths = v; }
-  set dailyFeeEnabled(bool v) { _dailyFeeEnabled = v; }
-  set flatFeeEnabled(bool v) { _flatFeeEnabled = v; }
-  set flatFeeCost(int v) { _flatFeeCost = v; }
-  set lateFeeCost(int v) { _lateFeeCost = v; }
-  set owner(String value) { _owner = value.isEmpty ? _owner : value; }
-  set status(String value) { _status = value.isEmpty ? _status : value; }
-  set itemName(String value) { _itemName = value.isEmpty ? _itemName : value; }
-  set itemDesc(String value) { _itemDesc = value.isEmpty ? _itemDesc : value; }
-  set itemImg(String value) { _itemImg = value.isEmpty ? _itemImg : value; }
-  set itemSerial(String value) { _itemSerial = value.isEmpty ? _itemSerial : value; }
-  set itemLink(String value) { _itemLink = value.isEmpty ? _itemLink: value; }
-  set itemValue(int value) { _itemValue = value;}
-  set itemRetail(int value) { _itemRetail = value;}
-  set itemCondition(String value) { _itemCondition = value; }
-  static ItemModel empty() {
-    return ItemModel("", "", "", "", "", "", "", "Good", "123","", 0, 0);
-  }
-  
-  factory ItemModel.fromJson(Map<String, dynamic> json, String id) {
-    return ItemModel(
-      json["owner"] ?? '', 
-      json["status"] ?? '', 
-      json["itemName"] ?? '', 
-      json["itemDesc"] ?? '', 
-      json["itemImg"] ?? '', 
-      json["itemSerial"] ?? '', 
-      json["itemLink"] ?? '',
-      json["itemCondition"] ?? '', 
-      json["itemRetail"] ?? 0, 
-      json["itemValue"] ?? 0,
-      json["ownerId"] ?? "",
-      json["itemId"] ?? ""
+
+  // Owner info
+  String owner = "";
+  String ownerId = "";
+
+  // Item info
+  // String? status = "";
+  String? name = "";
+  String? description = "";
+  String? condition = "";
+  String? image = "";
+  String? serial = "";
+  String? link = "";
+  int? retail = 0;
+  int? value = 0;
+  bool? dailyFeeEnabled = false;
+  bool? flatFeeEnabled = false;
+  bool amIBorrowingThis;
+  String id = "";
+  int? lateFeeDays = 0;
+  int? flatFeeMonths = 0;
+  int? lateFeeCost = 0;
+  int? flatFeeCost = 0;
+  ItemStatus? status = ItemStatus.home;
+  String? borrowerId;
+  BorrowTerms? terms;
+  ItemModel({
+    required this.owner,
+    required this.ownerId,
+    required this.id,
+    this.status,
+    this.name,
+    this.description,
+    this.condition,
+    this.flatFeeEnabled,
+    this.dailyFeeEnabled,
+    this.image,
+    this.serial,
+    this.link,
+    this.retail,
+    this.value,
+    this.terms,
+    this.borrowerId = "",
+    this.amIBorrowingThis = false,
+    // Cost related
+    this.lateFeeCost,
+    this.lateFeeDays,
+    this.flatFeeCost,
+    this.flatFeeMonths,
+
+  });
+
+  factory ItemModel.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot,
+      SnapshotOptions? options,
+      String currentUserId
+      ) {
+    final data = snapshot.data();
+    print(data);
+    var res = ItemModel(
+      owner: data?["owner"],
+      ownerId: data?["ownerId"],
+      status: ItemStatus.values.byName(data?["status"] ?? "home"),
+      name: data?["name"],
+      description: data?["description"],
+      condition: data?["condition"],
+      image: data?["image"],
+      serial: data?["serial"],
+      link: data?["link"],
+      id: data?["id"],
+      retail: data?["retail"] ?? 0,
+      value: data?["value"] ?? 0,
+      terms: BorrowTerms.fromMap(data),
+      flatFeeEnabled: data?["flatFeeEnabled"],
+      dailyFeeEnabled: data?["dailyFeeEnabled"],
+      lateFeeDays: data?["lateFeeDays"],
+      flatFeeMonths: data?["flatFeeMonths"],
+      lateFeeCost: data?["lateFeeCost"],
+      flatFeeCost: data?["flatFeeCost"],
+      borrowerId: data?["borrowerId"],
+      
     );
+    res.amIBorrowingThis = res.borrowerId == currentUserId;
+    return res;
   }
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirestore() {
     return {
-      'owner': _owner,
-      'status': _status,
-      'itemName': _itemName,
-      'itemDesc': _itemDesc,
-      'itemImg': _itemImg,
-      'itemSerial': _itemSerial,
-      'itemLink': _itemLink,
-      'itemRetail': _itemRetail,
-      'itemValue': _itemValue,
-      'itemCondition': _itemCondition,
-      "ownerId": _ownerId
+      'owner': owner,
+      'ownerId': ownerId,
+      'id': id,
+      if(terms != null) 'terms': terms?.toMap(),
+      if(status != null) 'status': status.toString(),
+      if(name != null) 'name': name,
+      if(description != null) 'description': description,
+      if(condition != null) 'condition': condition,
+      if(flatFeeEnabled != null) 'flatFeeEnabled': flatFeeEnabled,
+      if(dailyFeeEnabled != null) 'dailyFeeEnabled': dailyFeeEnabled,
+      if(image != null) 'image': image,
+      if(serial != null) 'serial': serial,
+      if(link != null) 'link': link,
+      if(retail != null) 'retail': retail,
+      if(value != null) 'value': value,
+      if(lateFeeCost != null) 'lateFeeCost': lateFeeCost,
+      if(lateFeeDays != null) 'lateFeeDays': lateFeeDays,
+      if(flatFeeCost != null) 'flatFeeCost': flatFeeCost,
+      if(flatFeeMonths != null) 'flatFeeMonths': flatFeeMonths,
+      if(borrowerId != null) 'borrowerId': borrowerId
     };
   }
+
   static ItemModel generate(int idx) {
-    return ItemModel("Owner$idx", "Status", "ItemName", "ItemDesc", "<>", "ItemSerial", "https://youtu.be/dQw4w9WgXcq", "Good", "123","", 1, 1);
+    return ItemModel(
+      owner: "Owner$idx",
+      ownerId: "TESTER",
+      status: ItemStatus.home,
+      name: "ItemName",
+      description: "ItemDescription",
+      image: "<>",
+      serial: "ItemSerial",
+      link: "https://youtu.be/dQw4w9WgXcQ",
+      condition: "Good",
+      id: "TEST123",
+      retail: 0,
+      value: 0,
+      flatFeeEnabled: false,
+      dailyFeeEnabled: false
+    );
   }
 
   Widget build(BuildContext context) {
-    return Row(children: [
-      Icon(Icons.gavel, color: Colors.black, size: 24, semanticLabel: _itemName,), 
-      const Text("    "),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Item: $_itemName"),
-          Text("Owner: $_owner"),
-          Text("Status: $_status")
-        ],
-
-      )
-    ],);
+    return Container(
+    padding: const EdgeInsets.all(8), // optional
+    decoration: BoxDecoration(
+      color: amIBorrowingThis ? Colors.purple : Colors.blue, // background color
+      borderRadius: BorderRadius.circular(8), // optional rounded corners
+    ),
+    child: Row(
+      children: [
+        Icon(
+          Icons.gavel,
+          color: Colors.black,
+          size: 24,
+          semanticLabel: name,
+        ),
+        const SizedBox(width: 8), // cleaner than Text("    ")
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Item: $name"),
+            Text("Owner: $owner"),
+            Text("Status: $status"),
+          ],
+        ),
+      ],
+    ),
+  );
   }
 }

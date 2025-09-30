@@ -24,11 +24,19 @@ class DailyLateFeeFormSection extends StatefulWidget {
 class _DailyLateFeeFormSectionWidgetState extends State<DailyLateFeeFormSection> {
   List<DropdownMenuItem<int>> get dropdownItems {
     List<DropdownMenuItem<int>> menuItems = [
-      DropdownMenuItem(child: Text("1 day"), value: 1),
-      DropdownMenuItem(child: Text("3 days"), value: 3),
-      DropdownMenuItem(child: Text("1 week"), value: 7),
+      DropdownMenuItem(value: 1, child: Text("1 day")),
+      DropdownMenuItem(value: 3, child: Text("3 days")),
+      DropdownMenuItem(value: 7, child: Text("1 week")),
     ];
     return menuItems;
+  }
+  List<DropdownMenuItem<int>> get dailyFees {
+    List<DropdownMenuItem<int>> items = [
+      DropdownMenuItem(value: 1, child: Text("\$1"),),
+      DropdownMenuItem(value: 2, child: Text("\$2"),),
+      DropdownMenuItem(value: 3, child: Text("\$3"),),
+    ];
+    return items;
   }
   @override
   Widget build(BuildContext context) {
@@ -50,11 +58,20 @@ class _DailyLateFeeFormSectionWidgetState extends State<DailyLateFeeFormSection>
               if(widget.enabled) {
                 return Row(
                       children: [
+                        DropdownButton(items: dailyFees, value: 1, onChanged: (int? v) {
+                          if(v != null) {
+                            
+                          }
+                        },),
                         Text("Late fees applied after "),
                         DropdownButton(
                           items: dropdownItems,
-                          value: 1,
-                          onChanged: (v) => {},
+                          value: widget.daysThreshold,
+                          onChanged: (int? v) {
+                            if(v != null) {
+                              widget.onDaysChanged(v);
+                            }
+                          },
                         ),
                         Text(" overdue.")
                       ],

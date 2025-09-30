@@ -1,3 +1,4 @@
+import 'package:borrow_mii/features/borrow_requests/screens/borrow_screen.dart';
 import 'package:borrow_mii/features/items/view_item/item_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:borrow_mii/features/items/screens/my_items_screen.dart';
@@ -46,7 +47,7 @@ class _PanelState extends State<Panel> {
           Expanded(child: MyItemsScreenWidget()),
         ],
       )),
-      Expanded(child: _BorrowPanel()),
+      Expanded(child: BorrowScreen()),
       Expanded(child: _SearchPanel()),
       Expanded(child: ItemScan())
       // Expanded(child: _)

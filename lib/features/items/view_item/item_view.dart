@@ -28,7 +28,7 @@ class _ItemViewWidgetState extends State<ItemViewWidget> {
   @override
   void initState() {
     super.initState();
-    _futuristicItem = _repo.getItemById(widget.itemId);
+    _futuristicItem = _repo.getItemById(widget.itemId, context);
   }
 
   Future<ItemModel?> getItem(String id) async {
@@ -45,19 +45,20 @@ class _ItemViewWidgetState extends State<ItemViewWidget> {
   Widget build(BuildContext context) {
     return FutureBuilder(future: _futuristicItem, builder: (context, AsyncSnapshot<ItemModel?> snapshot) {
       if(snapshot.connectionState == ConnectionState.waiting) {
-        print("LOADING :D");
         return const Center(child: CircularProgressIndicator());
       }
       if(snapshot.hasError) {
-        print("Item not found");
-        return Item404(itemId: widget.itemId);
+        final error = snapshot.error;
+        if( error is ItemException) {
+          return Item404(itemId: widget.itemId);
+        } else {
+          return Center(child: Text("Something went wrong: ${error.toString()}"),);
+        }
       }
       if(snapshot.data == null) {
-        print("No data was retrieved");
         return CreateItemFlow(id: widget.itemId,);
       }
       if(snapshot.hasData) {
-        print("Item *was* found");
         return _repo.getIsMyItem(context, snapshot.data!.ownerId) 
                   ? ItemOwnerView(item: snapshot.data!, goHome: goHome)
                   : ItemStandard(item: snapshot.data!, goHome: goHome)

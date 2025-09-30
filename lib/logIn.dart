@@ -1,5 +1,6 @@
 import 'package:borrow_mii/features/home/screens/home.dart';
 import 'package:borrow_mii/router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:borrow_mii/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,55 +18,74 @@ class LogInPage extends State<LogIn> {
   TextEditingController userPasswordController = TextEditingController();
   final reference = FirebaseFirestore.instance;
 
-  void startApp() {
-    runApp(MaterialApp(
-      title: 'Navigation Basics',
-      home: MyApp(),
-    ));
-  }
+  // void startApp() {
+  //   runApp(MaterialApp(
+  //     title: 'Navigation Basics',
+  //     home: MyApp(),
+  //   ));
+  // }
 
   // verifies user does not exist in database -- signs them up and writes to database.
   // if exists creates pop up window saying username already exists
   void formSignUp() async {
-    var doc =
-        await reference.collection("users").doc(userNameController.text).get();
-    if (!doc.exists) {
-      CurrentUser currentUser = CurrentUser();
-      currentUser.setCUName(userNameController.text);
-      currentUser.setCUPassword(userPasswordController.text);
-      currentUser.setUserName(userNameController.text);
-      currentUser.setPassword(userPasswordController.text);
-      reference
-          .collection("users")
-          .doc(userNameController.text)
-          .set(currentUser.toFirestore());
-      startApp();
-    } else {
-      _showSignUpErrorMessage();
+    final username = userNameController.text;
+    final password = userPasswordController.text;
+    try {
+      FirebaseAuth.instance.createUserWithEmailAndPassword(email: username, password: password);
+
+    } on FirebaseAuthException catch (e) {
+      print("Error singing up: ${e.message}");
+      return;
     }
+    // Navigator.pop(context);
+    
+    // var doc =
+    //     await reference.collection("users").doc(userNameController.text).get();
+    // if (!doc.exists) {
+    //   CurrentUser currentUser = CurrentUser();
+    //   currentUser.setCUName(userNameController.text);
+    //   currentUser.setCUPassword(userPasswordController.text);
+    //   currentUser.setUserName(userNameController.text);
+    //   currentUser.setPassword(userPasswordController.text);
+    //   reference
+    //       .collection("users")
+    //       .doc(userNameController.text)
+    //       .set(currentUser.toFirestore());
+    //   startApp();
+    // } else {
+    //   _showSignUpErrorMessage();
+    // }
   }
 
   // verifies existing user log in with password stored in database
   // if password incorrect shows error message
   void formValidation() async {
-    await reference
-        .collection('users')
-        .doc(userNameController.text)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        if (documentSnapshot.get('password') == userPasswordController.text) {
-          CurrentUser currentUser = CurrentUser();
-          currentUser.setCUName(userNameController.text);
-          currentUser.setCUPassword(userPasswordController.text);
-          startApp();
-        } else {
-          _showErrorMessage();
-        }
-      } else {
-        _showErrorMessage();
-      }
-    });
+        final username = userNameController.text;
+    final password = userPasswordController.text;
+    try {
+      FirebaseAuth.instance.signInWithEmailAndPassword(email: username, password: password);
+
+    } on FirebaseAuthException catch (e) {
+      print("Error signing in: ${e.message}");
+    }
+    // await reference
+    //     .collection('users')
+    //     .doc(userNameController.text)
+    //     .get()
+    //     .then((DocumentSnapshot documentSnapshot) {
+    //   if (documentSnapshot.exists) {
+    //     if (documentSnapshot.get('password') == userPasswordController.text) {
+    //       CurrentUser currentUser = CurrentUser();
+    //       currentUser.setCUName(userNameController.text);
+    //       currentUser.setCUPassword(userPasswordController.text);
+    //       startApp();
+    //     } else {
+    //       _showErrorMessage();
+    //     }
+    //   } else {
+    //     _showErrorMessage();
+    //   }
+    // });
   }
 
   // error message for incorrect log in

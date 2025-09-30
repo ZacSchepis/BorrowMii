@@ -1,14 +1,20 @@
+import 'package:borrow_mii/widgets/form_control.dart';
 import 'package:flutter/material.dart';
 
 class FlatFeeFormSection extends StatefulWidget {
   final bool enabled;
   final int monthsThreshold;
   final ValueChanged<bool> onToggle;
-  const FlatFeeFormSection(
-      {super.key,
+  final ValueChanged<int> onMonthFeeChange;
+  final ValueChanged<int> onMonthsChange;
+  const FlatFeeFormSection({
+      super.key,
       required this.enabled,
       required this.monthsThreshold,
-      required this.onToggle});
+      required this.onToggle,
+      required this.onMonthFeeChange,
+      required this.onMonthsChange
+    });
 
   @override
   State<StatefulWidget> createState() => _FlatFeeFormSectionWidgetState();
@@ -37,20 +43,40 @@ class _FlatFeeFormSectionWidgetState extends State<FlatFeeFormSection> {
         ),
         Builder(builder: (ctx) {
           if (widget.enabled) {
-            return Row(
+            return 
+            // Expanded
+            Row(
               children: [
+                Expanded(child: 
+                                TextFormField(
+                  textInputAction: TextInputAction.go, 
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: "Fee",
+                  ),
+                  onChanged: (v) => {},
+                  validator: (v) => "",
+                ),
+                ),
+      const SizedBox(width: 8), // spacing
+
+                // FormControl(label: "Price", onChanged: (v) => {}, validator: (v) => ""),
                 const Text("Flat fee after "),
                 DropdownButton(
                   items: flatwaitDropDownItems,
-                  value: 1,
-                  onChanged: (v) => {},
+                  value: widget.monthsThreshold,
+                  onChanged: (int? v) => {
+                    if(v != null) {
+                      widget.onMonthsChange(v)
+                    }
+                  },
                 ),
                 const Text(" overdue.")
               ],
             );
           }
           return Row();
-        })
+        }
+        )
       ],
     );
   }

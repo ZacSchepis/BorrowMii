@@ -51,39 +51,42 @@ class _Step2ItemDetailsWidgetState extends State<Step2ItemDetails> {
         children: [
           FormControl(
             label: "Item name",
-            onChanged: (value) => widget.item.itemName = value!,
+            onChanged: (value) => widget.item.name = value!,
             validator: _validator.itemName,
           ),
           // Text(widget.item.itemName),
           FormControl(
               label: "Item description",
-              onChanged: (value) => widget.item.itemDesc = value!,
+              onChanged: (value) => widget.item.description = value!,
               validator: _validator.itemDesc),
+          FormControl(
+            label: "Current value",
+            onChanged: (value) =>
+                widget.item.value = int.tryParse(value!) ?? 0,
+            validator: (v) => null,
+          ),
+          FormControl(
+            label: "Retail value",
+            onChanged: (value) =>
+                widget.item.value = int.tryParse(value!) ?? 0,
+            validator: (v) => null,
+          ),
+          FormControl(
+            label: "Item link",
+            onChanged: (value) => widget.item.link = value!,
+            validator: _validator.itemLink,
+          ),
           // Text(widget.item.itemDesc),
           FormControl(
               label: "Serial number",
               validator: (String? val) => null,
-              onChanged: (value) => widget.item.itemSerial = value!),
+              onChanged: (value) => widget.item.serial = value!),
           // Text(widget.item.itemSerial),
-          FormControl(
-            label: "Item link",
-            onChanged: (value) => widget.item.itemLink = value!,
-            validator: _validator.itemLink,
-          ),
+
           // Text(widget.item.itemLink),
-          FormControl(
-            label: "Retail value",
-            onChanged: (value) =>
-                widget.item.itemValue = int.tryParse(value!) ?? 0,
-            validator: (v) => null,
-          ),
+
           // Text(widget.item.itemRetail.toString()),
-          FormControl(
-            label: "Current value",
-            onChanged: (value) =>
-                widget.item.itemValue = int.tryParse(value!) ?? 0,
-            validator: (v) => null,
-          ),
+
           // Text(widget.item.itemValue.toString()),
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -100,7 +103,7 @@ class _Step2ItemDetailsWidgetState extends State<Step2ItemDetails> {
               Text("Item condition: "),
               DropdownButton(
                 items: dropdownItems,
-                value: widget.item.itemCondition,
+                value: widget.item.condition,
                 onChanged: widget.onConditionSet,
               ),
             ],

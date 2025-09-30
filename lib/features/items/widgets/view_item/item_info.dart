@@ -4,21 +4,23 @@ import 'package:flutter/material.dart';
 
 class ItemInfo extends StatelessWidget {
   final ItemModel item;
+  final CrossAxisAlignment crossAxisAlignment;
   const ItemInfo({
     super.key,
-    required this.item
+    required this.item,
+    this.crossAxisAlignment = CrossAxisAlignment.start
   });
 
   @override
   Widget build(BuildContext context) {
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: crossAxisAlignment,
       children: [
-        Text(item.itemName, style:  AppText.title,),
+        Text(item.name ?? "", style:  AppText.title,),
         Text("Owner: ${item.owner}", style: AppText.body,),
         Text("Status: ${item.status}", style: AppText.subtitle,),
-        Text(item.itemDesc, style: AppText.subtitle,)
+        Text(item.description ?? "", style: AppText.subtitle,)
       ],
     );
   }

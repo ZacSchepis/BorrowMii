@@ -1,15 +1,22 @@
 import 'package:borrow_mii/core/errors/link_errors.dart';
+import 'package:borrow_mii/data/datasources/user_datasource.dart';
 import 'package:borrow_mii/features/home/screens/home.dart';
 import 'package:borrow_mii/features/items/view_item/item_view.dart';
+import 'package:borrow_mii/logIn.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class AppRouter {
   final GoRouter router = GoRouter(
     initialLocation: "/"
     ,routes: [
-    GoRoute(path: "/", name: "home", builder: (ctx, __) {
-      
+    GoRoute(path: "/", name: "home", builder: (BuildContext context, __) {
+      // final user = context.read<UserState>();
+      UserState user = Provider.of<UserState>(context, listen: true);
+      if(user.getUserID() == null) {
+        return const LogIn();
+      }
       return const Home();
     }),
     GoRoute(

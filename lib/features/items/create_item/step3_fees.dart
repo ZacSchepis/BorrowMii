@@ -16,26 +16,31 @@ class Step3Fees extends StatefulWidget {
 class _Step3FeesWidgetState extends State<Step3Fees> {
   @override
   Widget build(BuildContext ctx) {
+    bool dailyFeeEnabled = widget.item.dailyFeeEnabled ?? false;
+    bool flatFeeEnabled = widget.item.flatFeeEnabled ?? false;
+    int lateFeeDays = widget.item.lateFeeDays ?? 1;
+    int flatFeeMonths = widget.item.flatFeeMonths ?? 1;
     return Material(
       child: Form(
             child: Column(
           children: [
             DailyLateFeeFormSection(
-              enabled: widget.item.dailyFeeEnabled,
-              daysThreshold: widget.item.lateFeeDays,
+              enabled: dailyFeeEnabled,
+              daysThreshold: lateFeeDays,
               onToggle: (v) => setState(() => widget.item.dailyFeeEnabled = v),
-              onDayFeeChanged: (v) =>
-                  setState(() => widget.item.lateFeeCost = v),
+              onDayFeeChanged: (v) =>setState(() => widget.item.lateFeeCost = v),
               onDaysChanged: (v) => setState(() => widget.item.lateFeeDays = v),
             ),
             FlatFeeFormSection(
-                enabled: widget.item.flatFeeEnabled,
-                monthsThreshold: widget.item.flatFeeMonths,
+                enabled: flatFeeEnabled,
+                monthsThreshold: flatFeeMonths,
+                onMonthFeeChange: (v) => setState(() => widget.item.flatFeeCost = v),
+                onMonthsChange: (v) => setState(() => widget.item.flatFeeMonths = v),
                 onToggle: (v) => setState(() => widget.item.flatFeeEnabled = v))
                   ,Spacer(),
         Align(
-          child: ElevatedButton(onPressed: widget.onNext, child: Text("Next")),
           alignment: Alignment.bottomRight,
+          child: ElevatedButton(onPressed: widget.onNext, child: Text("Submit")),
           
         )
           ],

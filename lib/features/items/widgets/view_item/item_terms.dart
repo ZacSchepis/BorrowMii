@@ -10,10 +10,12 @@ class ItemTerms extends StatelessWidget {
   });
   List<String> get bullets {
     List<String> b = [];
-    if(item.dailyFeeEnabled) {
+    final dailyFees = item.dailyFeeEnabled;
+    final flatFees = item.flatFeeEnabled;
+    if(dailyFees != null && dailyFees) {
       b.add("After ${item.lateFeeDays} days, a fee of \$${item.lateFeeCost}");
     }
-    if(item.flatFeeEnabled) {
+    if(flatFees != null && flatFees) {
       b.add("Lump sum if item is late more than ${item.flatFeeMonths} month(s), of amount \$${item.flatFeeCost}");
     }
     return b;

@@ -25,8 +25,10 @@ class StepperController extends ChangeNotifier {
     }
   }
   void goTo(int step) {
+    print("We got step: $step");
     if(step >= 0 && step < maxSteps) {
       _currentStep = step;
+      onStepChanged?.call();
       notifyListeners();
     } 
   }

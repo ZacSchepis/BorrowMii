@@ -2,20 +2,27 @@
 import 'dart:convert';
 
 import 'package:borrow_mii/core/constants/app_links.dart';
-import 'package:borrow_mii/router.dart';
-import 'package:flutter/material.dart';
+import 'package:borrow_mii/core/constants/nfc_messages.dart';
+import 'package:borrow_mii/core/errors/nfc_errors.dart';
 import 'package:nfc_manager/ndef_record.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
 import 'package:flutter/foundation.dart';
-import 'package:nfc_manager/nfc_manager_android.dart';
-import 'package:borrow_mii/widgets/nfc_scan.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+
+import 'package:nfc_manager/nfc_manager_android.dart';
+import 'package:nfc_manager/nfc_manager_ios.dart';
 
 class NfcService {
   // final  onDiscovered;
   // const NfcService({required this.onDiscovered});
+  late bool nfcAvailable;
+
+  Future<bool> isAvailable() async {
+    return NfcManager.instance.isAvailable();
+  }
   Future<void> startSession(Function(NfcTag) onDiscovered) async {
+    // final _inst = NfcManag/er.instance.
     await NfcManager.instance.startSession(
         pollingOptions: {NfcPollingOption.iso14443},
         onDiscovered: (tag) async {
@@ -28,71 +35,47 @@ class NfcService {
           }
         });
   }
+  Future<NdefMessage?> getNdefMessage(NfcTag tag) async{
+    Future<NdefMessage?> ndefMsg;
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        final ndefA = NdefAndroid.from(tag);
+        if(ndefA == null) throw NFCException(NfcMessages.incompatibleTag);
+        ndefMsg = ndefA.getNdefMessage();
+        break;
+      case TargetPlatform.iOS:
+        final ndefI = NdefIos.from(tag);
+        if(ndefI == null) throw NFCException(NfcMessages.incompatibleTag);
+        ndefMsg = ndefI.readNdef();
+        break;
+      default:
+        throw NFCException(NfcMessages.notSupported);
+    }
+    return ndefMsg;
+  }
   Future<Uri?> getNdef(NfcTag tag) async {
-    // final nd = 
-    final ndef = NdefAndroid.from(tag);
-    if(ndef == null) {
-      print("tag is not compatible with NDEF");
-      return null;
-    }
-    final msg = await ndef.getNdefMessage();
+    final msg = await getNdefMessage(tag);
     if(msg == null) {
-      print("Could not read NDEF");
-      return null;
+      throw NFCException(NfcMessages.unreadableCard);
     }
-    // List<String> msgs = new List.empty(growable: true);
     for(final rec in msg.records) {
       final type = utf8.decode(rec.type);
-      
-      String val = "";
-      print(rec.payload);
-      print("Type: ${rec.type}");
+      // String val = "";
       if(type == 'U') {
           final payload = rec.payload;
           if(payload.isEmpty) return null;
-
-          final prefixCode = payload.first;
           final uriData = utf8.decode(payload.sublist(1));
-
-          print(uriData);
-
-
-        // final uriString = utf8.decode(uri);
-        // print("Okay? $uriString");
-        // try {
           Uri? parsedUri = Uri.parse(uriData );
           if(parsedUri != null && parsedUri.scheme == APP_SCHEME) {
             return parsedUri;
           }
-
-        // } on FormatException catch(e) {
-        //   print("Some wrong formatting: $e");
-        // }
-        // print("Decoded URI: $uriString");
-        // val = "Decoded URI: $uriString";
-        // return parsedUri;
-
-        // msgs.add("Decoded URI: $uriString");
       }
       if (type == 'android.com:pkg') {
-        final pkgName = utf8.decode(rec.payload);
-        val = "Decoded AAR (Package Name): $pkgName";
-        print("Decoded AAR (Package Name): $pkgName");
+        // final pkgName = utf8.decode(rec.payload);
+        // val = "Decoded AAR (Package Name): $pkgName";
       }
-      // else if(type == 'T') {
-      //   final text = utf8.decode(rec.payload);
-      //   val = "Text: $text";
-      //   print("Text: $text");
-      // } else {
-      //   val = "unknown rec type: $type, payload: ${rec.payload}";
-      //   print("unknown rec type: $type, payload: ${rec.payload}");
-      // }
-      // msgs.add(val);
     }
-    // print(msg.);
-    return null;
-    // final res = msgs.join('\n');
-    // return res;
+    throw NFCException(NfcMessages.noValidData);
   }
   Future<void> stopSession() async {
     await NfcManager.instance.stopSession();

@@ -1,3 +1,5 @@
+import 'package:borrow_mii/widgets/button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'modelViewController.dart';
@@ -87,6 +89,16 @@ class ProfileMenu extends StatelessWidget {
                   ),
                 ],
               ),
+              Row(
+                children: [
+                  Button(text: "Sign Out", onPressed: () async {
+                   FirebaseAuth.instance.signOut();
+                    // Navigator.pop(context);
+                  }
+                   )
+                    
+                ],
+              )
             ],
           )
         ],
