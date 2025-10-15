@@ -1,6 +1,7 @@
 import 'package:borrow_mii/core/constants/item_status.dart';
 import 'package:borrow_mii/core/errors/item_errors.dart';
 import 'package:borrow_mii/data/models/borrow_order.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,11 @@ class ItemRepository {
     remote = FirestoreItemsDataSource(),
     fakeData = FakeItemsDataSource(),
     local = LocalItemsDataSource();
-  
+  Future<void> updateItemAttr<T>(String key, T val, String itemId) async {
+    await remote.updateItemAttr(key, val, itemId);
+    
+  }
+
   Future<List<ItemModel>> getMyItems(BuildContext context) async {
     try {
       final userId = context.read<UserState>().getUserID();
@@ -91,6 +96,23 @@ class ItemRepository {
   Future<BorrowOrder?> getBorrowOrderFromContext(BuildContext context, String id) async {
     final userId = context.read<UserState>().getUserID();
     return remote.getBorrowOrderFromBorrower(id, userId!);
+  }
+  String useUserId(BuildContext ctx) {
+    final userId = ctx.read<UserState>().getUserID();
+    if(userId == null || userId.isEmpty) throw ItemException("You must be signed in to watch your items feed");
+    return userId;
+  }
+
+  Stream<QuerySnapshot<ItemModel>> getMyInventory(String id) {
+    return remote.listenForFilterItems(
+      Filter("ownerId", isEqualTo: id), id);
+  }
+  Stream<QuerySnapshot<ItemModel>> getMyBorrows(String id) {
+    return remote.listenForFilterItems(Filter("borrowerId", isEqualTo: id), id);
+  }
+
+  Stream<QuerySnapshot<ItemModel>> getMyLoans(String id) {
+    return remote.listenForFilterItems(Filter.and(Filter("borrowerId", isNotEqualTo: ""), Filter("ownerId", isEqualTo: id)), id);
   }
 }
 

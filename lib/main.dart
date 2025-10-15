@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:borrow_mii/data/datasources/app_linkstate_datasource.dart';
 import 'package:borrow_mii/data/datasources/app_state.dart';
 import 'package:borrow_mii/data/datasources/friends_state.dart';
+import 'package:borrow_mii/data/datasources/items/my_borrows_state.dart';
+import 'package:borrow_mii/data/datasources/items/my_items_state.dart';
+import 'package:borrow_mii/data/datasources/items/my_loans_state.dart';
 import 'package:borrow_mii/data/models/user_model.dart';
 import 'package:borrow_mii/router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,7 +31,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  final MyItemsState myItemsState = MyItemsState();
+  final myLoansState = MyLoansState();
+  final myBorrowsState = MyBorrowsState();
   // if(mode != null && mode != "PRODUCTION") {
   //   const String host = "10.34.188.177";
   //   final int auth_port = 9099;
@@ -65,6 +70,12 @@ void main() async {
   final user = new UserState();
   FirebaseAuth.instance.authStateChanges().listen((User? _user) {
     user.setUser(_user);
+    final userId = _user?.uid;
+    if(userId != null && userId.isNotEmpty) {
+      myBorrowsState.loadItems(userId);
+      myLoansState.loadItems(userId);
+      myItemsState.loadItems(userId);
+    }
   });
 
   final router = AppRouter().router;
@@ -74,7 +85,11 @@ void main() async {
 runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => user),
-      ChangeNotifierProvider(create: (_) => friends)
+      ChangeNotifierProvider(create: (_) => friends),
+      ChangeNotifierProvider(create: (_) => myBorrowsState),
+      ChangeNotifierProvider(create: (_) => myLoansState),
+      ChangeNotifierProvider(create: (_) => myItemsState),
+
       // ChangeNotifierProvider(create: (_) => appLinkState),
       // ChangeNotifierProvider(create: (_) => appState)
     ], child: MyApp(),),

@@ -1,4 +1,5 @@
 import 'package:borrow_mii/features/borrow_requests/screens/borrow_screen.dart';
+import 'package:borrow_mii/features/items/item_tabs/item_tabs_selector_screen.dart';
 import 'package:borrow_mii/features/items/view_item/item_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:borrow_mii/features/items/screens/my_items_screen.dart';
@@ -35,8 +36,13 @@ class _PanelState extends State<Panel> {
     'Scan Item',
     style: optionStyle,
   );
-  Widget displayWidget = const Text("");
+  late Widget displayWidget ;
   ModelViewController mvc = ModelViewController();
+  @override
+  void initState() {
+    displayWidget = getWidgetOptions().elementAt(_selectedIndex);
+    super.initState();
+  }
 
   List<Widget> getWidgetOptions() {
     return <Widget>[
@@ -44,10 +50,10 @@ class _PanelState extends State<Panel> {
           child: Column(
         children: const [
           Text("My Items: "),
-          Expanded(child: MyItemsScreenWidget()),
+          Expanded(child: ItemTabsSelectorScreen()),
         ],
       )),
-      Expanded(child: BorrowScreen()),
+      // Expanded(child: BorrowScreen()),
       Expanded(child: _SearchPanel()),
       Expanded(child: ItemScan())
       // Expanded(child: _)
@@ -76,10 +82,10 @@ class _PanelState extends State<Panel> {
             icon: Icon(Icons.home),
             label: 'My Items',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Borrowed Items',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.business),
+          //   label: 'Borrowed Items',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Find Items',

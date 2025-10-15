@@ -1,3 +1,4 @@
+import 'package:borrow_mii/core/constants/firebase_collections.dart';
 import 'package:borrow_mii/data/datasources/storage_datasource.dart';
 import 'package:borrow_mii/data/datasources/user_datasource.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,10 +11,17 @@ class StorageRepository {
   StorageRepository() :
       _storage = StorageDatasource()
       ;
+    Future<String?> uploadImageToPath(XFile file, String userId, String path) async {
+      try {
+        return _storage.uploadImageToGCS(file, userId, path);
+      } catch (e) {
+        rethrow;
+      }
+    }
     Future<String?> uploadImage(XFile file, BuildContext context) async{
       try {
         final userId = context.read<UserState>().getUserID();
-        return _storage.uploadImageToGCS(file, userId!);
+        return uploadImageToPath(file, userId!, ITEM_IMAGES);
       } catch (e) {
         rethrow;
       }

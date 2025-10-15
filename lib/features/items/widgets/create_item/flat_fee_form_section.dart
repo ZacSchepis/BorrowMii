@@ -7,14 +7,13 @@ class FlatFeeFormSection extends StatefulWidget {
   final ValueChanged<bool> onToggle;
   final ValueChanged<int> onMonthFeeChange;
   final ValueChanged<int> onMonthsChange;
-  const FlatFeeFormSection({
-      super.key,
+  const FlatFeeFormSection(
+      {super.key,
       required this.enabled,
       required this.monthsThreshold,
       required this.onToggle,
       required this.onMonthFeeChange,
-      required this.onMonthsChange
-    });
+      required this.onMonthsChange});
 
   @override
   State<StatefulWidget> createState() => _FlatFeeFormSectionWidgetState();
@@ -43,31 +42,39 @@ class _FlatFeeFormSectionWidgetState extends State<FlatFeeFormSection> {
         ),
         Builder(builder: (ctx) {
           if (widget.enabled) {
-            return 
-            // Expanded
-            Row(
+            return
+                // Expanded
+                Wrap(
+              alignment: WrapAlignment.start,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Expanded(child: 
-                                TextFormField(
-                  textInputAction: TextInputAction.go, 
+                TextFormField(
+                  textInputAction: TextInputAction.go,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: "Fee",
+                    border: OutlineInputBorder(),
+                    labelText: "Fee",
+                    isDense: true
                   ),
-                  onChanged: (v) => {},
+                  keyboardType: TextInputType.number,
+                  onChanged: (v) =>
+                      widget.onMonthFeeChange(int.tryParse(v!) ?? 0),
                   validator: (v) => "",
                 ),
-                ),
-      const SizedBox(width: 8), // spacing
+
+                const SizedBox(width: 8), // spacing
 
                 // FormControl(label: "Price", onChanged: (v) => {}, validator: (v) => ""),
                 const Text("Flat fee after "),
                 DropdownButton(
                   items: flatwaitDropDownItems,
-                  value: widget.monthsThreshold,
+                  value: flatwaitDropDownItems
+                          .any((i) => i.value == widget.monthsThreshold)
+                      ? widget.monthsThreshold
+                      : flatwaitDropDownItems.first.value,
                   onChanged: (int? v) => {
-                    if(v != null) {
-                      widget.onMonthsChange(v)
-                    }
+                    if (v != null &&
+                        flatwaitDropDownItems.any((item) => item.value == v))
+                      {widget.onMonthsChange(v)}
                   },
                 ),
                 const Text(" overdue.")
@@ -75,8 +82,7 @@ class _FlatFeeFormSectionWidgetState extends State<FlatFeeFormSection> {
             );
           }
           return Row();
-        }
-        )
+        })
       ],
     );
   }

@@ -20,6 +20,7 @@ class ItemInputValidator extends Validator {
   }  
 
    String? itemLink(String? val) {
+    if(val == null) return null;
     return Validator.linkProp(val, "URL must be valid");
   }
 

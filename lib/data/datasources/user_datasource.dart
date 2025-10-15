@@ -14,6 +14,7 @@ class UserState  extends ChangeNotifier{
   String? getUserID() {
     return _user?.uid;
   }
+  User? get user => _user;
   String? get userName => _user?.displayName;
   // void setUser(String id, String mail) {
   //   userId = id;

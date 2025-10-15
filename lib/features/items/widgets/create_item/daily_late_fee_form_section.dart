@@ -7,21 +7,21 @@ class DailyLateFeeFormSection extends StatefulWidget {
   final ValueChanged<bool> onToggle;
   final ValueChanged<int> onDaysChanged;
   final ValueChanged<int> onDayFeeChanged;
-  const DailyLateFeeFormSection({
-    super.key,
-    required this.enabled,
-    required this.daysThreshold,
-    required this.onDaysChanged,
-    required this.onToggle,
-    required this.onDayFeeChanged
-  });
+  const DailyLateFeeFormSection(
+      {super.key,
+      required this.enabled,
+      required this.daysThreshold,
+      required this.onDaysChanged,
+      required this.onToggle,
+      required this.onDayFeeChanged});
 
   @override
-  _DailyLateFeeFormSectionWidgetState createState() => _DailyLateFeeFormSectionWidgetState();
-
+  _DailyLateFeeFormSectionWidgetState createState() =>
+      _DailyLateFeeFormSectionWidgetState();
 }
 
-class _DailyLateFeeFormSectionWidgetState extends State<DailyLateFeeFormSection> {
+class _DailyLateFeeFormSectionWidgetState
+    extends State<DailyLateFeeFormSection> {
   List<DropdownMenuItem<int>> get dropdownItems {
     List<DropdownMenuItem<int>> menuItems = [
       DropdownMenuItem(value: 1, child: Text("1 day")),
@@ -30,57 +30,73 @@ class _DailyLateFeeFormSectionWidgetState extends State<DailyLateFeeFormSection>
     ];
     return menuItems;
   }
+
   List<DropdownMenuItem<int>> get dailyFees {
     List<DropdownMenuItem<int>> items = [
-      DropdownMenuItem(value: 1, child: Text("\$1"),),
-      DropdownMenuItem(value: 2, child: Text("\$2"),),
-      DropdownMenuItem(value: 3, child: Text("\$3"),),
+      DropdownMenuItem(
+        value: 1,
+        child: Text("\$1"),
+      ),
+      DropdownMenuItem(
+        value: 2,
+        child: Text("\$2"),
+      ),
+      DropdownMenuItem(
+        value: 3,
+        child: Text("\$3"),
+      ),
     ];
     return items;
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-            // FormControl(
-            //   label: "Daily late fee", 
-            //   onChanged: (v) => {}, 
-            //   validator: (v) => null
-            //   ),
-            Row(
+        // FormControl(
+        //   label: "Daily late fee",
+        //   onChanged: (v) => {},
+        //   validator: (v) => null
+        //   ),
+        Row(
+          children: [
+            const Text("Daily late fees: Yes"),
+            Switch(value: widget.enabled, onChanged: widget.onToggle),
+            const Text("None")
+          ],
+        ),
+        Builder(builder: (ctx) {
+          if (widget.enabled) {
+            return Wrap(
+              alignment: WrapAlignment.start,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                const Text("Daily late fees: Yes"),
-                Switch(value: widget.enabled, onChanged: widget.onToggle),
-                const Text("None")
+                DropdownButton(
+                  items: dailyFees,
+                  value: 1,
+                  onChanged: (v) {
+                    if (v != null && dailyFees.contains(v)) {
+                      widget.onDayFeeChanged(v);
+                    }
+                  },
+                ),
+                Text("Late fees applied after "),
+                DropdownButton(
+                  items: dropdownItems,
+                  value: 1,
+                  onChanged: (int? v) {
+                    if (v != null && dropdownItems.contains(v)) {
+                      widget.onDaysChanged(v);
+                    }
+                  },
+                ),
+                Text(" overdue.")
               ],
-            ),
-            Builder(builder: (ctx) {
-              if(widget.enabled) {
-                return Row(
-                      children: [
-                        DropdownButton(items: dailyFees, value: 1, onChanged: (int? v) {
-                          if(v != null) {
-                            
-                          }
-                        },),
-                        Text("Late fees applied after "),
-                        DropdownButton(
-                          items: dropdownItems,
-                          value: widget.daysThreshold,
-                          onChanged: (int? v) {
-                            if(v != null) {
-                              widget.onDaysChanged(v);
-                            }
-                          },
-                        ),
-                        Text(" overdue.")
-                      ],
-                    );
-              } return Row();
-            })
-
+            );
+          }
+          return Row();
+        })
       ],
     );
-
   }
 }

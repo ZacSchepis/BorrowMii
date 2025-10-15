@@ -8,6 +8,7 @@ import 'package:borrow_mii/features/items/create_item/create_item_flow.dart';
 import 'package:borrow_mii/features/items/view_item/item_scan.dart';
 import 'package:borrow_mii/features/items/view_item/item_view.dart';
 import 'package:borrow_mii/features/items/widgets/view_item/item_404.dart';
+import 'package:borrow_mii/features/user/my_profile/my_profile_screen.dart';
 import 'package:borrow_mii/modelViewController.dart';
 import 'package:borrow_mii/panel.dart';
 import 'package:borrow_mii/profileMenu.dart';
@@ -123,22 +124,15 @@ class _HomeWidgetState extends State<Home> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ProfileMenu().build(context)))
+                          builder: (context) => MyProfileScreen()))
+
+                          // builder: (context) => ProfileMenu().build(context)))
                 },
                 icon: const Icon(Icons.account_circle_rounded),
               );
             },
           ),
-          actions: [
-            IconButton(
-                onPressed: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ItemScan()))
-                    },
-                icon: const Icon(Icons.more_vert)),
-          ],
+
         ),
         // body: handleLink(_uri!)
         body: Column(

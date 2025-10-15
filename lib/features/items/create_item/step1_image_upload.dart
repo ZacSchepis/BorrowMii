@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:borrow_mii/core/constants/image_mode.dart';
 import 'package:borrow_mii/data/repositories/storage_repository.dart';
 import 'package:borrow_mii/features/items/widgets/view_item/item_image.dart';
 import 'package:flutter/foundation.dart';
@@ -13,7 +14,7 @@ class Step1ImageUpload extends StatefulWidget {
   final VoidCallback onNext;
   final XFile? selectedImage;
   final ValueChanged<XFile?> onSelectImage;
-  final AsyncCallback pickImage;
+  final Future<void> Function(ImageSource mode)? pickImage;
   final String imagePath;
   Step1ImageUpload(
       {super.key,
@@ -22,8 +23,7 @@ class Step1ImageUpload extends StatefulWidget {
       required this.onSelectImage,
       required this.selectedImage,
       required this.pickImage,
-      required this.imagePath
-      });
+      required this.imagePath});
 
   @override
   _Step1ImageUploadWidgetState createState() =>
@@ -39,8 +39,13 @@ class _Step1ImageUploadWidgetState extends State<Step1ImageUpload> {
   @override
   Widget build(BuildContext ctx) {
     Widget imageWidget;
-    if(widget.selectedImage != null){
-      imageWidget = Image.file(File(widget.selectedImage!.path), width: 250, height: 250, fit:BoxFit.cover,);
+    if (widget.selectedImage != null) {
+      imageWidget = Image.file(
+        File(widget.selectedImage!.path),
+        width: 250,
+        height: 250,
+        fit: BoxFit.cover,
+      );
     } else if (widget.imagePath.isNotEmpty) {
       imageWidget = ItemImage(itemId: widget.imagePath);
     } else {
@@ -49,9 +54,17 @@ class _Step1ImageUploadWidgetState extends State<Step1ImageUpload> {
     return Column(
       children: [
         // ItemImage(itemId: widget.imagePath),
-        SizedBox(height: 250, width: 250, child: imageWidget,),
-                    ElevatedButton(
-                  onPressed: widget.pickImage, child: const Text("Select image")),
+        SizedBox(
+          height: 250,
+          width: 250,
+          child: imageWidget,
+        ),
+        ElevatedButton(
+            onPressed: () => widget.pickImage?.call(ImageSource.gallery),
+            child: const Text("Select image")),
+        ElevatedButton(
+            onPressed: () => widget.pickImage?.call(ImageSource.camera),
+            child: const Text("Take a picture")),
         // Column(
         //   children: [
         //     widget.selectedImage == null
@@ -68,9 +81,8 @@ class _Step1ImageUploadWidgetState extends State<Step1ImageUpload> {
         // ),
         Spacer(),
         Align(
-          child: ElevatedButton(onPressed: onNext, child: Text("Next")),
           alignment: Alignment.bottomRight,
-          
+          child: ElevatedButton(onPressed: onNext, child: Text("Next")),
         )
       ],
     );

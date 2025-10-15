@@ -1,3 +1,4 @@
+import 'package:borrow_mii/core/constants/image_mode.dart';
 import 'package:borrow_mii/data/datasources/user_datasource.dart';
 import 'package:borrow_mii/data/repositories/item_repository.dart';
 import 'package:borrow_mii/data/repositories/storage_repository.dart';
@@ -13,9 +14,11 @@ import 'package:provider/provider.dart';
 
 class CreateItemFlow extends StatefulWidget {
   final String id;
+  final ItemModel? item;
   const CreateItemFlow({
     super.key, 
     required this.id,
+    this.item
     });
 
   @override
@@ -36,7 +39,14 @@ class _CreateItemFlowState extends State<CreateItemFlow> {
   @override
   void initState() {
     super.initState();
-    newItem = ItemModel(owner: "", id: widget.id, ownerId: "");
+    final parentItem = widget.item;
+    if(parentItem == null) {
+      newItem =ItemModel(owner: "", id: widget.id, ownerId: "");
+    } else {
+      newItem = parentItem;
+    }
+    // if(widget.item != null) 
+    // newItem = ;
   }
 
   void nextStep() {
@@ -58,7 +68,7 @@ class _CreateItemFlowState extends State<CreateItemFlow> {
     newItem.id = widget.id;
     // if(_currentStep == 1)
     try {
-      // if(_currentStep == 2 && !feesEnabled) {
+      // if(_currentStep == 3) {
         _repo.addItem(newItem, context);
         itemCreated = true;
       // }
@@ -100,9 +110,20 @@ class _CreateItemFlowState extends State<CreateItemFlow> {
       });
     }
   }
-  Future<void> _pickImage() async {
+  Future<void> _pickImage(ImageSource mode) async {
     final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    // final XFile? pickedFile;
+      final pickedFile = await picker.pickImage(source: mode);
+    // ImageSource source = switch(mode) 
+    // switch(mode) {
+    //   case ImageMode.select: {
+    //     source = ImageSource.gallery;
+    //       break;
+    //   }
+    //   case ImageMode.select: {
+    //     // pickedFile = await picker.
+    //   }
+    // }
     setImage(pickedFile);
   }
   @override

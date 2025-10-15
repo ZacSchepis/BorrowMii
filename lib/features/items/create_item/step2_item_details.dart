@@ -53,33 +53,39 @@ class _Step2ItemDetailsWidgetState extends State<Step2ItemDetails> {
             label: "Item name",
             onChanged: (value) => widget.item.name = value!,
             validator: _validator.itemName,
+            initialValue: widget.item.name,
           ),
           // Text(widget.item.itemName),
           FormControl(
               label: "Item description",
               onChanged: (value) => widget.item.description = value!,
+              initialValue: widget.item.description,
               validator: _validator.itemDesc),
           FormControl(
             label: "Current value",
-            onChanged: (value) =>
-                widget.item.value = int.tryParse(value!) ?? 0,
+            onChanged: (value) => widget.item.value = int.tryParse(value!) ?? 0,
             validator: (v) => null,
+            keyboardType: TextInputType.number,
+            initialValue: widget.item.value.toString(),
           ),
           FormControl(
             label: "Retail value",
-            onChanged: (value) =>
-                widget.item.value = int.tryParse(value!) ?? 0,
+            onChanged: (value) => widget.item.value = int.tryParse(value!) ?? 0,
             validator: (v) => null,
+            keyboardType: TextInputType.number,
+            initialValue: widget.item.retail.toString(),
           ),
           FormControl(
             label: "Item link",
             onChanged: (value) => widget.item.link = value!,
+            initialValue: widget.item.link,
             validator: _validator.itemLink,
           ),
           // Text(widget.item.itemDesc),
           FormControl(
               label: "Serial number",
               validator: (String? val) => null,
+              initialValue: widget.item.serial,
               onChanged: (value) => widget.item.serial = value!),
           // Text(widget.item.itemSerial),
 
@@ -97,8 +103,7 @@ class _Step2ItemDetailsWidgetState extends State<Step2ItemDetails> {
             ],
           ),
           Row(
-                      mainAxisSize: MainAxisSize.min,
-
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text("Item condition: "),
               DropdownButton(
@@ -111,12 +116,11 @@ class _Step2ItemDetailsWidgetState extends State<Step2ItemDetails> {
           Spacer(),
           Align(
             child: ElevatedButton(
-              onPressed: () => {
-                    if (_formKey.currentState!.validate()) {widget.onNext()}
-                  },
-              child: const Text("Submit")),
-              alignment: Alignment.bottomRight,
-
+                onPressed: () => {
+                      if (_formKey.currentState!.validate()) {widget.onNext()}
+                    },
+                child: const Text("Submit")),
+            alignment: Alignment.bottomRight,
           )
         ],
       ),

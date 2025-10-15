@@ -1,0 +1,4 @@
+enum ImageMode {
+  select,
+  takeNew
+}

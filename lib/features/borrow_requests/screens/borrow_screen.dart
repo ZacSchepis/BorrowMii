@@ -14,14 +14,19 @@ class _BorrowScreenWidgetState extends State<BorrowScreen> {
   Widget build(BuildContext context) {
 
 
-    return Column(
+    return 
+    Scaffold(
+      appBar: AppBar(title: Text("Pending Requests"), leading: BackButton(onPressed: () => Navigator.pop(context),),),
+      body: Column(
       children: [
         Text("Manage Borrow Requests"),
         Expanded(child: NonFriendlyBorrow()
         
         )
       ],
-    );
+    ),
+    )
+    ;
 
   }
 }

@@ -16,8 +16,21 @@ import 'package:borrow_mii/data/models/item_model.dart';
 List<ItemModel> itemsCache = List.empty(growable: true);
 class FirestoreItemsDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Future<List<ItemModel>> filterItemsBy(Filter filters, String id) async {
+    final snapshot = await _firestore
+          .collection(ITEMS).withConverter(fromFirestore: (d, o) => ItemModel.fromFirestore(d, o, id), toFirestore: (ItemModel item, _) => item.toFirestore())
+          .where(filters)
+          .get();
+    if(snapshot.docs.isNotEmpty) {
+      List<ItemModel> items = List.empty(growable: true);
+      items.addAll(snapshot.docs.map((i) => i.data()));
+      return items;
+    } else {
+      throw ItemException("No items found");
+    }
+  }
+
   Future<List<ItemModel>> getItems(String id) async {
-    print("User: $id");
     final snapshot = await _firestore
       .collection(ITEMS).withConverter(fromFirestore: (d, o) => ItemModel.fromFirestore(d, o, id), toFirestore: (ItemModel item, _) => item.toFirestore())
       // .where("ownerId", isEqualTo: id)
@@ -37,11 +50,6 @@ class FirestoreItemsDataSource {
       } else {
         throw ItemException("No items found");
       }
-
-      // return 
-      
-    
-    // throw ItemException("Remote not implemented");
   }
   Future<ItemModel> getItemById(String id, String uId) async {
     final snapshot = await _firestore
@@ -72,10 +80,7 @@ class FirestoreItemsDataSource {
     if(bId != null && bId.isEmpty) {
       throw BorrowerMissingException("You must be signed in to borrow this item!");
     } 
-    // final isFutureOrSoon = DateTime.now().compareTo(order.borrowDate);
-    // final isPast = DateTime(year)
-    // if(DateTime().compareTo(bo))
-    final snap = _firestore.collection(FirebaseCollections.borrowOrders.name).withConverter(
+      final snap = _firestore.collection(FirebaseCollections.borrowOrders.name).withConverter(
       toFirestore: (BorrowOrder o,_) => o.toFirestore(),
       fromFirestore: BorrowOrder.fromFirestore
       
@@ -92,9 +97,6 @@ class FirestoreItemsDataSource {
         await doc.set(order);
         return doc.id;
       }
-      // final doc = oId.isNotEmpty ? snap.doc(oId) : snap.doc();
-      // order.id = doc.id;
-      // return order.id;
   }
  Stream<QuerySnapshot<ItemModel>> listenForItems(BuildContext ctx, List<ItemModel> borrows, VoidCallback onUpdate) {
     final userId = ctx.read<UserState>().getUserID();
@@ -110,7 +112,14 @@ class FirestoreItemsDataSource {
               )
             .snapshots();
   }
-
+ Stream<QuerySnapshot<ItemModel>> listenForFilterItems(Filter filters, String userId) {    
+    return _firestore.collection(FirebaseCollections.items.name)
+            .withConverter(fromFirestore: (d, o) => ItemModel.fromFirestore(d,o, userId), toFirestore: (ItemModel o, _) => o.toFirestore())
+            .where(
+                filters
+              )
+            .snapshots();
+  }
   StreamSubscription<QuerySnapshot<BorrowOrder>> listenForBorrows(BuildContext ctx, List<BorrowOrder> borrows, VoidCallback onUpdate) {
     final userId = ctx.read<UserState>().getUserID();
     if(userId == null || userId.isEmpty) throw ItemException("You must be signed in to watch your borrow requests");
@@ -173,18 +182,19 @@ class FirestoreItemsDataSource {
     if(order == null) {
       return;
     } 
-    // final item = await getItemById(order.itemId);
-    // if(item == null) {
-    //   item.status = ItemStatus.borrowed;
-    //   return;
-    // }
     String borrowerId = status == ItemStatus.home ? "" : order.borrowerId!;
     if(status == ItemStatus.borrowed) {
       await _firestore.collection(FirebaseCollections.borrows.name).doc(order.id).set(order.toFirestore());
     }
     await _firestore.collection(FirebaseCollections.items.name).doc(order.itemId).update({"status": status.name, "borrowerId": borrowerId });
   }
-
+  Future<void> updateItemAttr<T>(String key, T val, String itemId) async {
+    try {
+      await _firestore.collection(FirebaseCollections.items.name).doc(itemId).update({key: val});
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 class FakeItemsDataSource {

@@ -5,11 +5,13 @@ class LoadingModal extends StatefulWidget {
   final String title;
   final String subtitle;
   bool loaded;
+  final double width, height;
   LoadingModal({
     super.key,
     this.subtitle = "",
     this.title = "",
-    required this.loaded
+    required this.loaded,
+    this.width = 250, this.height =250
   });
 
   @override
@@ -25,7 +27,7 @@ class _LoadingScreenWidgetState extends State<LoadingModal> {
       child: Align(
         alignment: Alignment.center,
           child: SizedBox(
-            height: 250, width: 250,
+            height: widget.height, width: widget.width,
             child: Column(
               children: [
                 const CircularProgressIndicator(),

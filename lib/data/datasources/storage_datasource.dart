@@ -10,11 +10,12 @@ class StorageDatasource {
 
   StorageDatasource() :_storage = FirebaseStorage.instanceFor(bucket: "gs://borrow-mii.firebasestorage.app");
 
-  Future<String?> uploadImageToGCS(XFile file, String id) async{
+  Future<String?> uploadImageToGCS(XFile file, String id, String path) async{
     final ref = _storage.ref();
     final name = Uuid().v4();
-    final imgPath = "$ITEM_IMAGES/$id/$name";
-    print("THIS IS THE IMAGE PATH: '$imgPath'");
+    final imgPath = "$path/$id/$name";
+    // final imgPath = "$ITEM_IMAGES/$id/$name";
+    // print("THIS IS THE IMAGE PATH: '$imgPath'");
     final imageRef = ref.child(imgPath);
     final File file2 = File(file.path);
     await imageRef.putFile(file2);
