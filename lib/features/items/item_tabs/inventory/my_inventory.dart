@@ -127,11 +127,7 @@ class _MyInventoryWidgetState extends State<MyInventory> {
               icon: Icon(Icons.playlist_add),
               tooltip: "Move selected items to a group",
             ),
-            IconButton(
-              onPressed: () => {},
-              icon: Icon(Icons.edit),
-              tooltip: "Edit selected item info",
-            )
+ 
           ],
         ),
         
